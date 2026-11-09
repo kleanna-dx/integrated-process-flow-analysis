@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" href="data:,">
+  <title>공정도 변경 작업</title>
+  <style>
+    :root{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;color:#17212b;background:#f3f5f7;color-scheme:light;--blue:#174b78;--border:#d6dde5;--muted:#586675;--warning:#fff6df;--green:#eaf5ee}
+    *{box-sizing:border-box}body{margin:0;background:#f3f5f7}header{background:#fff;border-bottom:1px solid var(--border)}.header-inner,main{width:min(1120px,calc(100% - 32px));margin:0 auto}.header-inner{padding:24px 0 18px}h1{font-size:1.55rem;margin:0 0 8px}h2{font-size:1.16rem;margin:0 0 14px}h3{font-size:1rem;margin:16px 0 8px}p{line-height:1.55;margin:8px 0}.muted{color:var(--muted);font-size:.92rem}.tag{display:inline-flex;align-items:center;border:1px solid #728194;border-radius:100px;padding:4px 10px;font-weight:700;font-size:.8rem;margin-bottom:8px}.status-tag{background:#fff6df;border-color:#9b7111;color:#604400}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.steps span{border:1px solid var(--border);border-radius:8px;padding:9px 12px;background:#fafbfd;font-weight:700}.steps b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;margin-right:7px}main{padding:22px 0 54px}.authbar{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;padding:16px;background:#eef3f8;border:1px solid var(--border);border-radius:10px;margin-bottom:18px}.section-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;box-shadow:0 2px 8px #17212b0a}.step-title{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}.step-number{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--blue);color:#fff;font-weight:700}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field label{display:block;font-size:.9rem;font-weight:700;margin:0 0 6px}.field input,.field select,.field textarea,.authbar input{width:100%;min-height:42px;border:1px solid #99a5b2;border-radius:6px;padding:9px 10px;font:inherit;background:#fff}.field textarea{min-height:68px;resize:vertical}.field input[type=number]{text-align:right}.field input:focus,.field select:focus,.field textarea:focus,.authbar input:focus{outline:3px solid #cfe3f4;border-color:var(--blue)}.hint{font-size:.84rem;color:var(--muted);margin-top:5px}.notice{border-left:4px solid #9b7111;padding:11px 13px;background:var(--warning);border-radius:5px;margin:12px 0}.notice.good{border-color:#36835a;background:var(--green)}.notice.error{border-color:#a33;background:#fff0f0}.button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}button,.button{border:1px solid var(--blue);border-radius:6px;padding:10px 14px;min-height:42px;background:var(--blue);color:#fff;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}button.secondary,.button.secondary{background:#fff;color:var(--blue)}button:disabled{opacity:.5;cursor:not-allowed}.status{margin-top:10px;font-weight:700;white-space:pre-wrap}.error-text{color:#a21b1b;white-space:pre-wrap}.document-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}.doc-item{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fbfcfd}.doc-item strong{display:block}.doc-item code{word-break:break-all;font-size:.78rem;color:#465565}.route-list{display:grid;gap:12px;margin-top:12px}.route-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fafbfd}.route-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.route-card-head strong{font-size:.95rem}.route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.check-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}.check-row label{display:flex;align-items:center;gap:7px;font-size:.88rem}.check-row input{width:18px;height:18px}.result-box{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fbfcfd;white-space:pre-wrap;overflow:auto}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:6px;margin-top:10px}table{border-collapse:collapse;width:100%;min-width:680px}th,td{text-align:left;border-bottom:1px solid var(--border);padding:9px;vertical-align:top}th{background:#eef2f6}.hidden{display:none!important}footer{color:var(--muted);font-size:.84rem;padding:12px 2px}@media(max-width:760px){.header-inner,main{width:min(100% - 20px,1120px)}.steps{grid-template-columns:1fr}.grid,.grid.three,.document-list,.route-grid,.authbar{grid-template-columns:1fr}.section-card{padding:16px}.authbar{align-items:stretch}}
+    /* Operator view: three clear steps; administration and diagnostics stay tucked away. */
+    :root{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;color:#17191b;background:#f4f5f6;color-scheme:light;--blue:#30343a;--border:#d9dcdf;--muted:#62676c;--warning:#f1f2f3;--green:#f1f3f2}
+    *{box-sizing:border-box}body{background:#f4f5f6;color:#17191b}header{background:#fff}.header-inner,main{width:min(960px,calc(100% - 32px))}.header-inner{padding:22px 0 18px}h1{font-size:1.45rem;letter-spacing:-.02em}.tag{border-radius:3px}.status-tag{background:#f2f3f4;border-color:#d5d8db;color:#222}.steps{gap:8px;margin-top:16px}.steps span{border-radius:4px;background:#fff;padding:8px 10px}.steps b,.step-number{background:#363a3e;border-radius:3px}.section-card{border-radius:5px;box-shadow:none;padding:20px 22px;margin-bottom:12px}.step-title{margin-bottom:14px}.step-title p{margin-top:3px}.step-number{width:28px;height:28px}.grid{gap:12px}.field input,.field select,.field textarea,.authbar input{border-radius:3px;border-color:#b9bdc1}.field input:focus,.field select:focus,.field textarea:focus,.authbar input:focus{outline:2px solid #d6d9dc;border-color:#62676c}.notice{border-left-color:#777;background:#f2f3f4;color:#222;border-radius:2px}.notice.good{border-left-color:#555;background:#f1f3f2}.notice.error{border-left-color:#777;background:#f4f1f1}button,.button{border-radius:3px;background:#30343a;border-color:#30343a}button.secondary,.button.secondary{background:#fff;color:#25282b;border-color:#92979b}button:disabled{opacity:.48}.button-row{gap:8px;margin-top:12px}.steps b{width:22px;height:22px}.document-list{grid-template-columns:1fr 1fr;gap:8px}.doc-item{border-radius:3px;background:#fff;padding:9px 11px}.doc-item code{color:#4d5257}.scope-note{margin:10px 0;padding:8px 0;border:0;border-top:1px solid var(--border);background:transparent;color:#484d51}.authbar{background:#fff;border-radius:4px;margin:8px 0 10px;padding:12px}.admin-tools,.advanced-tools,.advanced-fields,.review-tools,#modify-mapping-review,.developer-details,.file-details{margin:10px 0;border:1px solid var(--border);border-radius:3px;background:#fff;padding:10px 12px}.admin-tools summary,.advanced-tools summary,.advanced-fields summary,.review-tools summary,#modify-mapping-review summary,.developer-details summary,.file-details summary{cursor:pointer;font-weight:700;color:#303438}.admin-tools[open]>summary,.advanced-tools[open]>summary,.advanced-fields[open]>summary,.developer-details[open]>summary{margin-bottom:10px}.mapping-list{margin:10px 0 0;padding-left:22px}.mapping-list li{margin:6px 0;line-height:1.45;overflow-wrap:anywhere}.mapping-list .blocked,.mapping-list .mapped{color:#303438}.result-box{background:#f7f7f7;border:1px solid var(--border);border-radius:3px}.output-summary{font-weight:600;margin:10px 0}.status{font-size:.91rem}.developer-details pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}.route-card{border-radius:3px;background:#fff}.hidden{display:none!important}
+    @media(max-width:760px){.header-inner,main{width:min(100% - 20px,960px)}.section-card{padding:15px}.steps{grid-template-columns:1fr}.grid,.grid.three,.document-list,.route-grid,.authbar{grid-template-columns:1fr}.section-card{margin-bottom:10px}}
+  </style>
+  <style>
+    .operator-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:12px}.operator-actions button{width:auto}
+    .preview-table-wrap{overflow-x:auto;margin:14px 0}.preview-table{width:100%;border-collapse:collapse;background:#fff;font-size:.92rem}.preview-table caption{text-align:left;font-weight:700;padding:8px 0}.preview-table th,.preview-table td{border:1px solid var(--border);padding:9px 10px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.preview-table thead{background:#f2f3f4}.preview-table th:first-child{width:20%}.download-ready{background:#1e5a3d!important;border-color:#1e5a3d!important;color:#fff!important;font-weight:700}.required-note{margin:10px 0 0;padding:9px 11px;background:#f5f5f2;border-left:3px solid #777}.field-error{display:block;color:#9c2525;font-size:.82rem;margin-top:5px}.field-error.hidden{display:none}.preview-intro{margin:12px 0;padding:10px 12px;border-left:3px solid #63676b;background:#f5f6f6}.file-ready{margin:12px 0;padding:12px 14px;border:1px solid #6e9b7f;background:#eef7f0}
+    .flow-change-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}.flow-change-item{padding:11px 12px;border:1px solid var(--border);background:#fafbfc;border-radius:4px}.flow-change-item strong{display:block;margin-bottom:5px}.flow-change-item span{overflow-wrap:anywhere}.flow-change-warning{padding:11px 12px;border-left:3px solid #8b6a18;background:#f6f4ee}.flow-change-table{width:100%;border-collapse:collapse}.flow-change-table th,.flow-change-table td{padding:8px;border:1px solid var(--border);text-align:left}
+    @media(max-width:760px){.flow-change-grid{grid-template-columns:1fr}}
+    .workspace-menu{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.priority-group-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.priority-group-list button{width:auto;background:#fff;color:#222;border-color:var(--border);font-weight:500}.priority-group-list button[aria-pressed=true]{background:#30343a;color:#fff}.workspace-menu a{padding:7px 10px;border:1px solid var(--border);background:#fff;color:#262a2d;text-decoration:none;border-radius:3px}.workspace-menu a:focus,.workspace-menu a:hover{outline:2px solid #9da2a6}.mapping-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.mapping-metric{border:1px solid var(--border);padding:10px;background:#fafafa}.mapping-metric strong{display:block;font-size:1.15rem;margin-top:4px}button.mapping-metric{width:100%;text-align:left;font:inherit;color:inherit;background:#fafafa;border:1px solid var(--border);border-radius:3px;padding:10px;cursor:pointer}button.mapping-metric[aria-pressed=true]{outline:2px solid #30343a;background:#e9ebed}button.mapping-metric:disabled{cursor:not-allowed;opacity:.55}button.mapping-metric strong{font-size:1.15rem}.mapping-controls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.mapping-table{min-width:1150px}.mapping-table tr[data-row]{cursor:pointer}.mapping-table tr[data-row]:hover{background:#f4f6f7}.mapping-detail{white-space:pre-wrap;background:#f5f6f6;padding:12px;border:1px solid var(--border);overflow-wrap:anywhere}.mapping-pager{display:flex;gap:8px;align-items:center;margin:10px 0}.mapping-pager button{width:auto}.mapping-warning{padding:10px;border-left:3px solid #9b7111;background:#fff8e6}@media(max-width:760px){.mapping-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.mapping-controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <span class="tag status-tag">TEST_ONLY · 검토용 작업</span>
+    <h1>공정도 변경 작업</h1>
+    <p class="muted">공식 V1.0 도면은 읽기 전용입니다. 로그인 후 별도 작업본에서 입력·미리보기·Excel 생성을 진행합니다.</p>
+    <div class="steps" aria-label="업무 단계"><span><b>1</b>공정도 선택</span><span><b>2</b>변경사항 입력</span><span><b>3</b>결과 확인·다운로드</span></div>
+    <div class="operator-actions"><span id="signed-in-user" class="muted" aria-live="polite"></span><button id="logout-button" type="button" class="secondary">로그아웃</button></div>
+    <nav class="workspace-menu" aria-label="작업 메뉴"><a href="#step-process">설비 ADD·MODIFY·DELETE</a><a href="#flow-change-section">PIPE/FLOW_CHANGE 합성</a><a href="#flow-mapping-review-section">연결·유량 매핑 검토</a><a href="#what-if-section">물질수지 What-if</a><a href="#saved-proposal-whatif">저장된 제안 비교</a></nav>
+  </div>
+</header>
+<main>
+
+  <section class="section-card" id="step-process">
+    <div class="step-title"><span class="step-number">1</span><div><h2>공정도 선택</h2><p class="muted">수정할 공정도와 등록된 작업본을 확인합니다. 공식 V1.0 파일은 읽기 전용입니다.</p></div></div>
+    <div class="grid three">
+      <div class="field"><label for="process-select">공정도</label><select id="process-select"><option value="">공정도 목록을 불러오는 중입니다.</option></select></div>
+      <div class="field"><label for="working-copy-select">내 사용자 작업본</label><select id="working-copy-select" disabled><option value="">먼저 공정도를 선택하세요</option></select><div class="hint">현재 로그인 사용자가 직접 등록한 파일만 표시됩니다. 다른 사용자의 작업본은 조회되지 않습니다.</div></div>
+      <div class="field"><label for="sheet-select">수정 대상 시트</label><select id="sheet-select" disabled><option value="">먼저 사용자 작업본을 선택하세요</option></select></div>
+      <div class="field"><label for="placement-select">삽입 위치</label><select id="placement-select" disabled><option value="">시트를 선택하세요</option></select><div class="hint">VERIFIED 위치만 생성할 수 있습니다. 검토 필요·미지원 위치는 사유를 표시합니다.</div></div>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <div class="field"><label for="working-copy-file">별도 Excel 작업본 등록 (.xlsx, 최대 10MB)</label><input id="working-copy-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disabled></div>
+      <div class="field"><label>&nbsp;</label><button id="upload-working-copy" type="button" disabled>이 공정의 사용자 작업본 등록</button></div>
+    </div>
+    <p class="scope-note">업로드한 XLSX만 USER_WORKING_COPY로 등록합니다. 공식 V1.0 원본 바이트는 등록 거부되며, Profile이 작업본 SHA와 일치하지 않으면 생성할 수 없습니다. 신규 박스 추가는 BOX_ONLY TEST_ONLY입니다.</p>
+    <p id="location-assessment" class="notice" role="status">공정도·작업본을 선택하면 시트별 삽입 후보와 검증 상태를 표시합니다.</p>
+    <ul id="location-review-list" class="muted" aria-live="polite"></ul>
+    <div class="button-row"><button id="load-documents" type="button" class="secondary">공정도 목록 새로고침</button></div>
+    <p id="process-selection-status" class="status" role="status">로그인 후 공정도 목록을 불러옵니다.</p>
+    <details class="file-details"><summary>선택한 공정도와 작업본 정보</summary>
+      <div id="document-details" class="document-list" aria-live="polite"></div>
+      <div id="working-copy-details" class="document-list" aria-live="polite"></div>
+    </details>
+    <p id="working-status" class="status" role="status"></p><p id="working-error" class="error-text" role="alert"></p>
+  </section>
+
+  <section class="section-card" id="flow-change-section">
+    <div class="step-title"><span class="step-number">2</span><div><h2>배관·유량 변경 — FLOW_CHANGE 합성 검토</h2><p class="muted">현재는 서버가 제공하는 단일 합성 fixture만 지원합니다. 실제 사업장 연결·유량이나 공식 도면 적용을 검증하는 기능이 아닙니다.</p></div></div>
+    <p class="flow-change-warning" id="flow-change-boundary">기능 플래그가 켜져 있고 P-02 사용자 작업본이 서버 fixture와 바이트 단위로 같을 때만 Preview가 가능합니다. 실제 연결 증빙 없음 · 실제 유량 mapping VERIFIED 0건 · 실제 readiness CALCULATION_UNAVAILABLE.</p>
+    <div class="button-row"><button id="flow-fixture-download" type="button" class="secondary">서버 합성 fixture 받기</button><span id="flow-fixture-status" class="status" role="status">로그인 후 서버 fixture 상태를 확인합니다.</span></div>
+    <p class="hint">fixture 다운로드 후 1단계에서 공정 P-02의 별도 사용자 작업본으로 등록하고 그 작업본을 선택하세요. 임의 workbook은 허용되지 않습니다.</p>
+    <div class="grid">
+      <div class="field"><label for="flow-scenario">시험 시나리오</label><select id="flow-scenario"><option value="FLOW-10">20 → 10 ton/day</option><option value="FLOW-50">20 → 50 ton/day</option><option value="FLOW-20">20 → 20 ton/day (변경 없음)</option></select></div>
+      <div class="field"><label for="flow-rationale">검토 사유</label><input id="flow-rationale" maxlength="8000" placeholder="합성 검토 목적을 입력하세요"></div>
+    </div>
+    <div class="flow-change-grid" aria-label="합성 FLOW_CHANGE 연결 정보">
+      <div class="flow-change-item"><strong>공정·시트</strong><span>P-02 → P-01 · Synthetic Flow</span></div>
+      <div class="flow-change-item"><strong>연결 ID</strong><span>SYN-FLOW-P2X-P1N (합성 전용)</span></div>
+      <div class="flow-change-item"><strong>출발 → 도착 설비</strong><span>SYN-EQ-P2-X → SYN-EQ-P1-N (가상)</span></div>
+      <div class="flow-change-item"><strong>물질 / 단위 / 기간</strong><span>synthetic process wastewater · ton/day · 2026-11-02/SYNTHETIC_TEST_PERIOD</span></div>
+      <div class="flow-change-item"><strong>현재 기준 유량</strong><span id="flow-current-quantity">20 ton/day</span></div>
+      <div class="flow-change-item"><strong>생성 조건</strong><span id="flow-generation-eligibility">fixture 및 사용자 작업본 검증 대기</span></div>
+    </div>
+    <div class="button-row"><button id="flow-preview" type="button" disabled>What-if 미리보기</button><button id="flow-generate" type="button" disabled>TEST_ONLY Excel 생성</button><button id="flow-download" type="button" class="secondary" disabled>생성 Excel 다운로드</button></div>
+    <p id="flow-status" class="status" role="status" aria-live="polite"></p><p id="flow-error" class="error-text" role="alert"></p>
+    <div id="flow-preview-summary" class="preview-table-wrap hidden" aria-live="polite"></div>
+    <div id="flow-generated-info" class="file-ready hidden" aria-live="polite"></div>
+    <details id="flow-technical-details" class="developer-details hidden"><summary>FLOW_CHANGE 계산·검증 상세</summary><pre id="flow-technical-json" class="result-box"></pre></details>
+  </section>
+
+  <section class="section-card" id="flow-mapping-review-section">
+    <div class="step-title"><span class="step-number">R</span><div><h2>연결·유량 매핑 검토</h2><p class="muted">공식 도면 인벤토리와 사용자가 선택한 물질수지 XLSM을 읽기 전용으로 대조합니다. ID 문자열 후보는 물리 연결 증빙이 아닙니다.</p></div></div>
+    <p id="mapping-source-state" class="mapping-warning" role="status">공식 checkpoint와 원본 SHA 상태를 확인하는 중입니다. VERIFIED 유량 매핑은 0건으로 유지합니다.</p>
+    <div class="mapping-controls">
+      <div class="field"><label for="mapping-process-select">공식 공정도</label><select id="mapping-process-select"><option value="">공정 인벤토리 로드 대기</option></select></div>
+      <div class="field"><label for="mapping-sheet-select">시트</label><select id="mapping-sheet-select" disabled><option value="">공정 선택</option></select></div>
+      <div class="field"><label for="mapping-search">도면 후보 검색</label><input id="mapping-search" maxlength="128" placeholder="설비 ID, 셀 위치, connector"></div>
+      <div class="field"><label for="mapping-row-search">물질수지 행 검색</label><input id="mapping-row-search" maxlength="128" placeholder="출발/도착 ID, 물질"></div>
+      <div class="field"><label for="mapping-quality-filter">검토 우선순위 / 품질 상태</label><select id="mapping-quality-filter"><option value="">전체 후보</option><option value="UNRESOLVED_EQUIPMENT">설비 ID 후보 없음</option><option value="MISSING_SOURCE_EQUIPMENT_CANDIDATE">출발 설비 ID 미확인</option><option value="MISSING_TARGET_EQUIPMENT_CANDIDATE">도착 설비 ID 미확인</option><option value="MULTIPLE_LOCATION_CANDIDATES">복수 위치 후보</option><option value="DUPLICATE_ENDPOINT_PAIR">중복 endpoint</option><option value="MISSING_MATERIAL_TYPE">물질 종류 누락</option><option value="MISSING_FLOW_UNIT">유량 단위 누락</option><option value="MISSING_PERIOD">기간 누락</option><option value="CONNECTOR_BINDING_REQUIRED">Connector mapping 필요</option><option value="MISSING_EVIDENCE">증빙 필요</option><option value="NOT_REVIEWED">미검토</option><option value="BOTH_ENDPOINT_CANDIDATES">양 endpoint 후보</option><option value="ONE_ENDPOINT_CANDIDATE">한쪽 endpoint 후보</option><option value="NO_ENDPOINT_CANDIDATES">endpoint 후보 없음</option><option value="VERIFIED_FLOW_MAPPING">검증 완료 유량 매핑</option></select></div>
+      <div class="field"><label for="mapping-source-file">물질수지 DB (.xlsm/.xlsx, 15MB 이하)</label><input id="mapping-source-file" type="file" accept=".xlsm,.xlsx"></div>
+    </div>
+    <div class="button-row"><button id="load-mapping-candidates" type="button" class="secondary" disabled>도면 구조 후보 조회</button><button id="compare-mapping-source" type="button" disabled>선택 파일 읽기 전용 대조</button><a class="button secondary" href="/api/workspace/flow-mapping-review/review-template.csv">검토 입력 CSV 양식</a></div>
+    <div id="mapping-priority-groups" class="priority-group-list" aria-label="검토 우선순위 그룹"></div>
+    <div class="button-row"><button id="mapping-export-csv" type="button" class="secondary" disabled>전체 검토 CSV</button><button id="mapping-export-json" type="button" class="secondary" disabled>전체 검토 JSON</button><button id="mapping-export-xlsx" type="button" disabled>검토용 XLSX</button></div>
+    <section class="review-tools" aria-labelledby="mapping-draft-title">
+      <h3 id="mapping-draft-title">STEP 8.7 · 담당자 검토 초안 검증</h3>
+      <p class="hint">검토용 XLSX 양식 또는 CSV를 내려받아 입력 후 같은 분석에 업로드하세요. 검토 초안은 사용자 세션의 임시 메모리에서만 처리되며 DB에 저장되지 않습니다. 검토 완료도 실제 연결 VERIFIED로 바뀌지 않습니다.</p>
+      <div class="button-row"><button id="mapping-download-review-template" class="secondary" type="button" disabled>검토 양식 XLSX 받기</button><button id="mapping-download-review-template-csv" class="secondary" type="button" disabled>검토 양식 CSV 받기</button><input id="mapping-review-draft-file" type="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><button id="mapping-import-review-draft" type="button" disabled>검토 초안 검증</button></div>
+      <p id="mapping-draft-status" class="status" role="status" aria-live="polite">먼저 물질수지 파일 분석을 완료하세요.</p>
+      <p id="mapping-draft-error" class="error-text" role="alert"></p>
+      <div id="mapping-draft-summary" class="preview-intro hidden" aria-live="polite"></div>
+      <div class="grid"><div class="field"><label for="mapping-draft-filter">가져오기 결과 필터</label><select id="mapping-draft-filter"><option value="">전체</option><option value="VALID_DRAFT">정상 초안</option><option value="REVIEW_REQUIRED">검토 필요</option><option value="SOURCE_SHA_MISMATCH">원본 파일 버전 불일치</option><option value="SOURCE_ROW_MISMATCH">원본 시트·행 불일치</option><option value="ORIGINAL_EQUIPMENT_ID_CHANGED">원본 설비 ID 변경</option><option value="DUPLICATE_REVIEW_ROW">중복 검토 행</option><option value="INVALID_ROW">입력 오류</option><option value="MISSING_FROM_UPLOAD">업로드 누락</option></select></div></div>
+      <div class="button-row"><button id="mapping-draft-export-csv" type="button" class="secondary" disabled>검토 결과 CSV</button><button id="mapping-draft-export-json" type="button" class="secondary" disabled>검토 결과 JSON</button><button id="mapping-draft-export-xlsx" type="button" disabled>검토 결과 XLSX</button></div>
+      <div id="mapping-draft-preview" class="preview-table-wrap hidden" aria-live="polite"></div>
+    </section>
+    <div class="mapping-metrics" aria-label="매핑 검토 현황">
+      <button class="mapping-metric" type="button" data-review-filter=""><span>전체 입력 행</span><strong id="mapping-total-rows">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="BOTH_ENDPOINT_CANDIDATES"><span>양 endpoint 후보</span><strong id="mapping-both-candidates">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="ONE_ENDPOINT_CANDIDATE"><span>한쪽 후보</span><strong id="mapping-one-candidate">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="NO_ENDPOINT_CANDIDATES"><span>후보 없음</span><strong id="mapping-no-candidate">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="MULTIPLE_LOCATION_CANDIDATES"><span>복수 위치 후보</span><strong id="mapping-multiple-locations">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="DUPLICATE_ENDPOINT_PAIR"><span>중복 endpoint 그룹</span><strong id="mapping-ambiguous-count">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="MISSING_MATERIAL_TYPE"><span>물질 종류 누락 행</span><strong id="mapping-material-missing">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="MISSING_FLOW_UNIT"><span>단위 누락 행</span><strong id="mapping-unit-missing">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="MISSING_PERIOD"><span>기간 누락 행</span><strong id="mapping-period-missing">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="CONNECTOR_BINDING_REQUIRED"><span>Connector binding 필요</span><strong id="mapping-connector-binding-count">—</strong></button>
+      <button class="mapping-metric" type="button" data-review-filter="VERIFIED_FLOW_MAPPING"><span>실제 VERIFIED 유량</span><strong id="mapping-verified-count">0</strong></button>
+      <div class="mapping-metric"><span>현재 필터 결과</span><strong id="mapping-filtered-count">—</strong></div>
+      <div class="mapping-metric"><span>현재 화면 행</span><strong id="mapping-row-count">—</strong></div>
+    </div>
+    <p id="mapping-status" class="status" role="status" aria-live="polite">로그인 후 공식 인벤토리를 불러옵니다.</p><p id="mapping-error" class="error-text" role="alert"></p>
+    <div class="preview-table-wrap"><table class="preview-table mapping-table"><caption>물질수지 입력 행 — 텍스트 대조 결과와 물리 연결 증빙을 분리 표시</caption><thead><tr><th>DB 행 ID</th><th>출발 → 도착 ID</th><th>공식 도면 후보 위치 (출발·도착)</th><th>입력 수치</th><th>물질·단위·기간</th><th>Connector 후보</th><th>판정/검토 사유</th></tr></thead><tbody id="mapping-flow-rows"><tr><td colspan="7">물질수지 파일을 선택하고 읽기 전용 대조를 실행하세요.</td></tr></tbody></table></div>
+    <div class="mapping-pager"><button id="mapping-page-prev" class="secondary" type="button" disabled>이전</button><span id="mapping-page-label">페이지 —</span><button id="mapping-page-next" class="secondary" type="button" disabled>다음</button></div>
+    <details class="file-details"><summary>공식 도면 구조 후보</summary><div class="mapping-pager"><button id="mapping-candidate-prev" class="secondary" type="button" disabled>이전 후보</button><span id="mapping-candidate-page-label">후보 페이지 —</span><button id="mapping-candidate-next" class="secondary" type="button" disabled>다음 후보</button></div><div id="mapping-candidate-table" class="preview-table-wrap"></div></details>
+    <details class="file-details"><summary>선택 행 상세 및 증거 경계</summary><div id="mapping-detail" class="mapping-detail">선택 행 없음</div></details>
+    <p class="mapping-warning">문자열 ID 일치는 STRING_MATCH_ONLY입니다. Connector anchor/화살표/도형 위치는 실제 배관 연결 증빙이 아니며, 유량 단위·기간·물질 정보가 없으면 계산 준비 완료로 취급하지 않습니다. 원본 도면과 물질수지 파일은 변경하지 않습니다.</p>
+  </section>
+
+  <section class="section-card" id="step-input">
+    <div class="step-title"><span class="step-number">2</span><div><h2>변경사항 입력</h2><p class="muted">설비번호, 설비명, 사업장 Item No., 용량·단위, 수량, 설비 유형은 필수입니다. 확인되지 않은 폐수·폐기물·배관 정보는 입력하지 않아도 됩니다.</p></div></div>
+    <details class="review-tools"><summary>입력 초기화 및 추가 항목</summary>
+      <div class="button-row"><button id="load-reference-case" type="button" class="secondary">빈 입력 양식으로 초기화</button></div>
+      <p class="hint">각 미리보기는 현재 입력값으로 새 TEST_ONLY 요청을 만듭니다. 과거 요청 값은 자동으로 불러오지 않습니다.</p>
+    </details>
+    <div class="grid three" style="margin-top:14px">
+      <div class="field"><label for="change-type">변경 유형</label><select id="change-type"><option value="ADD">설비 추가</option></select></div>
+      <div class="field"><label for="equipment-id">설비번호 <span aria-hidden="true">*</span></label><input id="equipment-id" maxlength="64" pattern="[A-Za-z0-9][A-Za-z0-9._\-]{0,63}" required aria-required="true" title="영문 또는 숫자로 시작하고 영문·숫자·점·밑줄·하이픈만 입력하세요." placeholder="예: SYNTH-PW15020-A"><span id="equipment-id-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="equipment-name">설비명 <span aria-hidden="true">*</span></label><input id="equipment-name" maxlength="255" required aria-required="true" placeholder="예: 합성 여과 설비 A"><span id="equipment-name-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="item-no">사업장 Item No. <span aria-hidden="true">*</span></label><input id="item-no" maxlength="128" required aria-required="true" placeholder="예: TEST-ITEM-A"><span id="item-no-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="capacity">용량/규격 <span aria-hidden="true">*</span></label><input id="capacity" maxlength="128" required aria-required="true" placeholder="예: 125"><span id="capacity-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="capacity-unit">용량 단위 <span aria-hidden="true">*</span></label><input id="capacity-unit" maxlength="64" required aria-required="true" placeholder="예: ㎥/시"><span id="capacity-unit-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="equipment-quantity">설비 수량/대수 <span aria-hidden="true">*</span></label><input id="equipment-quantity" maxlength="64" required aria-required="true" placeholder="예: 1ea"><span id="equipment-quantity-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="equipment-type-label">설비 유형 표시 <span aria-hidden="true">*</span></label><input id="equipment-type-label" type="text" maxlength="32" required aria-required="true" placeholder="예: 여과시설, 저장시설, 혼합시설"><span id="equipment-type-label-error" class="field-error hidden" aria-live="polite"></span></div>
+      <div class="field"><label for="equipment-note">비고 (Profile에서 매핑된 경우에만)</label><input id="equipment-note" maxlength="255" disabled placeholder="선택한 Profile이 비고 셀을 제공할 때 입력 가능"></div>
+    </div>
+    <p class="hint">현재 변경 작업은 검증된 위치의 설비 박스 추가만 지원합니다. 신규 배관 연결은 생성하지 않으며 실제 연결 증빙은 별도 검토가 필요합니다.</p>
+
+    <details class="advanced-fields"><summary>폐수·폐기물·배관 및 증빙 입력 (필요 시)</summary>
+    <h3>폐수 변경 입력</h3>
+    <div class="grid three">
+      <div class="field"><label for="wastewater-type">폐수 종류</label><input id="wastewater-type" placeholder="미확인 시 공란"></div>
+      <div class="field"><label for="wastewater-quantity">발생량</label><input id="wastewater-quantity" type="number" min="0" step="any" placeholder="숫자 입력"></div>
+      <div class="field"><label for="wastewater-unit">단위</label><input id="wastewater-unit" placeholder="예: ton/day"></div>
+      <div class="field"><label for="wastewater-period">기준 기간</label><input id="wastewater-period" placeholder="예: 2026-01-01~2026-01-31"></div>
+      <div class="field"><label for="wastewater-destination">이동처</label><input id="wastewater-destination" placeholder="확인되지 않으면 공란"></div>
+      <div class="field"><label for="wastewater-evidence">증빙 참조</label><input id="wastewater-evidence" placeholder="문서/계측기/현장 확인 참조"></div>
+    </div>
+
+    <h3>폐기물 변경 입력</h3>
+    <div class="grid three">
+      <div class="field"><label for="waste-type">폐기물 종류</label><input id="waste-type" placeholder="미확인 시 공란"></div>
+      <div class="field"><label for="waste-quantity">발생량</label><input id="waste-quantity" type="number" min="0" step="any" placeholder="숫자 입력"></div>
+      <div class="field"><label for="waste-unit">단위</label><input id="waste-unit" placeholder="예: ton/day"></div>
+      <div class="field"><label for="waste-period">기준 기간</label><input id="waste-period" placeholder="측정 기준 기간"></div>
+      <div class="field"><label for="waste-destination">이동·처리처</label><input id="waste-destination" placeholder="미확인 시 공란"></div>
+      <div class="field"><label for="waste-evidence">증빙 참조</label><input id="waste-evidence" placeholder="계근표/인계서 등 참조"></div>
+    </div>
+
+    <div class="route-card" style="margin-top:18px">
+      <div class="route-card-head"><div><strong>배관 및 물량 경로</strong><p class="muted">출발·도착, 유량, 단위, 기간, 순환·분기 정보와 증빙 참조를 입력합니다. 입력만으로 연결이 검증되지는 않습니다.</p></div><button id="add-route" type="button" class="secondary">경로 추가</button></div>
+      <div id="route-list" class="route-list"></div>
+    </div>
+    <div class="check-row"><label><input id="run-synthetic-network" type="checkbox"><span>이 입력 경로만 별도 합성 TEST_ONLY 연결망으로 계산 시험</span></label><label><input id="synthetic-scope-complete" type="checkbox"><span>합성 fixture의 전체 범위·경계가 작성되었음을 표시</span></label></div>
+    <p class="notice">두 확인은 합성 데이터에만 적용됩니다. 실제 도면 경로나 유량을 자동 확정하지 않습니다.</p>
+    </details>
+  </section>
+
+  <section class="section-card" id="step-output">
+    <div class="step-title"><span class="step-number">3</span><div><h2>미리보기 · Excel 생성 및 다운로드</h2><p class="muted">미리보기에서 지원 범위를 확인한 뒤 TEST_ONLY Excel을 생성합니다.</p></div></div>
+    <p id="preview-intro" class="preview-intro hidden">입력·변경 데이터 기반 표 미리보기입니다. 실제 도면 이미지를 렌더링해 확인한 화면은 아닙니다.</p>
+    <div class="button-row"><button id="preview-change" type="button" disabled>미리보기</button><button id="generate-output" type="button" disabled>TEST_ONLY Excel 생성</button><button id="download-output" type="button" class="secondary" disabled>TEST_ONLY Excel 다운로드</button></div>
+    <p id="output-summary" class="output-summary" aria-live="polite"></p>
+    <div id="generated-file-info" class="file-ready hidden" aria-live="polite"><strong>생성 작업본 준비 완료</strong><div id="generated-file-name"></div><div class="muted">공식 원본이 아닌 TEST_ONLY / REVIEW_REQUIRED 작업본입니다.</div></div>
+    <div id="preview-table-wrap" class="preview-table-wrap hidden" aria-live="polite"><table class="preview-table"><caption>공정도 입력·변경 데이터 미리보기 (도면 이미지 렌더링 아님)</caption><thead><tr><th scope="col">항목</th><th scope="col">변경 전</th><th scope="col">변경 후</th></tr></thead><tbody id="preview-table-body"></tbody></table></div>
+    <p id="review-required-note" class="required-note hidden">폐수·배관 연결 및 물질수지는 증빙 검토 전까지 확정되지 않습니다. 생성 파일은 공식 원본이 아닌 별도 TEST_ONLY 작업본입니다.</p>
+    <p id="output-status" class="status" role="status"></p><p id="output-error" class="error-text" role="alert"></p>
+    <div id="unsupported-notice" class="notice hidden"></div>
+    <details id="output-debug-panel" class="developer-details hidden"><summary>개발·검증 상세 데이터</summary><pre id="output-details" class="result-box" aria-live="polite"></pre></details>
+  </section>
+  <section class="section-card" id="modify-section">
+    <div class="step-title"><span class="step-number">4</span><div><h2>Profile 검증 필드 수정 (TEST_ONLY)</h2><p class="muted">현재 선택한 사용자 작업본의 exact-SHA Profile과 필드별 셀·값·서식을 서버가 다시 확인합니다. 공식 마스터·원본은 변경하지 않습니다.</p></div></div>
+    <p class="notice">VERIFIED Profile 필드만 입력할 수 있습니다. 관리번호 변경, REVIEW_REQUIRED/UNSUPPORTED Profile, formula/병합/DrawingML 충돌은 차단됩니다. 실제 연결·유량은 수정하지 않습니다.</p>
+    <div class="grid three">
+      <div class="field"><label for="modify-equipment-select">검증된 설비</label><select id="modify-equipment-select" disabled><option value="">공정도와 시트를 먼저 선택하세요</option></select></div>
+      <div class="field" id="modify-legacy-current-field"><label for="modify-current-item">현재 Item No. (레거시 MODIFY)</label><input id="modify-current-item" readonly aria-readonly="true" placeholder="설비 선택 시 표시"></div>
+      <div class="field" id="modify-legacy-new-field"><label for="modify-new-item">변경할 Item No. (레거시 MODIFY)</label><input id="modify-new-item" maxlength="128" placeholder="새 Item No. 입력" disabled></div>
+    </div>
+    <p id="modify-mapping-status" class="status" role="status">공정·작업본·시트를 선택하면 Profile 버전, 증빙 수준, 작업본 SHA와 필드별 수정 가능 상태를 확인합니다.</p>
+    <div id="modify-profile-summary" class="preview-intro hidden" aria-live="polite"></div>
+    <div id="modify-profile-fields" class="grid three" aria-live="polite"></div>
+    <div class="button-row"><button id="modify-preview-button" type="button" disabled>변경 미리보기</button><button id="modify-generate-button" type="button" disabled>TEST_ONLY Excel 생성</button><button id="modify-download-button" type="button" class="secondary" disabled>TEST_ONLY Excel 다운로드</button></div>
+    <div id="modify-preview-table-wrap" class="preview-table-wrap hidden" aria-live="polite"><table class="preview-table"><caption>Profile 필드 변경 전후</caption><thead><tr><th scope="col">공정·시트·설비·필드</th><th scope="col">변경 전</th><th scope="col">변경 후</th><th scope="col">상태</th></tr></thead><tbody id="modify-preview-table-body"></tbody></table></div>
+    <p id="modify-status" class="status" role="status"></p><p id="modify-error" class="error-text" role="alert"></p>
+    <p id="modify-generated-info" class="file-ready hidden" aria-live="polite"></p>
+    <hr>
+    <h3>설비 DELETE 영향 분석 (synthetic TEST_ONLY 전용)</h3>
+    <p class="notice">공식 공정도 삭제가 아닙니다. 분석에서 명시적으로 SAFE인 합성 정책 작업본만 별도 TEST_ONLY 파일을 만들 수 있습니다. 물리 연결·유량은 확인되지 않으며 실제 readiness는 CALCULATION_UNAVAILABLE입니다.</p>
+    <div class="grid">
+      <div class="field"><label for="delete-management-no">영향 분석 대상 설비번호</label><input id="delete-management-no" maxlength="96" placeholder="작업본의 정확한 설비번호"></div>
+      <div class="field"><label for="delete-rationale">삭제 제안 사유</label><input id="delete-rationale" maxlength="8000" placeholder="TEST_ONLY 검토 사유"></div>
+    </div>
+    <div class="button-row"><button id="delete-assess-button" type="button" class="secondary" disabled>읽기 전용 영향 분석</button><button id="delete-preview-button" type="button" disabled>안전 판정 미리보기</button><button id="delete-generate-button" type="button" disabled>DELETE TEST_ONLY 생성</button><button id="delete-download-button" type="button" class="secondary" disabled>TEST_ONLY 다운로드</button></div>
+    <p id="delete-status" class="status" role="status"></p><p id="delete-error" class="error-text" role="alert"></p>
+    <details id="delete-impact-details" class="developer-details hidden"><summary>DELETE 영향 분석 결과 및 차단 사유</summary><pre id="delete-impact-json" class="result-box" aria-live="polite"></pre></details>
+    <p id="delete-output-info" class="file-ready hidden" aria-live="polite"></p>
+  </section>
+  <section class="section-card" id="what-if-section">
+    <div class="step-title"><span class="step-number">4</span><div><h2>물질수지 What-if (TEST_ONLY)</h2><p class="muted">로그인 세션과 CSRF 보호를 사용하는 별도 계산 기능입니다. 입력 네트워크는 사용자가 제공한 합성 연결망이며 실제 배관 증빙이나 사업장 계산을 뜻하지 않습니다.</p></div></div>
+    <p id="what-if-readiness" class="notice" role="status">실제 계산 가능 여부를 확인하는 중입니다.</p>
+    <div class="grid three">
+      <div class="field"><label for="whatif-process">대상 공정</label><input id="whatif-process" value="P2" maxlength="32"></div>
+      <div class="field"><label for="whatif-source">출발 설비/경계</label><input id="whatif-source" value="P2-X" maxlength="128"></div>
+      <div class="field"><label for="whatif-target">도착 설비/경계</label><input id="whatif-target" value="P1-N" maxlength="128"></div>
+      <div class="field"><label for="whatif-material-class">물질 분류</label><select id="whatif-material-class"><option>WASTEWATER</option><option>WASTE</option><option>CHEMICAL</option></select></div>
+      <div class="field"><label for="whatif-material">물질 종류</label><input id="whatif-material" value="process wastewater" maxlength="128"></div>
+      <div class="field"><label for="whatif-connection">변경 연결 ID</label><input id="whatif-connection" value="P2-X-P1-N" maxlength="128"></div>
+      <div class="field"><label for="whatif-before">변경 전 유량</label><input id="whatif-before" type="number" min="0" step="any" value="20"></div>
+      <div class="field"><label for="whatif-unit">단위</label><input id="whatif-unit" value="ton/day" maxlength="64"></div>
+      <div class="field"><label for="whatif-period">측정 기간 (필수)</label><input id="whatif-period" value="2026-10-01/TEST_PERIOD" maxlength="128" required></div>
+    </div>
+    <div class="check-row"><label><input id="whatif-use-sample" type="checkbox" checked><span>기본 합성 네트워크 사용 (JSON 직접 입력 불필요)</span></label></div>
+    <details class="advanced-fields"><summary>고급 입력: 기준 연결망 JSON (선택)</summary>
+      <p class="hint">기본 TEST_ONLY fixture 대신 자체 네트워크를 입력할 때만 사용하세요. 모든 연결·공정항에 기간과 단위를 명시해야 합니다.</p>
+      <div class="field"><label for="whatif-network">노드·연결·공정항 입력</label><textarea id="whatif-network" rows="18" spellcheck="false"></textarea></div>
+    </details>
+    <div class="grid"><div class="field"><label for="whatif-10">시나리오 A 변경 후 유량 (예: 10)</label><input id="whatif-10" type="number" min="0" step="any" value="10"></div><div class="field"><label for="whatif-50">시나리오 B 변경 후 유량 (예: 50)</label><input id="whatif-50" type="number" min="0" step="any" value="50"></div></div>
+    <div class="button-row"><button id="run-whatif" type="button">What-if 계산</button><button id="download-whatif" class="secondary" type="button" disabled>TEST_ONLY 결과 Excel 다운로드</button></div>
+    <p id="whatif-status" class="status" role="status"></p><p id="whatif-error" class="error-text" role="alert"></p>
+    <div id="whatif-results" class="preview-table-wrap hidden" aria-live="polite"></div>
+    <details id="whatif-details" class="developer-details hidden"><summary>What-if 전체 JSON 결과</summary><pre id="whatif-json" class="result-box"></pre></details>
+  </section>
+  <section class="section-card" id="saved-proposal-whatif">
+    <div class="step-title"><span class="step-number">5</span><div><h2>저장된 변경 제안 Before/After</h2><p class="muted">로그인한 사용자에게 연결된 제안과 저장된 합성 What-if 결과만 표시합니다. 결과가 없는 제안은 다운로드할 수 없습니다.</p></div></div>
+    <div class="grid"><div class="field"><label for="proposal-select">변경 제안</label><select id="proposal-select"><option value="">제안 목록을 불러오세요</option></select></div><div class="button-row" style="align-items:end"><button id="load-proposals" type="button" class="secondary">제안 목록 새로고침</button><button id="download-proposal-whatif" type="button" disabled>비교 TEST_ONLY Excel 다운로드</button></div></div>
+    <p id="proposal-whatif-status" class="status" role="status"></p><p id="proposal-whatif-error" class="error-text" role="alert"></p>
+    <div id="proposal-comparison-summary" class="preview-intro hidden"></div>
+    <div id="proposal-results" class="preview-table-wrap hidden" aria-live="polite"></div>
+  </section>
+  <footer>TEST_ONLY 작업본만 생성합니다. VERIFIED 삽입 위치만 활성화되며, 공식 원본은 변경하지 않습니다. 실제 연결·유량은 검증되지 않으면 계산에 사용하지 않습니다.</footer>
+</main>
+<script>
+(() => {
+  const byId = id => document.getElementById(id);
+  const diagnosticsEnabled = new URLSearchParams(window.location.search).get('diagnostics') === '1';
+  let csrfToken = '';
+  const api = async (path, options={}) => {
+    const headers = new Headers(options.headers || {});
+    headers.set('Cache-Control', 'no-store');
+    if (options.method && options.method.toUpperCase() !== 'GET' && csrfToken) headers.set('X-CSRF-Token', csrfToken);
+    const response = await fetch(path, {...options, headers, credentials:'same-origin', cache:'no-store'});
+    if (response.status === 401) { location.replace('/login.html'); throw new Error('로그인 세션이 만료됐습니다. 다시 로그인해 주세요.'); }
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      throw new Error(body.message || body.detail || body.error || `요청 실패 (HTTP ${response.status})`);
+    }
+    return response;
+  };
+  const asJson = async (path, options={}) => (await api(path, options)).json();
+  let documents = [];
+  let selectedDocument = null;
+  let workingCopy = null;
+  let userWorkingCopies = [];
+  let selectedWorkingCopySummary = null;
+  let activeRequestId = null;
+  let generatedScenario = null;
+  let selectedLocation = null;
+  let genericDiagramEdit = false;
+  let inputRevision = 0;
+  let previewInFlight = false;
+  let generationInFlight = false;
+  let modifyProfile = null;
+  let modifyPreviewId = null;
+  let modifyGenerated = null;
+  let modifyRevision = 0;
+  let deleteAssessment = null;
+  let deletePreview = null;
+  let deleteGenerated = null;
+  let deleteRevision = 0;
+  let flowFixture = null;
+  let flowPreview = null;
+  let flowGenerated = null;
+  let flowRevision = 0;
+  let flowBusy = false;
+
+  function show(id, value) { byId(id).classList.toggle('hidden', !value); }
+  function resetDeletePanel(message='') {
+    deleteRevision++;deleteAssessment=null;deletePreview=null;deleteGenerated=null;
+    byId('delete-management-no').value='';byId('delete-rationale').value='';
+    byId('delete-preview-button').disabled=true;byId('delete-generate-button').disabled=true;byId('delete-download-button').disabled=true;
+    show('delete-impact-details',false);show('delete-output-info',false);byId('delete-impact-json').textContent='';
+    setStatus('delete-error','');setStatus('delete-status',message||'작업본·시트·대상 설비를 선택해 읽기 전용 영향을 분석하세요.');
+    byId('delete-assess-button').disabled=!workingCopy||!byId('sheet-select').value||!byId('delete-management-no').value.trim();
+  }
+  function setStatus(id, text) { byId(id).textContent = text || ''; }
+  function clearFieldError(id) {
+    const field=byId(id);const error=byId(`${id}-error`);
+    if(error){error.textContent='';error.classList.add('hidden');}
+    if(field)field.removeAttribute('aria-invalid');
+  }
+  function invalidatePreview(event) {
+    inputRevision++;activeRequestId=null;generatedScenario=null;
+    byId('generate-output').disabled=true;byId('download-output').disabled=true;
+    byId('download-output').classList.remove('download-ready');byId('download-output').textContent='TEST_ONLY Excel 다운로드';
+    show('preview-table-wrap',false);show('preview-intro',false);show('review-required-note',false);show('unsupported-notice',false);show('generated-file-info',false);
+    setStatus('output-error','');setStatus('output-summary','');
+    setStatus('output-status','입력 내용이 바뀌었습니다. 기존 미리보기와 다운로드가 초기화됐습니다. 다시 미리보기를 실행해 주세요.');
+    if(event?.target?.id)clearFieldError(event.target.id);
+  }
+  byId('step-input').addEventListener('input',invalidatePreview);
+  byId('step-input').addEventListener('change',invalidatePreview);
+  function escText(value) { return value == null || value === '' ? '미확인' : String(value); }
+  function addDocLine(container, label, value) {
+    const article = document.createElement('article'); article.className = 'doc-item';
+    const strong = document.createElement('strong'); strong.textContent = label;
+    const text = document.createElement('div'); text.textContent = escText(value);
+    article.append(strong, text); container.append(article);
+  }
+  async function loadDocuments() {
+    setStatus('working-error',''); setStatus('working-status','로그인된 계정으로 공정도 목록을 읽는 중입니다.');
+    try {
+      documents = await asJson('/api/workspace/process-documents');
+      const select = byId('process-select'); select.replaceChildren();
+      const blank = document.createElement('option'); blank.value=''; blank.textContent='공정도 선택'; select.append(blank);
+      documents.forEach(doc => {
+        const option = document.createElement('option'); option.value=String(doc.baselineDocumentId);
+        option.textContent=`${doc.processCode} · ${doc.officialFilename}${doc.workingDocumentId ? ' · 검증 작업본 있음' : ''}`;
+        select.append(option);
+      });
+      setStatus('process-selection-status',`공정도 ${documents.length}개를 불러왔습니다. 공정도를 선택한 뒤 본인이 준비한 Excel 작업본을 등록하거나 기존 사용자 작업본을 선택하세요.`);
+    } catch(error) { setStatus('working-error',error.message); setStatus('working-status',''); }
+  }
+  byId('load-documents').addEventListener('click',loadDocuments);
+  byId('logout-button').addEventListener('click',async()=>{
+    try{await api('/api/session/logout',{method:'POST'});}catch(_){}
+    location.replace('/login.html');
+  });
+
+  async function loadSelectedDocument() {
+    invalidateFlowChange();invalidatePreview();resetModifyPanel('공정·작업본을 다시 선택하세요.');
+    const id=Number(byId('process-select').value);selectedDocument=documents.find(doc=>Number(doc.baselineDocumentId)===id)||null;workingCopy=null;selectedWorkingCopySummary=null;userWorkingCopies=[];
+    byId('preview-change').disabled=true;byId('sheet-select').replaceChildren();byId('placement-select').replaceChildren();
+    byId('sheet-select').disabled=true;byId('placement-select').disabled=true;selectedLocation=null;genericDiagramEdit=false;
+    const details=byId('document-details');details.replaceChildren();byId('working-copy-details').replaceChildren();
+    const copySelect=byId('working-copy-select');copySelect.replaceChildren();const copyBlank=document.createElement('option');copyBlank.value='';copyBlank.textContent='사용자 작업본 선택';copySelect.append(copyBlank);copySelect.disabled=true;
+    byId('working-copy-file').disabled=!selectedDocument;byId('upload-working-copy').disabled=!selectedDocument;
+    show('preview-table-wrap',false);show('review-required-note',false);show('output-debug-panel',false);
+    byId('generate-output').disabled=true;byId('download-output').disabled=true;activeRequestId=null;generatedScenario=null;
+    if(!selectedDocument){setStatus('process-selection-status','공정도를 선택하세요.');return;}
+    addDocLine(details,'분류','OFFICIAL_BASELINE · 읽기 전용');addDocLine(details,'공식 V1.0 파일',selectedDocument.officialFilename);
+    addDocLine(details,'기준 문서 ID / SHA-256',`${selectedDocument.baselineDocumentId} / ${selectedDocument.officialSha256||'공정도 목록에서 확인 불가'}`);
+    setStatus('process-selection-status',`${selectedDocument.processCode} 선택 · 내 사용자 작업본 목록을 불러옵니다.`);setStatus('working-error','');
+    try{
+      userWorkingCopies=await asJson(`/api/workspace/diagram-editor/working-copies?baselineDocumentId=${encodeURIComponent(id)}`);
+      for(const item of userWorkingCopies){const option=document.createElement('option');option.value=String(item.workingDocumentId);option.textContent=`v${item.version} · ${item.filename} · ${item.verificationStatus} · ${item.workingSha256.slice(0,12)}…`;copySelect.append(option);}
+      copySelect.disabled=userWorkingCopies.length===0;
+      setStatus('process-selection-status',userWorkingCopies.length?`${userWorkingCopies.length}개 사용자 작업본을 찾았습니다. 사용할 버전을 명시적으로 선택하세요.`:'등록된 사용자 작업본이 없습니다. 별도 XLSX를 등록하세요.');
+    }catch(error){setStatus('working-error',error.message);setStatus('process-selection-status','사용자 작업본 목록을 불러오지 못했습니다. 기능 활성화 및 DB 상태를 확인하세요.');}
+  }
+  async function loadSelectedWorkingCopy(){
+    invalidateFlowChange();invalidatePreview();resetModifyPanel('작업본·시트를 선택하세요.');workingCopy=null;selectedWorkingCopySummary=null;
+    const id=Number(byId('working-copy-select').value);const summary=userWorkingCopies.find(item=>Number(item.workingDocumentId)===id)||null;
+    byId('sheet-select').replaceChildren();byId('sheet-select').disabled=true;byId('placement-select').replaceChildren();byId('placement-select').disabled=true;selectedLocation=null;byId('preview-change').disabled=true;byId('working-copy-details').replaceChildren();
+    if(!summary){setStatus('process-selection-status','등록된 사용자 작업본을 명시적으로 선택하세요.');return;}
+    try{
+      const loaded=await asJson(`/api/workspace/diagram-editor/working-copies/${id}`);
+      if(loaded.workingCopyKind!=='USER_WORKING_COPY'||loaded.workingSha256!==summary.workingSha256)throw new Error('작업본 종류 또는 SHA가 목록과 일치하지 않습니다.');
+      if(loaded.processCode!==selectedDocument?.processCode)throw new Error('선택 공정과 작업본 공정이 다릅니다.');
+      workingCopy={id:Number(loaded.workingDocumentId),processCode:loaded.processCode,filename:loaded.filename,status:loaded.verificationStatus,workingSha256:loaded.workingSha256,sourceSha256:loaded.sourceSha256,kind:loaded.workingCopyKind};selectedWorkingCopySummary=summary;
+      const info=byId('working-copy-details');addDocLine(info,'분류 / 소유자',`${loaded.workingCopyKind} / ${loaded.registeredBy}`);addDocLine(info,'작업본 ID / 버전',`${loaded.workingDocumentId} / v${loaded.versionNumber}`);addDocLine(info,'기준 원본 SHA-256',loaded.sourceSha256);addDocLine(info,'실제 작업본 SHA-256',loaded.workingSha256);addDocLine(info,'파일 크기 / 검증',`${loaded.byteSize} bytes / ${loaded.verificationStatus}`);addDocLine(info,'이전 버전 ID',loaded.previousWorkingDocumentId||'최초 버전');
+      const sheets=await asJson(`/api/workspace/diagram-editor/working-copies/${workingCopy.id}/sheets`);const select=byId('sheet-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='시트 선택';select.append(blank);
+      sheets.filter(item=>item.visibility==='VISIBLE'&&item.usedRange!=='EMPTY').forEach(item=>{const option=document.createElement('option');option.value=item.sheetName;option.textContent=item.sheetName;select.append(option);});
+      select.disabled=false;setStatus('process-selection-status',`사용자 작업본 ${workingCopy.id} · v${summary.version} · SHA 일치 · 시트를 선택하세요.`);resetModifyPanel('시트를 선택하면 Profile과 편집 가능 여부를 서버에서 재판정합니다.');
+    }catch(error){workingCopy=null;selectedWorkingCopySummary=null;setStatus('working-error',error.message);setStatus('process-selection-status','작업본 검증 실패 · ADD 생성을 차단했습니다.');}
+  }
+  byId('process-select').addEventListener('change',loadSelectedDocument);
+  byId('working-copy-select').addEventListener('change',loadSelectedWorkingCopy);
+  byId('upload-working-copy').addEventListener('click',async()=>{
+    const file=byId('working-copy-file').files?.[0];if(!selectedDocument||!file){setStatus('working-error','공정도와 별도로 준비한 XLSX 작업본을 선택하세요.');return;}
+    if(file.size>10*1024*1024){setStatus('working-error','작업본은 10MB 이하여야 합니다.');return;}
+    byId('upload-working-copy').disabled=true;setStatus('working-error','');setStatus('working-status','ZIP·POI·기준 SHA·시트·Profile 검증 후 별도 사용자 작업본으로 저장합니다.');
+    try{const form=new FormData();form.set('baselineDocumentId',String(selectedDocument.baselineDocumentId));form.set('file',file,file.name);const result=await asJson('/api/workspace/diagram-editor/working-copies',{method:'POST',body:form});
+      setStatus('working-status',`${result.message} ID ${result.workingDocumentId} · v${result.version} · ${result.verificationStatus} · SHA-256 ${result.workingSha256}`);byId('working-copy-file').value='';await loadSelectedDocument();byId('working-copy-select').value=String(result.workingDocumentId);await loadSelectedWorkingCopy();
+    }catch(error){setStatus('working-error',error.message);setStatus('working-status','작업본을 등록하지 않았습니다.');}finally{byId('upload-working-copy').disabled=!selectedDocument;}
+  });
+  const isLegacyPw01Location=item=>item?.editabilityStatus==='LEGACY_ONLY'&&item.processCode==='PW-01'&&item.sheetName==='PW-01-05'&&item.sourceEquipmentId==='C-PW15009'&&item.targetEquipmentId==='C-PW15010';
+  async function loadSheetLocations(){
+    selectedLocation=null;byId('placement-select').replaceChildren();byId('placement-select').disabled=true;byId('preview-change').disabled=true;
+    const sheetName=byId('sheet-select').value;if(!workingCopy||!sheetName){setStatus('location-assessment','시트를 선택하면 삽입 후보를 평가합니다.');resetModifyPanel('공정도와 시트를 선택하세요.');return;}
+    await loadModifyEquipmentOptions();
+    setStatus('location-assessment','삽입 위치 후보를 구조적으로 평가하는 중입니다.');
+    try{
+      const locations=await asJson(`/api/workspace/diagram-editor/working-copies/${workingCopy.id}/locations?sheetName=${encodeURIComponent(sheetName)}`);
+      const profileSummary=(selectedWorkingCopySummary?.sheets||[]).find(item=>item.sheetName===sheetName);
+      const evidenceLabel={STRUCTURE_ANALYZED:'구조 분석만',SYNTHETIC_TESTED:'합성 테스트만',WORKING_COPY_VERIFIED:'작업본 SHA 검증',LEGACY_FIXED_PATH_ONLY:'레거시 고정 경로'};
+      setStatus('location-assessment',`시트 ${sheetName} · Profile ${profileSummary?.profileId||'없음'}${profileSummary?.profileVersion?` v${profileSummary.profileVersion}`:''} · ${profileSummary?.profileStatus||'REVIEW_REQUIRED'} · 증거 ${evidenceLabel[profileSummary?.profileEvidenceLevel]||'미확인'} · 사용자 작업본 SHA 일치 ${profileSummary?.workingCopyShaMatch?'예':'아니오'} · 매핑 ${(profileSummary?.profileFields||[]).join(', ')||'미확인'} · 서버에서 위치를 재검증합니다.`);
+      const select=byId('placement-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='삽입 후보 선택';select.append(blank);
+      const reviewList=byId('location-review-list');reviewList.replaceChildren();
+      const statusLabel={VERIFIED:'검증됨',REVIEW_REQUIRED:'검토 필요',UNSUPPORTED:'미지원',LEGACY_ONLY:'레거시 전용'};
+      const reviewEvidenceLabel={STRUCTURE_ANALYZED:'구조 분석만',SYNTHETIC_TESTED:'합성 테스트만',WORKING_COPY_VERIFIED:'작업본 SHA 검증',LEGACY_FIXED_PATH_ONLY:'레거시 고정 경로'};
+      for(const item of locations){const option=document.createElement('option');option.value=item.locationId;option.textContent=`${statusLabel[item.editabilityStatus]||'미지원'} · ${item.sourceEquipmentId} → ${item.targetEquipmentId} · ${item.candidateCellRange||'범위 미확인'}`;option.dataset.status=item.editabilityStatus;option.disabled=item.editabilityStatus!=='VERIFIED'&&!isLegacyPw01Location(item);select.append(option);
+        if(item.editabilityStatus!=='VERIFIED'){const profileInfo=item.profileId?` · ${item.profileId} v${item.profileVersion||'미상'} · ${item.profileStatus||'미상'} · ${reviewEvidenceLabel[item.profileEvidenceLevel]||'증거 미확인'} · Profile 필드 ${(item.profileFields||[]).join(', ')||'미확인'} (미승인)`:'';const line=document.createElement('li');line.textContent=`${item.editabilityStatus}${profileInfo}: ${item.sourceEquipmentId} → ${item.targetEquipmentId} · ${item.editabilityReason}`;reviewList.append(line);}}
+      select.disabled=locations.length===0;select._assessments=locations;
+      const verified=locations.filter(item=>item.editabilityStatus==='VERIFIED').length;
+      const legacy=locations.filter(isLegacyPw01Location).length;
+      setStatus('location-assessment',locations.length?`후보 ${locations.length}개 · 범용 생성 가능 ${verified}개 · 레거시 전용 ${legacy}개. 실제 연결 증빙은 별도로 NOT_VERIFIED입니다.`:'이 시트에서 자동 평가 가능한 삽입 후보가 없습니다.');
+      if(!locations.length){const empty=document.createElement('option');empty.textContent='삽입 후보 없음';select.append(empty);}
+    }catch(error){setStatus('location-assessment',`위치 평가 실패 — 생성 차단: ${error.message}`);}
+  }
+  byId('sheet-select').addEventListener('change',()=>{invalidateFlowChange();loadSheetLocations();});
+  byId('placement-select').addEventListener('change',()=>{
+    const list=byId('placement-select')._assessments||[];const id=byId('placement-select').value;
+    selectedLocation=list.find(item=>item.locationId===id&&(item.editabilityStatus==='VERIFIED'||isLegacyPw01Location(item)))||null;
+      byId('equipment-note').value='';byId('equipment-note').disabled=true;
+    if(selectedLocation){const noteMapped=(selectedLocation.availableFields||[]).includes('note');byId('equipment-note').disabled=!noteMapped;setStatus('location-assessment',`${selectedLocation.editabilityStatus} · ${selectedLocation.processCode}/${selectedLocation.sheetName} · ${selectedLocation.sourceEquipmentId} → ${selectedLocation.targetEquipmentId} · 프로필 ${selectedLocation.profileId||selectedLocation.templateProfile} v${selectedLocation.profileVersion||'미상'} (${selectedLocation.profileStatus||'미상'}) · 입력 필드 ${(selectedLocation.availableFields||[]).join(', ')||'미상'} · 예상 변경 ${selectedLocation.expectedChangeRange||selectedLocation.candidateCellRange||'미상'} · 실제 배관 연결: NOT_VERIFIED.`);byId('preview-change').disabled=!workingCopy;}
+    else{const item=list.find(candidate=>candidate.locationId===id);setStatus('location-assessment',item?`${item.editabilityStatus} · 생성 차단 사유: ${item.editabilityReason}`:'삽입 위치를 선택하세요.');byId('preview-change').disabled=true;}
+  });
+  function resetModifyPanel(message=''){
+    modifyRevision++;modifyProfile=null;modifyPreviewId=null;modifyGenerated=null;resetDeletePanel(message);
+    byId('modify-equipment-select').replaceChildren();const option=document.createElement('option');option.value='';option.textContent=message||'검증 설비 선택';byId('modify-equipment-select').append(option);byId('modify-equipment-select').disabled=true;
+    byId('modify-current-item').value='';byId('modify-new-item').value='';byId('modify-new-item').disabled=true;
+    byId('modify-profile-summary').textContent='';show('modify-profile-summary',false);byId('modify-profile-fields').replaceChildren();
+    show('modify-legacy-current-field',true);show('modify-legacy-new-field',true);
+    byId('modify-preview-button').disabled=true;byId('modify-generate-button').disabled=true;byId('modify-download-button').disabled=true;
+    byId('modify-preview-table-body').replaceChildren();show('modify-preview-table-wrap',false);show('modify-generated-info',false);
+    setStatus('modify-status','');setStatus('modify-error','');setStatus('modify-mapping-status',message||'검증된 공정·시트를 선택하면 수정 가능한 설비를 조회합니다.');
+  }
+  const modifyFieldLabels={managementNo:'설비번호',equipmentName:'설비명',businessItemNo:'Item No.',capacity:'용량',capacityUnit:'단위',quantity:'수량',equipmentTypeLabel:'설비유형',note:'비고'};
+  function renderModifyProfile(profile){
+    const mapping=profile.mapping||{};const profileBased=Boolean(mapping.profileId);
+    show('modify-legacy-current-field',!profileBased);show('modify-legacy-new-field',!profileBased);
+    if(!profileBased){const item=mapping.fields?.businessItemNo;byId('modify-current-item').value=item?.currentText||'';byId('modify-new-item').disabled=false;return;}
+    const available=mapping.availableFields||[];
+    byId('modify-profile-summary').textContent=`${mapping.profileId} v${mapping.profileVersion||'미상'} · ${mapping.profileStatus||'미상'} · 증거 ${mapping.profileEvidenceLevel||'미상'} · Profile SHA ${mapping.profileShaMatch?'일치':'불일치'} · 작업본 SHA ${mapping.workingCopyShaMatch?'일치':'불일치'} · 수정 가능 ${available.join(', ')||'없음'}`;
+    show('modify-profile-summary',true);const fields=byId('modify-profile-fields');fields.replaceChildren();
+    for(const name of (mapping.profileFields||Object.keys(mapping.fields||{}))){
+      const item=mapping.fields?.[name];if(!item)continue;const wrapper=document.createElement('div');wrapper.className='field';
+      const label=document.createElement('label');label.textContent=modifyFieldLabels[name]||name;wrapper.append(label);
+      const editable=available.includes(name)&&item.status==='VERIFIED'&&name!=='managementNo';
+      const input=document.createElement('input');input.type='text';input.value=item.currentText||'';
+      if(editable){input.dataset.modifyField=name;input.dataset.currentValue=item.currentText||'';input.setAttribute('aria-label',`${modifyFieldLabels[name]||name} 현재값`);}
+      else{input.readOnly=true;input.setAttribute('aria-readonly','true');const reason=document.createElement('span');reason.className='hint';reason.textContent=`수정 차단 · ${item.status||'REVIEW_REQUIRED'} · ${item.reason||'Profile 근거 부족'}`;wrapper.append(input,reason);fields.append(wrapper);continue;}
+      wrapper.append(input);fields.append(wrapper);
+    }
+  }
+  function currentModifyRequest(profile){
+    if(profile?.mapping?.profileId){const replacements={},expectedCurrentValues={};
+      byId('modify-profile-fields').querySelectorAll('input[data-modify-field]').forEach(input=>{const field=input.dataset.modifyField;const value=input.value.trim();if(value&&value!==input.dataset.currentValue){replacements[field]=value;expectedCurrentValues[field]=input.dataset.currentValue;}});
+      return {replacements,expectedCurrentValues};}
+    const value=byId('modify-new-item').value.trim();const current=byId('modify-current-item').value;
+    return {replacements:value&&value!==current?{businessItemNo:value}:{},expectedCurrentValues:{}};
+  }
+  async function loadModifyEquipmentOptions(){
+    resetModifyPanel('Profile 기반 수정 후보를 확인하는 중입니다.');
+    const revision=modifyRevision;const sheetName=byId('sheet-select').value;
+    if(!workingCopy||!sheetName)return;
+    try{
+      const options=await asJson(`/api/workspace/diagram-editor/modify/equipment-options?workingDocumentId=${workingCopy.id}&sheetName=${encodeURIComponent(sheetName)}`);
+      if(revision!==modifyRevision)return;
+      const select=byId('modify-equipment-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent=options.length?'검증된 설비 선택':'이 공정·시트에 수정 가능한 Profile 설비가 없습니다';select.append(blank);
+      options.forEach(item=>{const option=document.createElement('option');option.value=item.managementNo;option.textContent=`${item.managementNo} · ${item.equipmentName||'설비명 미확인'}`;option.dataset.itemNo=item.businessItemNo||'';select.append(option);});
+      select.disabled=options.length===0;setStatus('modify-mapping-status',options.length?`수정 후보 ${options.length}개 · Profile/SHA/필드별 현재값을 다시 조회합니다.`:'수정 후보 없음 · REVIEW_REQUIRED/UNSUPPORTED는 차단됩니다.');
+    }catch(error){if(revision===modifyRevision){resetModifyPanel(`후보 조회 실패 — 수정 차단: ${error.message}`);}}
+  }
+  byId('modify-equipment-select').addEventListener('change',()=>{
+    const managementNo=byId('modify-equipment-select').value;
+    byId('delete-management-no').value=managementNo;
+    invalidateDeleteTarget(managementNo?'선택한 설비번호로 DELETE 영향 분석을 실행할 수 있습니다.':'DELETE 대상 설비를 입력하거나 MODIFY 목록에서 선택하세요.');
+  });
+  byId('modify-equipment-select').addEventListener('change',async()=>{
+    const managementNo=byId('modify-equipment-select').value;const sheetName=byId('sheet-select').value;
+    modifyProfile=null;modifyPreviewId=null;modifyGenerated=null;byId('modify-new-item').value='';byId('modify-current-item').value='';byId('modify-new-item').disabled=true;byId('modify-preview-button').disabled=true;byId('modify-generate-button').disabled=true;byId('modify-download-button').disabled=true;show('modify-preview-table-wrap',false);show('modify-generated-info',false);byId('modify-profile-fields').replaceChildren();byId('modify-profile-summary').textContent='';show('modify-profile-summary',false);
+    if(!workingCopy||!managementNo||!sheetName)return;
+    const revision=++modifyRevision;setStatus('modify-error','');setStatus('modify-mapping-status','설비·Profile·현재 셀 값·서식을 서버에서 재검증하는 중입니다.');
+    try{
+      const profile=await asJson(`/api/workspace/diagram-editor/modify/equipment?workingDocumentId=${workingCopy.id}&sheetName=${encodeURIComponent(sheetName)}&managementNo=${encodeURIComponent(managementNo)}`);
+      if(revision!==modifyRevision)return;if(profile.processCode!==selectedDocument?.processCode)throw new Error('선택 공정과 작업본 공정이 다릅니다.');
+      const mapping=profile.mapping||{};
+      if(mapping.profileId){if(!mapping.profileShaMatch||!mapping.workingCopyShaMatch||!(mapping.availableFields||[]).length)throw new Error('Profile/SHA 검증 또는 VERIFIED 필드가 없어 수정할 수 없습니다.');}
+      else{const item=mapping.fields?.businessItemNo;if(!item||item.status!=='VERIFIED'||!item.cellAddress)throw new Error('기존 MODIFY Item No.의 셀 매핑이 VERIFIED가 아니므로 수정할 수 없습니다.');}
+      modifyProfile=profile;renderModifyProfile(profile);
+      setStatus('modify-mapping-status',`${profile.processCode} · ${sheetName} · ${managementNo} · ${mapping.profileEvidenceLevel||'기존 master mapping'} · 수정 가능 ${(mapping.availableFields||[]).join(', ')||'businessItemNo'}`);
+    }catch(error){if(revision===modifyRevision){modifyProfile=null;setStatus('modify-error',error.message);setStatus('modify-mapping-status','매핑 검증 실패 · 수정 차단');}}
+  });
+  function invalidateModifyPreview(){
+    modifyRevision++;modifyPreviewId=null;modifyGenerated=null;byId('modify-generate-button').disabled=true;byId('modify-download-button').disabled=true;
+    byId('modify-preview-table-body').replaceChildren();show('modify-preview-table-wrap',false);show('modify-generated-info',false);
+    const request=currentModifyRequest(modifyProfile);byId('modify-preview-button').disabled=!modifyProfile||!Object.keys(request.replacements).length;
+  }
+  byId('modify-new-item').addEventListener('input',invalidateModifyPreview);
+  byId('modify-profile-fields').addEventListener('input',event=>{if(event.target.matches('input[data-modify-field]'))invalidateModifyPreview();});
+  byId('modify-preview-button').addEventListener('click',async()=>{
+    const profile=modifyProfile;if(!profile)return;const request=currentModifyRequest(profile);
+    if(!Object.keys(request.replacements).length)return;
+    const revision=modifyRevision;byId('modify-preview-button').disabled=true;setStatus('modify-error','');setStatus('modify-status','변경 전 값과 현재 작업본을 서버에서 재검증합니다.');
+    try{
+      const preview=await asJson('/api/workspace/diagram-editor/modify/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({workingDocumentId:profile.workingDocumentId,sheetName:profile.sheetName,managementNo:profile.managementNo,replacements:request.replacements,expectedCurrentValues:request.expectedCurrentValues})});
+      if(revision!==modifyRevision||profile!==modifyProfile)return;
+      if(preview.status!=='TEST_ONLY_READY'||preview.connectionEvidenceStatus!=='NOT_VERIFIED_NO_PHYSICAL_CONNECTION_EVIDENCE')throw new Error('서버가 TEST_ONLY 안전 상태를 확인하지 못했습니다.');
+      modifyPreviewId=preview.previewId;const body=byId('modify-preview-table-body');body.replaceChildren();
+      for(const field of Object.keys(preview.afterValues||{})){const row=document.createElement('tr');const values=[`${profile.processCode} · ${profile.sheetName} · ${profile.managementNo} · ${modifyFieldLabels[field]||field}`,preview.beforeValues?.[field],preview.afterValues?.[field],`${preview.status} · ${preview.connectionEvidenceStatus}`];for(const value of values){const cell=document.createElement('td');cell.textContent=value==null?'':String(value);row.append(cell);}body.append(row);}
+      show('modify-preview-table-wrap',true);byId('modify-generate-button').disabled=false;setStatus('modify-status','미리보기 완료 · 변경 전후를 확인한 뒤 TEST_ONLY Excel을 생성하세요.');
+    }catch(error){if(revision===modifyRevision){modifyPreviewId=null;setStatus('modify-error',error.message);setStatus('modify-status','미리보기 실패 · Excel 생성 차단');}}
+    finally{if(revision===modifyRevision){const current=currentModifyRequest(modifyProfile);byId('modify-preview-button').disabled=!modifyProfile||!Object.keys(current.replacements).length;}}
+  });
+  byId('modify-generate-button').addEventListener('click',async()=>{
+    if(!modifyPreviewId)return;const previewId=modifyPreviewId;const revision=modifyRevision;byId('modify-generate-button').disabled=true;setStatus('modify-error','');setStatus('modify-status','작업본의 값·매핑·SHA를 다시 검증하고 있습니다.');
+    try{
+      const generated=await asJson('/api/workspace/diagram-editor/modify/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({previewId})});
+      if(revision!==modifyRevision||previewId!==modifyPreviewId)return;
+      if(generated.officialBaselineModified!==false||generated.mode!=='TEST_ONLY')throw new Error('TEST_ONLY 생성 상태를 확인할 수 없습니다.');
+      modifyGenerated=generated;byId('modify-download-button').disabled=false;byId('modify-generated-info').textContent=`생성 완료 · ${generated.processCode} · ${generated.sheetName} · 수정 셀 ${generated.affectedCells.join(', ')} · SHA-256 ${generated.outputSha256}`;show('modify-generated-info',true);setStatus('modify-status','TEST_ONLY Excel이 준비됐습니다. 공식 원본은 변경되지 않았습니다.');
+    }catch(error){if(revision===modifyRevision){setStatus('modify-error',error.message);setStatus('modify-status','생성 실패 · 다운로드할 파일이 없습니다.');byId('modify-generate-button').disabled=false;}}
+  });
+  byId('modify-download-button').addEventListener('click',async()=>{
+    if(!modifyGenerated||!modifyPreviewId)return;const previewId=modifyPreviewId;const revision=modifyRevision;byId('modify-download-button').disabled=true;
+    try{const result=await downloadBlob(`/api/workspace/diagram-editor/modify/download/${encodeURIComponent(previewId)}`,`${modifyGenerated.processCode}_${modifyGenerated.managementNo}_TEST_ONLY_MODIFY.xlsx`,()=>revision===modifyRevision&&previewId===modifyPreviewId);if(revision===modifyRevision)setStatus('modify-status',`다운로드 시작 · ${result.filename} · SHA-256 ${result.hash||modifyGenerated.outputSha256}`);}
+    catch(error){if(revision===modifyRevision)setStatus('modify-error',error.message);}
+    finally{if(revision===modifyRevision)byId('modify-download-button').disabled=false;}
+  });
+
+  function invalidateDeleteTarget(message=''){
+    deleteRevision++;deleteAssessment=null;deletePreview=null;deleteGenerated=null;
+    byId('delete-preview-button').disabled=true;byId('delete-generate-button').disabled=true;byId('delete-download-button').disabled=true;
+    show('delete-impact-details',false);show('delete-output-info',false);setStatus('delete-error','');
+    if(message)setStatus('delete-status',message);
+    byId('delete-assess-button').disabled=!workingCopy||!byId('sheet-select').value||!byId('delete-management-no').value.trim();
+  }
+  function invalidateDeleteProposal(){
+    deleteRevision++;deletePreview=null;deleteGenerated=null;byId('delete-generate-button').disabled=true;byId('delete-download-button').disabled=true;show('delete-output-info',false);
+  }
+  byId('delete-management-no').addEventListener('input',()=>invalidateDeleteTarget('대상 설비가 바뀌었습니다. 영향 분석을 다시 실행하세요.'));
+  byId('delete-rationale').addEventListener('input',()=>{if(deletePreview||deleteGenerated)invalidateDeleteProposal();});
+  byId('delete-assess-button').addEventListener('click',async()=>{
+    const managementNo=byId('delete-management-no').value.trim();const sheetName=byId('sheet-select').value;
+    if(!workingCopy||!sheetName||!managementNo)return;
+    const revision=++deleteRevision;deleteAssessment=null;deletePreview=null;deleteGenerated=null;
+    byId('delete-preview-button').disabled=true;byId('delete-generate-button').disabled=true;byId('delete-download-button').disabled=true;show('delete-output-info',false);
+    setStatus('delete-error','');setStatus('delete-status','작업본을 변경하지 않는 읽기 전용 DELETE 영향 분석을 수행합니다.');
+    try{
+      const result=await asJson(`/api/workspace/diagram-editor/modify/delete-impact?workingDocumentId=${workingCopy.id}&sheetName=${encodeURIComponent(sheetName)}&managementNo=${encodeURIComponent(managementNo)}`);
+      if(revision!==deleteRevision)return;
+      deleteAssessment=result;byId('delete-impact-json').textContent=JSON.stringify(result,null,2);show('delete-impact-details',true);
+      const safe=result.status==='SAFE_BOX_ONLY_TEST_ONLY'&&result.automaticTestOnlyDeleteAllowed===true;
+      byId('delete-preview-button').disabled=!safe;
+      setStatus('delete-status',`${result.status} · fingerprint ${result.analysisFingerprint} · ${safe?'synthetic TEST_ONLY 미리보기 가능':'생성 차단'} · 실제 readiness CALCULATION_UNAVAILABLE · 연결 ${result.connectionEvidenceStatus}`);
+    }catch(error){if(revision===deleteRevision){deleteAssessment=null;setStatus('delete-error',error.message);setStatus('delete-status','영향 분석 실패 · DELETE 미리보기와 생성을 차단했습니다.');}}
+  });
+  byId('delete-preview-button').addEventListener('click',async()=>{
+    if(!deleteAssessment||deleteAssessment.status!=='SAFE_BOX_ONLY_TEST_ONLY')return;
+    const rationale=byId('delete-rationale').value.trim();if(!rationale){setStatus('delete-error','삭제 제안 사유를 입력하세요.');return;}
+    const revision=++deleteRevision;byId('delete-preview-button').disabled=true;setStatus('delete-error','');setStatus('delete-status','서버에서 작업본 SHA·Profile·fingerprint를 다시 검증하고 있습니다.');
+    try{
+      const preview=await asJson('/api/workspace/diagram-editor/modify/delete-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({workingDocumentId:workingCopy.id,sheetName:byId('sheet-select').value,managementNo:byId('delete-management-no').value.trim(),expectedWorkingSha256:workingCopy.workingSha256,analysisFingerprint:deleteAssessment.analysisFingerprint,rationale})});
+      if(revision!==deleteRevision)return;
+      if(preview.status!=='TEST_ONLY_READY'||preview.assessment?.status!=='SAFE_BOX_ONLY_TEST_ONLY')throw new Error('서버가 SAFE_BOX_ONLY_TEST_ONLY 상태를 재확인하지 못했습니다.');
+      deletePreview=preview;byId('delete-generate-button').disabled=false;
+      setStatus('delete-status',`DELETE 미리보기 완료 · 제안 ${preview.proposalId} · ${preview.status} · 실제 readiness CALCULATION_UNAVAILABLE`);
+    }catch(error){if(revision===deleteRevision){deletePreview=null;byId('delete-generate-button').disabled=true;setStatus('delete-error',error.message);setStatus('delete-status','미리보기 실패 · 산출물 생성은 차단됐습니다.');}}
+    finally{if(revision===deleteRevision)byId('delete-preview-button').disabled=!deleteAssessment||deleteAssessment.status!=='SAFE_BOX_ONLY_TEST_ONLY';}
+  });
+  byId('delete-generate-button').addEventListener('click',async()=>{
+    if(!deletePreview||deletePreview.status!=='TEST_ONLY_READY')return;
+    const revision=++deleteRevision;byId('delete-generate-button').disabled=true;setStatus('delete-error','');setStatus('delete-status','생성 직전 SHA·Profile·fingerprint를 재검증하고 TEST_ONLY 파일을 만들고 있습니다.');
+    try{
+      const generated=await asJson('/api/workspace/diagram-editor/modify/delete-generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({previewId:deletePreview.previewId})});
+      if(revision!==deleteRevision)return;
+      if(generated.officialBaselineModified!==false||generated.mode!=='TEST_ONLY'||generated.officialReadiness!=='CALCULATION_UNAVAILABLE')throw new Error('TEST_ONLY 안전 메타데이터 검증에 실패했습니다.');
+      deleteGenerated=generated;byId('delete-download-button').disabled=false;
+      byId('delete-output-info').textContent=`생성 완료 · ${generated.filename} · 삭제 셀 ${generated.affectedCells.join(', ')} · 출력 SHA-256 ${generated.outputSha256} · 제안 ${generated.proposalId}`;show('delete-output-info',true);
+      setStatus('delete-status','별도 TEST_ONLY 작업본을 생성했습니다. 공식 원본은 변경되지 않았고 물리 연결·유량은 검증되지 않았습니다.');
+    }catch(error){if(revision===deleteRevision){setStatus('delete-error',error.message);setStatus('delete-status','생성 실패 · 다운로드할 파일이 없습니다.');byId('delete-generate-button').disabled=false;}}
+  });
+  byId('delete-download-button').addEventListener('click',async()=>{
+    if(!deleteGenerated)return;const generated=deleteGenerated;const revision=deleteRevision;byId('delete-download-button').disabled=true;
+    try{const result=await downloadBlob(`/api/workspace/diagram-editor/modify/delete-download/${encodeURIComponent(generated.previewId)}`,generated.filename,()=>revision===deleteRevision&&generated===deleteGenerated);if(revision===deleteRevision)setStatus('delete-status',`다운로드 시작 · ${result.filename} · SHA-256 ${result.hash||generated.outputSha256}`);}
+    catch(error){if(revision===deleteRevision)setStatus('delete-error',error.message);}
+    finally{if(revision===deleteRevision)byId('delete-download-button').disabled=false;}
+  });
+
+  async function downloadBlob(path, fallback, stillCurrent=()=>true) {
+    const response=await api(path);const blob=await response.blob();if(!blob.size)throw new Error('다운로드 파일이 비었습니다.');
+    if(!stillCurrent())throw new Error('입력값이 바뀌어 다운로드를 취소했습니다. 다시 미리보기와 생성을 진행해 주세요.');
+    const disposition=response.headers.get('Content-Disposition')||'';const match=disposition.match(/filename\*=UTF-8''([^;]+)/i);
+    let filename=fallback;if(match){try{filename=decodeURIComponent(match[1]);}catch(_){}}
+    const expected=response.headers.get('X-Output-SHA256')||'';let hash='';
+    if(globalThis.crypto?.subtle){const digest=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());hash=[...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');if(expected&&hash.toLowerCase()!==expected.toLowerCase())throw new Error('다운로드 파일 SHA-256이 서버 검증값과 일치하지 않습니다.');}
+    const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;link.hidden=true;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    return {filename,hash:hash||expected};
+  }
+
+
+  function invalidateFlowChange(message='선택 또는 입력이 바뀌었습니다. FLOW_CHANGE 미리보기를 다시 실행하세요.'){
+    flowRevision++;flowPreview=null;flowGenerated=null;flowBusy=false;
+    byId('flow-generate').disabled=true;byId('flow-download').disabled=true;byId('flow-download').classList.remove('download-ready');
+    show('flow-preview-summary',false);show('flow-generated-info',false);show('flow-technical-details',false);
+    setStatus('flow-error','');setStatus('flow-status',message);byId('flow-generation-eligibility').textContent='미리보기 재검증 필요';
+    updateFlowEligibility();
+  }
+  function updateFlowEligibility(){
+    const isP02=selectedDocument?.processCode==='P-02'&&workingCopy?.processCode==='P-02'&&workingCopy?.kind==='USER_WORKING_COPY';
+    const rightSheet=byId('sheet-select').value==='Synthetic Flow';const scenario=byId('flow-scenario').value;const noOp=scenario==='FLOW-20';
+    const ready=Boolean(flowFixture&&workingCopy&&isP02&&rightSheet&&byId('flow-rationale').value.trim());
+    byId('flow-preview').disabled=!ready||flowBusy;
+    byId('flow-generation-eligibility').textContent=noOp?'기준 유량 20과 동일: 생성 차단':!isP02?'P-02 소유 작업본 필요':!rightSheet?'Synthetic Flow 시트 선택 필요':!flowFixture?'fixture SHA 확인 필요':!byId('flow-rationale').value.trim()?'검토 사유 입력 필요':flowPreview?'서버 Preview 통과': 'Preview 가능';
+    if(noOp)byId('flow-generate').disabled=true;
+    return ready;
+  }
+  async function downloadServerFlowFixture(){
+    const button=byId('flow-fixture-download');button.disabled=true;flowFixture=null;updateFlowEligibility();setStatus('flow-error','');setStatus('flow-fixture-status','로그인·기능 플래그·서버 fixture를 확인하고 있습니다.');
+    try{
+      if(selectedDocument&&selectedDocument.processCode!=='P-02')throw new Error('현재 합성 FLOW_CHANGE는 P-02 작업본만 지원합니다.');
+      const response=await api('/api/workspace/diagram-editor/flow-change/fixture');
+      if(response.headers.get('X-Test-Only')!=='true'||response.headers.get('X-Official-Baseline-Modified')!=='false')throw new Error('서버 fixture 안전 메타데이터가 확인되지 않았습니다.');
+      const blob=await response.blob();const expected=response.headers.get('X-Fixture-SHA256')||'';const id=response.headers.get('X-Fixture-ID')||'';
+      if(!blob.size||!expected||!id)throw new Error('서버 fixture 응답이 비어 있거나 식별 정보가 없습니다.');
+      if(globalThis.crypto?.subtle){const digest=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());const actual=[...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');if(actual.toLowerCase()!==expected.toLowerCase())throw new Error('서버 fixture 다운로드 SHA-256이 헤더와 일치하지 않습니다.');}
+      const filename=decodeURIComponent((response.headers.get('Content-Disposition')||'').match(/filename\*=UTF-8''([^;]+)/i)?.[1]||'P-02_FLOW_CHANGE_SYNTHETIC_FIXTURE_V1.xlsx');
+      const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;link.hidden=true;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      flowFixture={fixtureId:id,sha256:expected};updateFlowEligibility();setStatus('flow-fixture-status',`서버 합성 fixture 확인·다운로드 완료 · SHA-256 ${expected} · TEST_ONLY`);
+    }catch(error){flowFixture=null;updateFlowEligibility();setStatus('flow-error',error.message);setStatus('flow-fixture-status','fixture를 확인하지 못했습니다. 기능 플래그와 로그인 상태를 확인하세요.');}
+    finally{button.disabled=false;}
+  }
+  byId('flow-fixture-download').addEventListener('click',downloadServerFlowFixture);
+  byId('flow-scenario').addEventListener('change',()=>{invalidateFlowChange('시나리오가 바뀌었습니다. 새 Preview를 실행하세요.');});
+  byId('flow-rationale').addEventListener('input',()=>{if(flowPreview||flowGenerated)invalidateFlowChange('검토 사유가 바뀌었습니다. 새 Preview를 실행하세요.');else updateFlowEligibility();});
+  byId('flow-preview').addEventListener('click',async()=>{
+    if(flowBusy||!updateFlowEligibility()||!flowFixture||!workingCopy)return;
+    const revision=++flowRevision;flowBusy=true;flowPreview=null;flowGenerated=null;byId('flow-generate').disabled=true;byId('flow-download').disabled=true;
+    setStatus('flow-error','');show('flow-preview-summary',false);setStatus('flow-status','소유 작업본·fixture SHA·유량 binding·What-if 계산을 서버에서 재검증합니다.');
+    try{
+      const preview=await asJson('/api/workspace/diagram-editor/flow-change/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({workingDocumentId:workingCopy.id,expectedWorkingSha256:workingCopy.workingSha256,fixtureId:flowFixture.fixtureId,expectedFixtureSha256:flowFixture.sha256,scenarioId:byId('flow-scenario').value,rationale:byId('flow-rationale').value.trim()})});
+      if(revision!==flowRevision)return;
+      const changes=preview.labelChanges||[];const addresses=changes.map(item=>item.cellAddress).sort();
+      if(preview.officialBaselineModified!==false||preview.actualReadiness!=='CALCULATION_UNAVAILABLE'||preview.calculatedEdgeQuantity==null||!preview.noOp&&addresses.join(',')!=='B17,B8'||changes.some(item=>Number(item.afterQuantity)!==Number(preview.calculatedEdgeQuantity)||item.unit!=='ton/day'||item.period!=='2026-11-02/SYNTHETIC_TEST_PERIOD'))throw new Error('서버 Preview의 안전 상태·B8/B17 mapping·단위·기간 검증에 실패했습니다.');
+      flowPreview=preview;renderFlowChangePreview(preview);const noOp=preview.noOp===true;
+      byId('flow-generate').disabled=noOp||preview.reviewStatus!=='TEST_ONLY_REVIEW_REQUIRED';
+      byId('flow-generation-eligibility').textContent=noOp?'기준 유량 20과 동일: Generate 차단':byId('flow-generate').disabled?'검토 상태가 허용되지 않아 생성 차단':'서버 계산·B8/B17 mapping 일치';
+      setStatus('flow-status',noOp?'기준값과 같아 변경 없음으로 처리했습니다. proposal·Excel 생성은 없습니다.':`Preview 완료 · ${preview.scenarioId} · 계산 결과 ${preview.calculatedEdgeQuantity} ton/day · 실제 readiness는 ${preview.actualReadiness}.`);
+    }catch(error){if(revision===flowRevision){flowPreview=null;byId('flow-generate').disabled=true;setStatus('flow-error',error.message);setStatus('flow-status','Preview 실패 · Excel 생성을 차단했습니다.');}}
+    finally{if(revision===flowRevision){flowBusy=false;updateFlowEligibility();byId('flow-generate').disabled=!flowPreview||flowPreview.noOp||flowPreview.reviewStatus!=='TEST_ONLY_REVIEW_REQUIRED';}}
+  });
+  function renderFlowChangePreview(preview){
+    const wrap=byId('flow-preview-summary');wrap.replaceChildren();const table=document.createElement('table');table.className='flow-change-table';
+    const head=document.createElement('thead');const header=document.createElement('tr');for(const title of ['항목','변경 전','변경 후']){const th=document.createElement('th');th.scope='col';th.textContent=title;header.append(th);}head.append(header);table.append(head);
+    const summary=preview.calculation||{};const edges=summary.edges||[];const processes=summary.processBalances||[];const external=summary.externalBalances||[];
+    const edge=edges.find(item=>item.connectionId==='SYN-FLOW-P2X-P1N')||{};const beforeExternal=external.map(item=>`${item.materialType}: in ${item.externalInflow??'미계산'} / out ${item.externalOutflow??'미계산'} / 잔차 ${item.residual??'미계산'} ${item.unit||''}`).join(' · ')||'계산 자료 없음';
+    const impact=processes.map(item=>`${item.processCode}: 유입 ${item.inflow??'미계산'} / 유출 ${item.outflow??'미계산'} / 잔차 ${item.residual??'미계산'} ${item.unit||''} [${item.status||'미확인'}]`).join(' · ')||'계산 자료 없음';
+    const rows=[['공정 / 시트 / 연결','P-02 / Synthetic Flow / SYN-FLOW-P2X-P1N','가상 P-02 → P-01 연결'],['설비','SYN-EQ-P2-X → SYN-EQ-P1-N','가상 fixture 설비 (실제 설비 아님)'],['유량',`${preview.beforeQuantity} ton/day`,`${preview.requestedQuantity} ton/day (계산 edge ${preview.calculatedEdgeQuantity})`],['변경량','0 ton/day',`${Number(preview.requestedQuantity)-Number(preview.beforeQuantity)} ton/day`],['물질·기간','synthetic process wastewater · ton/day · 2026-11-02/SYNTHETIC_TEST_PERIOD','동일 basis; 환산 없음'],['영향 및 수지',beforeExternal,impact],['Excel 반영 위치','Synthetic Flow!B8, B17',preview.labelChanges.map(item=>`${item.cellAddress}: ${item.displayBefore} → ${item.displayAfter}`).join(' · ')||'변경 없음'],['상태','TEST_ONLY 합성 기준',`${summary.status||'미확인'} · readiness ${preview.actualReadiness} · 실제 연결 증빙 없음`]];
+    const body=document.createElement('tbody');for(const row of rows){const tr=document.createElement('tr');for(const value of row){const td=document.createElement('td');td.textContent=value==null?'미확인':String(value);tr.append(td);}body.append(tr);}table.append(body);wrap.append(table);wrap.classList.remove('hidden');byId('flow-technical-json').textContent=JSON.stringify(preview,null,2);show('flow-technical-details',true);
+  }
+  byId('flow-generate').addEventListener('click',async()=>{
+    if(!flowPreview||flowPreview.noOp||flowBusy)return;const previewId=flowPreview.previewId;const revision=flowRevision;flowBusy=true;byId('flow-generate').disabled=true;setStatus('flow-error','');setStatus('flow-status','Generate 직전 사용자 소유권·fixture SHA·fingerprint·계산·label mapping을 다시 확인합니다.');
+    try{
+      const generated=await asJson('/api/workspace/diagram-editor/flow-change/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({previewId})});
+      if(revision!==flowRevision||flowPreview?.previewId!==previewId)return;
+      if(generated.officialBaselineModified!==false||generated.mode!=='TEST_ONLY'||generated.officialReadiness!=='CALCULATION_UNAVAILABLE'||generated.outputSha256==null)throw new Error('Generate 결과의 안전 메타데이터 검증 실패');
+      flowGenerated=generated;byId('flow-download').disabled=false;byId('flow-generated-info').textContent=`TEST_ONLY · REVIEW_REQUIRED · ${generated.filename} · B8/B17 ${generated.labelChanges.map(item=>item.cellAddress+'='+item.displayAfter).join(', ')} · SHA-256 ${generated.outputSha256} · 공식 원본 변경 없음`;show('flow-generated-info',true);setStatus('flow-status','합성 Excel 생성 완료. 실제 사업장 연결·유량 검증 결과로 사용할 수 없습니다.');
+    }catch(error){if(revision===flowRevision){setStatus('flow-error',error.message);setStatus('flow-status','Generate 실패 · 출력 다운로드를 차단했습니다.');byId('flow-generate').disabled=false;}}
+    finally{flowBusy=false;updateFlowEligibility();byId('flow-generate').disabled=!flowPreview||flowPreview.noOp||Boolean(flowGenerated)||flowPreview.reviewStatus!=='TEST_ONLY_REVIEW_REQUIRED';}
+  });
+  byId('flow-download').addEventListener('click',async()=>{
+    if(!flowGenerated||flowBusy)return;const generated=flowGenerated;const revision=flowRevision;byId('flow-download').disabled=true;
+    try{const result=await downloadBlob(`/api/workspace/diagram-editor/flow-change/download/${encodeURIComponent(generated.previewId)}`,generated.filename,()=>revision===flowRevision&&generated===flowGenerated);if(revision===flowRevision)setStatus('flow-status',`TEST_ONLY 다운로드 시작 · ${result.filename} · SHA-256 ${result.hash||generated.outputSha256}`);}
+    catch(error){if(revision===flowRevision)setStatus('flow-error',error.message);}
+    finally{if(revision===flowRevision)byId('flow-download').disabled=false;}
+  });
+  function setField(id,value){byId(id).value=value==null?'':String(value);}
+
+  byId('load-reference-case').addEventListener('click',()=>{
+    setStatus('output-error','');
+    for(const id of ['equipment-id','equipment-name','item-no','capacity','capacity-unit','equipment-quantity','equipment-note'])setField(id,'');
+    setField('equipment-type-label','');
+    for(const id of ['wastewater-type','wastewater-quantity','wastewater-unit','wastewater-period','wastewater-destination','wastewater-evidence','waste-type','waste-quantity','waste-unit','waste-period','waste-destination','waste-evidence'])setField(id,'');
+    byId('route-list').replaceChildren();routeNumber=0;byId('run-synthetic-network').checked=false;byId('synthetic-scope-complete').checked=false;
+    invalidatePreview();setStatus('output-status','새 합성 ADD 입력 양식으로 초기화했습니다.');
+  });
+
+  let routeNumber=0;
+  function addRoute(route={}) {
+    routeNumber++;const n=routeNumber;const card=document.createElement('article');card.className='route-card';card.dataset.routeId=String(n);
+    const head=document.createElement('div');head.className='route-card-head';const title=document.createElement('strong');title.textContent=`경로 ${n}`;const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='경로 제거';remove.addEventListener('click',()=>card.remove());head.append(title,remove);
+    const fields=[['sourceEquipment','출발 설비/경계','text'],['sourceProcess','출발 공정 코드','text'],['targetEquipment','도착 설비/경계','text'],['targetProcess','도착 공정 코드','text'],['pathDescription','배관/이동 경로','text'],['flowType','물질 종류','text'],['materialClass','분류 (WASTEWATER/WASTE/CHEMICAL)','text'],['connectionType','경로 유형 (SERIES/BRANCH/MERGE/INTERNAL_RECYCLE/INTERPROCESS_RECYCLE/EXTERNAL_INFLOW/EXTERNAL_OUTFLOW)','text'],['quantity','유량/이동량','number'],['unit','단위','text'],['period','기준 기간','text'],['evidenceReference','증빙 참조 ID/위치','text']];
+    const grid=document.createElement('div');grid.className='route-grid';
+    for(const [key,label,type] of fields){const wrap=document.createElement('div');wrap.className='field';const lab=document.createElement('label');lab.textContent=label;lab.htmlFor=`route-${n}-${key}`;const input=document.createElement('input');input.id=`route-${n}-${key}`;input.dataset.key=key;input.type=type;if(type==='number'){input.min='0';input.step='any';}input.value=route[key]==null?'':String(route[key]);wrap.append(lab,input);grid.append(wrap);}
+    const checks=document.createElement('div');checks.className='check-row';
+    for(const [key,label] of [['internalRecycle','내부 순환 후보'],['branchOrMerge','분기/합류 후보'],['complete','입력자가 경로 완결이라고 표시']]){const lab=document.createElement('label');const input=document.createElement('input');input.type='checkbox';input.dataset.key=key;input.checked=Boolean(route[key]);const span=document.createElement('span');span.textContent=label;lab.append(input,span);checks.append(lab);}
+    card.append(head,grid,checks);byId('route-list').append(card);
+  }
+  byId('add-route').addEventListener('click',()=>addRoute());
+  function routeValues(){return [...byId('route-list').querySelectorAll('.route-card')].map(card=>{const o={};card.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;o[k]=el.type==='checkbox'?el.checked:el.type==='number'?(el.value===''?null:Number(el.value)):el.value;});return o;});}
+  function requestBody(){return {
+    workingDocumentId:workingCopy?.id||0,sheetName:byId('sheet-select').value,changeType:byId('change-type').value,
+    targetManagementNo:'',
+    managementNo:byId('equipment-id').value.trim(),equipmentName:byId('equipment-name').value.trim(),businessItemNo:byId('item-no').value.trim(),
+    capacity:byId('capacity').value.trim(),capacityUnit:byId('capacity-unit').value.trim(),equipmentQuantity:byId('equipment-quantity').value.trim(),
+    placementId:byId('placement-select').value,equipmentTypeLabel:byId('equipment-type-label').value,
+    note:byId('equipment-note').disabled?'':byId('equipment-note').value.trim(),
+    wastewaterType:byId('wastewater-type').value.trim(),wastewaterQuantity:byId('wastewater-quantity').value===''?null:Number(byId('wastewater-quantity').value),
+    wastewaterUnit:byId('wastewater-unit').value.trim(),wastewaterPeriod:byId('wastewater-period').value.trim(),wastewaterDestination:byId('wastewater-destination').value.trim(),wastewaterEvidence:byId('wastewater-evidence').value.trim(),
+    wasteType:byId('waste-type').value.trim(),wasteQuantity:byId('waste-quantity').value===''?null:Number(byId('waste-quantity').value),
+    wasteUnit:byId('waste-unit').value.trim(),wastePeriod:byId('waste-period').value.trim(),wasteDestination:byId('waste-destination').value.trim(),wasteEvidence:byId('waste-evidence').value.trim(),
+    routes:routeValues(),runSyntheticTestOnlyNetwork:byId('run-synthetic-network').checked,
+    syntheticNetworkScopeComplete:byId('synthetic-scope-complete').checked,scopeCompleteAttested:false
+  };}
+  function renderPreviewTable(input,result) {
+    const insertion=result.insertion||{};
+    const reviewItems=Array.isArray(result.inputCoverage)?result.inputCoverage:[];
+    const reviewText=reviewItems.length?reviewItems.join(' '):'폐수·폐기물·배관 입력을 확인해 주세요.';
+    const longValues=[['설비번호',input.managementNo,40],['설비명',input.equipmentName,42],['Item No.',input.businessItemNo,36],['용량·단위',`${input.capacity} ${input.capacityUnit}`.trim(),36]]
+      .filter(([,value,limit])=>String(value||'').length>limit)
+      .map(([label])=>`${label}: 도면 칸에 맞춰 축소 표시될 수 있습니다. Excel 셀 값은 축약하지 않았으며, 길이·가독성은 Excel에서 검토해 주세요.`);
+    const rows=[
+      ['선택 공정','변경 없음',selectedDocument?.processCode||'미선택'],
+      ['변경 유형','변경 없음','설비 추가 (ADD)'],
+      ['삽입 위치','변경 없음',selectedLocation?`${selectedLocation.sourceEquipmentId}와 ${selectedLocation.targetEquipmentId} 사이 (${selectedLocation.candidateCellRange})`:`${insertion.predecessor||'미확인'}와 ${insertion.successor||'미확인'} 사이`],
+      ['기술 편집 상태','미검증',selectedLocation?.editabilityStatus||'REVIEW_REQUIRED'],
+      ['실제 연결 증빙','미검증',selectedLocation?.connectionEvidenceStatus||'NOT_VERIFIED'],
+      ['설비번호','기존 목록에 없음',input.managementNo],
+      ['설비명','기존 도면에 없음',input.equipmentName],
+      ['Item No.','기존 도면에 없음',input.businessItemNo],
+      ['용량·단위','기존 도면에 없음',`${input.capacity} ${input.capacityUnit}`.trim()],
+      ['수량','기존 도면에 없음',input.equipmentQuantity],
+      ['설비 유형 표시','기존 도면에 없음',input.equipmentTypeLabel],
+      ['비고',input.note?'기존 도면에 없음':'입력 없음',input.note||'프로필에서 비고 셀이 매핑되지 않으면 공란 유지'],
+      ['긴 텍스트 표시 검토',longValues.length?'검토 필요':'기본 표시 폭으로 확인',longValues.length?longValues.join(' '):'표시값을 원문 그대로 기록하고 자동 축소를 허용합니다.'],
+      ['폐수·폐기물·배관 검토','증빙 및 경로 입력 없음',reviewText]
+    ];
+    const body=byId('preview-table-body');body.replaceChildren();
+    for(const row of rows){const tr=document.createElement('tr');for(const value of row){const cell=document.createElement('td');cell.textContent=value||'미입력';tr.append(cell);}body.append(tr);}
+    show('preview-table-wrap',true);show('preview-intro',true);show('review-required-note',true);
+  }
+  byId('preview-change').addEventListener('click',async()=>{
+    if(previewInFlight)return;
+    setStatus('output-error','');
+    const requiredIds=['equipment-id','equipment-name','item-no','capacity','capacity-unit','equipment-quantity','equipment-type-label'];
+    const fieldMessages={'equipment-id':'설비번호는 영문 또는 숫자로 시작하고 허용된 문자만 입력하세요.','equipment-name':'설비명을 입력하세요.','item-no':'사업장 Item No.를 입력하세요.','capacity':'용량 또는 규격을 입력하세요.','capacity-unit':'용량 단위를 입력하세요.','equipment-quantity':'설비 수량/대수를 입력하세요.','equipment-type-label':'설비 유형을 입력하세요.'};
+    const missing=[];
+    for(const id of requiredIds){const field=byId(id);if(!field.checkValidity()){const error=byId(`${id}-error`);if(error){error.textContent=field.validationMessage||fieldMessages[id];error.classList.remove('hidden');}field.setAttribute('aria-invalid','true');missing.push(id);}else clearFieldError(id);}
+    if(missing.length){byId(missing[0]).focus();setStatus('output-error','표시된 필수 항목을 확인해 주세요.');byId('generate-output').disabled=true;return;}
+    const requestRevision=inputRevision;previewInFlight=true;byId('preview-change').disabled=true;
+    setStatus('output-status','입력한 설비 정보를 검증된 위치와 비교합니다.');
+    try{
+      const legacyPw01=isLegacyPw01Location(selectedLocation);
+      if(!workingCopy||!selectedLocation||(selectedLocation.editabilityStatus!=='VERIFIED'&&!legacyPw01))throw new Error('검증된 작업본과 허용된 삽입 위치를 선택해야 합니다.');
+      const input=requestBody();
+      let result;
+      if(legacyPw01){
+        if(input.note)throw new Error('PW-01-05 레거시 경로에는 Profile 기반 비고 셀 매핑이 없어 비고를 입력할 수 없습니다.');
+        input.placementId='PW01-05-BETWEEN-C-PW15009-C-PW15010';
+        result=await asJson('/api/workspace/change-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});
+        genericDiagramEdit=false;
+      }else{
+        result=await asJson('/api/workspace/diagram-editor/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({workingDocumentId:workingCopy.id,locationId:selectedLocation.locationId,sheetName:selectedLocation.sheetName,managementNo:input.managementNo,equipmentName:input.equipmentName,businessItemNo:input.businessItemNo,capacity:input.capacity,capacityUnit:input.capacityUnit,quantity:input.equipmentQuantity,equipmentTypeLabel:input.equipmentTypeLabel,note:input.note})});
+        genericDiagramEdit=true;
+      }
+      if(requestRevision!==inputRevision)return;
+      activeRequestId=genericDiagramEdit?result.previewId:result.requestId;generatedScenario=null;byId('download-output').disabled=true;show('generated-file-info',false);
+      result.changeType='ADD';result.equipmentManagementNo=result.equipmentManagementNo||input.managementNo;result.insertion=result.insertion||{predecessor:selectedLocation.sourceEquipmentId,successor:selectedLocation.targetEquipmentId};
+      setStatus('output-summary',`설비 박스 추가 미리보기 · ${result.equipmentManagementNo} · ${result.automaticEditAllowed?'생성 가능':'생성 차단'} · BOX_ONLY TEST_ONLY`);
+      const details={requestId:result.requestId,requestStatus:result.requestStatus,changeType:result.changeType,managementNo:result.equipmentManagementNo,
+        modifyTargetAssessment:result.modifyTargetAssessment||null,modifyTarget:result.modifyTarget||null,
+        before:result.beforeSummary,after:result.afterSummary,editPlanStatus:result.editPlanStatus,automaticEditAllowed:result.automaticEditAllowed,
+        placementId:result.placementId,insertion:result.insertion||null,balanceStatus:result.balanceStatus,
+        actualNetworkReadiness:result.actualNetworkReadiness,syntheticTestOnlyCalculation:result.syntheticTestOnlyCalculation,
+        inputCoverage:result.inputCoverage,reviewRequiredItems:result.reviewRequiredItems,officialBaselineModified:false,officialApprovalCreated:false};
+      byId('output-details').textContent=JSON.stringify(details,null,2);show('output-debug-panel',diagnosticsEnabled);
+      const allowed=result.automaticEditAllowed===true&&result.editPlanStatus==='TEST_ONLY_READY'&&selectedLocation?.editabilityStatus==='VERIFIED';byId('generate-output').disabled=!allowed;
+      show('output-debug-panel',diagnosticsEnabled);
+      show('unsupported-notice',!allowed);if(!allowed)byId('unsupported-notice').textContent='현재 지원되지 않는 변경/대상입니다. 입력은 검토요청으로 저장됐으며, 도면 자동 수정·Excel 생성은 차단했습니다.';
+      renderPreviewTable(requestBody(),result);
+      setStatus('output-status',allowed?(genericDiagramEdit?'미리보기 완료 · BOX_ONLY TEST_ONLY입니다. 배관 연결은 생성되지 않습니다.':'PW-01 기존 ADD 미리보기 완료 · 표시된 내용을 확인해 주세요.'):'미리보기는 완료했지만 현재 지원 범위 밖이라 Excel 생성이 차단되었습니다.');
+    }catch(error){if(requestRevision===inputRevision){setStatus('output-error',error.message);setStatus('output-status','');activeRequestId=null;byId('generate-output').disabled=true;}}
+    finally{previewInFlight=false;byId('preview-change').disabled=!workingCopy||!selectedLocation;}
+  });
+  byId('generate-output').addEventListener('click',async()=>{
+    if(!activeRequestId||generationInFlight)return;generationInFlight=true;byId('generate-output').disabled=true;setStatus('output-error','');setStatus('output-status','별도 TEST_ONLY 작업본을 생성하고 파일 구조를 재검증합니다.');
+    const requestId=activeRequestId;const revision=inputRevision;
+    try{
+      const result=genericDiagramEdit
+        ?await asJson('/api/workspace/diagram-editor/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({previewId:requestId})})
+        :await asJson(`/api/workspace/requests/${requestId}/generate`,{method:'POST'});
+      if(activeRequestId!==requestId||inputRevision!==revision)return;
+      generatedScenario=result;
+      byId('output-details').textContent=JSON.stringify(result,null,2);show('output-debug-panel',diagnosticsEnabled);byId('download-output').disabled=false;byId('download-output').classList.add('download-ready');byId('download-output').textContent='생성된 TEST_ONLY Excel 다운로드';
+      byId('generated-file-name').textContent=result.filename||'PW-01-05_TEST_ONLY.xlsx';show('generated-file-info',true);
+      setStatus('output-summary',`TEST_ONLY Excel 생성 완료 · ${result.filename}`);
+      setStatus('output-status','생성 작업본입니다. 공식 원본은 변경되지 않았으며 폐수·폐기물·배관 정보는 별도 검토가 필요합니다.');
+    }catch(error){if(activeRequestId===requestId&&inputRevision===revision){setStatus('output-error',error.message);setStatus('output-status','');byId('generate-output').disabled=false;}}
+    finally{generationInFlight=false;}
+  });
+  byId('download-output').addEventListener('click',async()=>{
+    if(!activeRequestId||!generatedScenario||byId('download-output').disabled)return;byId('download-output').disabled=true;setStatus('output-error','');
+    const requestId=activeRequestId;const revision=inputRevision;
+    try{const path=genericDiagramEdit?(generatedScenario.testOnlyOutputId?`/api/workspace/diagram-editor/test-only-outputs/${generatedScenario.testOnlyOutputId}/download`:`/api/workspace/diagram-editor/download?previewId=${encodeURIComponent(requestId)}`):`/api/workspace/requests/${requestId}/download`;const file=await downloadBlob(path,generatedScenario.filename,()=>activeRequestId===requestId&&inputRevision===revision);if(activeRequestId===requestId&&inputRevision===revision)setStatus('output-status',`다운로드 완료 · ${file.filename} · SHA-256 ${file.hash||'응답 헤더 미제공'}`);}
+    catch(error){if(activeRequestId===requestId&&inputRevision===revision)setStatus('output-error',error.message);}
+    finally{if(activeRequestId===requestId&&inputRevision===revision)byId('download-output').disabled=false;}
+  });
+
+  function seedWhatIfNetwork(){
+    const period=byId('whatif-period').value;
+    const nodes=[
+      {nodeId:'S-P2',equipmentNumber:null,processCode:'P2',equipmentType:'EXTERNAL_BOUNDARY',nodeType:'EXTERNAL_SOURCE',label:'합성 외부 유입 P2',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'},
+      {nodeId:'S-P1',equipmentNumber:null,processCode:'P1',equipmentType:'EXTERNAL_BOUNDARY',nodeType:'EXTERNAL_SOURCE',label:'합성 외부 유입 P1',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'},
+      {nodeId:'X',equipmentNumber:'P2-X',processCode:'P2',equipmentType:'PROCESS_EQUIPMENT',nodeType:'PROCESS_EQUIPMENT',label:'P2 합성 설비 X',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'},
+      {nodeId:'N',equipmentNumber:'P1-N',processCode:'P1',equipmentType:'PROCESS_EQUIPMENT',nodeType:'PROCESS_EQUIPMENT',label:'P1 합성 설비 N',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'},
+      {nodeId:'OUT-P2',equipmentNumber:null,processCode:'P2',equipmentType:'EXTERNAL_BOUNDARY',nodeType:'EXTERNAL_SINK',label:'합성 외부 유출 P2',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'},
+      {nodeId:'OUT-P1',equipmentNumber:null,processCode:'P1',equipmentType:'EXTERNAL_BOUNDARY',nodeType:'EXTERNAL_SINK',label:'합성 외부 유출 P1',sourceDocument:'TEST_ONLY synthetic',sourceSheet:'TEST_ONLY'}
+    ];
+    const fixed=(connectionId,sourceNodeId,targetNodeId,sourceProcess,targetProcess,quantity,connectionType)=>({connectionId,sourceNodeId,targetNodeId,sourceProcess,targetProcess,materialClass:byId('whatif-material-class').value,materialType:byId('whatif-material').value,unit:byId('whatif-unit').value,quantity,connectionType,quantityBasis:'USER_INPUT',fixed:true,evidence:'사용자 입력 합성 fixture — 실제 증빙 아님',period});
+    const solved=(connectionId,sourceNodeId,targetNodeId,sourceProcess,targetProcess,connectionType)=>({connectionId,sourceNodeId,targetNodeId,sourceProcess,targetProcess,materialClass:byId('whatif-material-class').value,materialType:byId('whatif-material').value,unit:byId('whatif-unit').value,quantity:null,connectionType,quantityBasis:'CALCULATED',fixed:false,evidence:'합성 연결망에서만 보존식으로 계산',period});
+    const edges=[fixed('P2-IN','S-P2','X','P2','P2',100,'EXTERNAL_INFLOW'),fixed('P1-IN','S-P1','N','P1','P1',100,'EXTERNAL_INFLOW'),fixed('P2-X-P1-N','X','N','P2','P1',Number(byId('whatif-before').value),'INTERPROCESS_RECYCLE'),solved('P2-X-P2-OUT','X','OUT-P2','P2','', 'EXTERNAL_OUTFLOW'),solved('P1-N-P1-OUT','N','OUT-P1','P1','', 'EXTERNAL_OUTFLOW')];
+    byId('whatif-network').value=JSON.stringify({nodes,edges,processTerms:[]},null,2);
+  }
+  byId('whatif-before').addEventListener('change',()=>{try{const data=JSON.parse(byId('whatif-network').value);const edge=data.edges.find(item=>item.connectionId===byId('whatif-connection').value);if(edge&&edge.fixed)edge.quantity=Number(byId('whatif-before').value);byId('whatif-network').value=JSON.stringify(data,null,2);}catch(_){}});
+  byId('whatif-period').addEventListener('change',()=>{try{const data=JSON.parse(byId('whatif-network').value);data.edges.forEach(edge=>{if(edge.period)edge.period=byId('whatif-period').value;});(data.processTerms||[]).forEach(term=>{if(term.period)term.period=byId('whatif-period').value;});byId('whatif-network').value=JSON.stringify(data,null,2);}catch(_){}});
+  byId('whatif-use-sample').addEventListener('change',()=>{
+    const useSample=byId('whatif-use-sample').checked;
+    byId('whatif-network').readOnly=useSample;
+    if(useSample)seedWhatIfNetwork();
+  });
+  function whatIfPayload(){
+    if(byId('whatif-use-sample').checked)seedWhatIfNetwork();
+    const input=JSON.parse(byId('whatif-network').value);
+    return {mode:'TEST_ONLY',simulationId:`whatif-${Date.now()}`,scenarioName:'사용자 합성 What-if',processCode:byId('whatif-process').value.trim(),sourceEquipment:byId('whatif-source').value.trim(),targetEquipment:byId('whatif-target').value.trim(),materialClass:byId('whatif-material-class').value,materialType:byId('whatif-material').value.trim(),unit:byId('whatif-unit').value.trim(),period:byId('whatif-period').value.trim(),changedConnectionId:byId('whatif-connection').value.trim(),baseQuantity:Number(byId('whatif-before').value),nodes:input.nodes,edges:input.edges,processTerms:input.processTerms||[],scenarios:[{scenarioId:'FLOW-LOW',description:`유량 ${byId('whatif-before').value} → ${byId('whatif-10').value}`,newQuantity:Number(byId('whatif-10').value)},{scenarioId:'FLOW-HIGH',description:`유량 ${byId('whatif-before').value} → ${byId('whatif-50').value}`,newQuantity:Number(byId('whatif-50').value)}]};
+  }
+  function renderWhatIf(report){
+    const wrap=byId('whatif-results');wrap.replaceChildren();const table=document.createElement('table');table.className='preview-table';
+    const head=document.createElement('thead');head.innerHTML='<tr><th>시나리오</th><th>상태</th><th>변경 연결</th><th>영향 설비·공정</th><th>공정별 수지</th><th>외부 수지</th><th>잔차·계산 불가 근거</th></tr>';table.append(head);
+    const body=document.createElement('tbody');const cases=[{scenarioId:'BASELINE',description:'변경 전 기준',result:report.baseline},...(report.scenarios||[])];
+    for(const item of cases){const result=item.result||{};const row=document.createElement('tr');const processes=(result.processes||[]).map(p=>`${p.processCode}: 유입 ${p.inflow} / 유출 ${p.outflow} / 잔차 ${p.residual} ${p.unit} [${p.status}]`).join('\n')||'미계산';const external=(result.external||[]).map(x=>`${x.materialType} ${x.period}: 외부 유입 ${x.externalInflow} / 외부 유출 ${x.externalOutflow} / 잔차 ${x.residual} ${x.unit} [${x.status}]`).join('\n')||'미계산';const reasons=[...(result.issues||[]),...(result.nodes||[]).flatMap(n=>n.calculationUnavailableReasons||[])].join('\n')||'없음';const values=[`${item.scenarioId} · ${item.description||''}`,result.status||'미확인',`${result.changedConnectionId||'—'} · ${result.previousQuantity??'—'} → ${result.newQuantity??'—'}`,`설비: ${(result.impactedEquipmentNumbers||[]).join(', ')||'—'}\n공정: ${(result.impactedProcessCodes||[]).join(', ')||'—'}`,processes,external,reasons];for(const value of values){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}body.append(row);}
+    table.append(body);wrap.append(table);wrap.classList.remove('hidden');byId('whatif-json').textContent=JSON.stringify(report,null,2);byId('whatif-details').classList.remove('hidden');
+  }
+  byId('run-whatif').addEventListener('click',async()=>{
+    byId('whatif-error').textContent='';byId('download-whatif').disabled=true;byId('whatif-results').classList.add('hidden');setStatus('whatif-status','합성 TEST_ONLY 연결망 계산 중입니다.');
+    try{const payload=whatIfPayload();if(!payload.period)throw new Error('측정 기간은 필수입니다.');const report=await asJson('/api/workspace/material-balance/what-if',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});renderWhatIf(report);byId('download-whatif').dataset.payload=JSON.stringify(payload);byId('download-whatif').disabled=false;setStatus('whatif-status',`합성 계산 완료: ${report.scenarios.map(s=>`${s.scenarioId} ${s.result.status}`).join(' · ')}. 실제 readiness는 ${report.actualReadiness.status}입니다.`);}catch(error){byId('whatif-error').textContent=error.message;setStatus('whatif-status','계산하지 못했습니다. 기간·입력 네트워크와 연결 endpoint를 확인하세요.');}
+  });
+  byId('download-whatif').addEventListener('click',async()=>{
+    byId('download-whatif').disabled=true;try{const payload=JSON.parse(byId('download-whatif').dataset.payload||'{}');const response=await api('/api/workspace/material-balance/what-if/export',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const blob=await response.blob();const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=(response.headers.get('Content-Disposition')||'').match(/filename\*=UTF-8''([^;]+)/i)?.[1]||'what-if-TEST_ONLY.xlsx';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);setStatus('whatif-status','TEST_ONLY 결과 Excel 다운로드를 시작했습니다. 공식 자료는 변경되지 않았습니다.');}catch(error){byId('whatif-error').textContent=error.message;}finally{byId('download-whatif').disabled=false;}
+  });
+  seedWhatIfNetwork();
+  byId('whatif-network').readOnly=true;
+
+  function appendComparisonTable(container,title,headers,rows){
+    const heading=document.createElement('h3');heading.textContent=title;container.append(heading);
+    const wrapper=document.createElement('div');wrapper.className='preview-table-wrap';const table=document.createElement('table');table.className='preview-table';
+    const head=document.createElement('thead');const headerRow=document.createElement('tr');headers.forEach(label=>{const th=document.createElement('th');th.scope='col';th.textContent=label;headerRow.append(th);});head.append(headerRow);table.append(head);
+    const body=document.createElement('tbody');(rows||[]).forEach(values=>{const row=document.createElement('tr');values.forEach(value=>{const cell=document.createElement('td');cell.textContent=value==null||value===''?'—':String(value);row.append(cell);});body.append(row);});table.append(body);wrapper.append(table);container.append(wrapper);
+  }
+  function networkEdges(report){return report?.baseline?.edges||[];}
+  function renderSavedProposal(proposal){
+    const results=byId('proposal-results');results.replaceChildren();const validation=proposal.validationResults||{};
+    const before=validation.beforeNetwork,after=validation.afterNetwork,comparison=validation.comparison||{};
+    const hasComparison=validation.calculationKind==='SYNTHETIC_TEST_ONLY'&&before&&after;
+    byId('download-proposal-whatif').disabled=!hasComparison;
+    const summary=byId('proposal-comparison-summary');summary.replaceChildren();
+    const label=document.createElement('strong');label.textContent=`${proposal.changeType} · ${proposal.processCode} / ${proposal.sheetName} · ${proposal.proposalId}`;
+    const disclaimer=document.createElement('p');disclaimer.textContent=`TEST_ONLY 합성 비교 · 실제 공정 readiness: ${validation.officialReadiness||'CALCULATION_UNAVAILABLE'} · 검토: ${proposal.reviewStatus||'REVIEW_REQUIRED'} · 연결 증빙: ${proposal.mappingStatus||'REVIEW_REQUIRED'}`;
+    const rationale=document.createElement('p');rationale.textContent=`변경 사유: ${proposal.rationale||'미입력'} · 설비: ${proposal.managementNo||'미지정'}`;summary.append(label,disclaimer,rationale);summary.classList.remove('hidden');
+    if(!hasComparison){results.classList.add('hidden');setStatus('proposal-whatif-status','저장된 Before/After What-if가 없습니다. 이 제안의 비교 Excel은 아직 생성할 수 없습니다.');return;}
+    results.classList.remove('hidden');
+    appendComparisonTable(results,'변경 전·후 snapshot',['항목','변경 전','변경 후'],Object.keys(proposal.beforeValues||{}).concat(Object.keys(proposal.afterValues||{})).filter((key,index,all)=>all.indexOf(key)===index).map(key=>[key,proposal.beforeValues?.[key],proposal.afterValues?.[key]]));
+    const edgeRows=[];for(const [phase,report] of [['변경 전',before],['변경 후',after]]){const sets=[['BASELINE',report?.baseline],...(report?.scenarios||[]).map(scenario=>[scenario.scenarioId,scenario.result])];for(const [scenarioId,result] of sets)for(const edge of result?.edges||[])edgeRows.push([phase,scenarioId,edge.connectionId,`${edge.sourceProcess||'외부'} / ${edge.sourceEquipment||'경계'}`,`${edge.targetProcess||'외부'} / ${edge.targetEquipment||'경계'}`,edge.materialType,edge.quantity,edge.unit,edge.period,edge.status]);}
+    appendComparisonTable(results,'공정·설비 연결망 및 시나리오 전후',['구분','시나리오','연결 ID','출발','도착','물질','유량','단위','기간','상태'],edgeRows);
+    const beforeById=new Map(networkEdges(before).map(edge=>[edge.connectionId,edge]));const afterById=new Map(networkEdges(after).map(edge=>[edge.connectionId,edge]));const changedIds=[...new Set([...beforeById.keys(),...afterById.keys()])].sort();
+    const changedRows=changedIds.map(id=>{const old=beforeById.get(id),current=afterById.get(id);let state='UNCHANGED';if(!old)state='ADDED';else if(!current)state='DELETED';else if(old.sourceEquipment!==current.sourceEquipment||old.targetEquipment!==current.targetEquipment||old.sourceProcess!==current.sourceProcess||old.targetProcess!==current.targetProcess||old.connectionType!==current.connectionType)state='PIPE_OR_TOPOLOGY_CHANGED';else if(old.materialClass!==current.materialClass||old.materialType!==current.materialType||old.period!==current.period)state='MATERIAL_OR_PERIOD_CHANGED';else if((old.quantity==null||current.quantity==null)?old.quantity!==current.quantity:Number(old.quantity)!==Number(current.quantity)||old.unit!==current.unit)state='FLOW_CHANGED';return [state,id,old?.quantity,current?.quantity,old?.unit,current?.unit];}).filter(row=>row[0]!=='UNCHANGED');
+    appendComparisonTable(results,'신규·삭제·변경 연결',['상태','연결 ID','변경 전 유량','변경 후 유량','변경 전 단위','변경 후 단위'],changedRows);
+    const balanceRows=[];for(const [phase,report] of [['변경 전',before],['변경 후',after]]){const sets=[['BASELINE',report?.baseline],...(report?.scenarios||[]).map(scenario=>[scenario.scenarioId,scenario.result])];for(const [scenarioId,result] of sets)for(const item of result?.processes||[])balanceRows.push([phase,scenarioId,item.processCode,item.materialType,item.inflow,item.outflow,item.generation,item.residual,item.unit,item.period,item.status]);}
+    appendComparisonTable(results,'Before/After 공정별 물질수지 및 시나리오',['구분','시나리오','공정','물질','유입','유출','발생/소모','잔차','단위','기간','상태'],balanceRows);
+    const residualRows=(comparison.processResidualDeltas||[]).map(item=>[item.processCode,item.materialType,item.period,item.beforeResidual,item.afterResidual,item.delta,item.status]);
+    appendComparisonTable(results,'잔차 변화',['공정','물질','기간','변경 전 잔차','변경 후 잔차','차이','상태'],residualRows);
+    const externalRows=(comparison.externalBalanceDeltas||[]).map(item=>[item.status,item.materialType,item.unit,item.period,item.externalInflowBefore,item.externalInflowAfter,item.externalOutflowBefore,item.externalOutflowAfter,item.residualBefore,item.residualAfter]);
+    appendComparisonTable(results,'신규·변경 외부 유입·유출',['비교 상태','물질','단위','기간','전 유입','후 유입','전 유출','후 유출','전 잔차','후 잔차'],externalRows);
+    const impacts=[['변경 전 영향 설비',(comparison.impactedEquipmentBefore||[]).join(', ')],['변경 후 영향 설비',(comparison.impactedEquipmentAfter||[]).join(', ')],['변경 전 영향 공정',(comparison.impactedProcessesBefore||[]).join(', ')],['변경 후 영향 공정',(comparison.impactedProcessesAfter||[]).join(', ')]];
+    appendComparisonTable(results,'영향 범위 및 검토 필요 사항',['항목','내용'],impacts);
+    const issues=[];for(const [phase,report] of [['변경 전',before],['변경 후',after]]){if(report?.baseline?.status!=='CALCULATED')issues.push([phase,'baseline 상태',report?.baseline?.status]);(report?.baseline?.issues||[]).forEach(issue=>issues.push([phase,'baseline 검토',issue]));(report?.scenarios||[]).forEach(scenario=>{if(scenario.result?.status!=='CALCULATED')issues.push([`${phase} ${scenario.scenarioId}`,'계산 상태',scenario.result?.status]);(scenario.result?.issues||[]).forEach(issue=>issues.push([`${phase} ${scenario.scenarioId}`,'검토 사유',issue]));});}
+    issues.push(['공식 결과','실제 readiness','CALCULATION_UNAVAILABLE'],['증빙','물리 연결','검토 필요 — 합성 입력은 실제 연결 증빙이 아님'],['출력','원본 변경','공식 Excel·공정도 원본은 수정하지 않음']);appendComparisonTable(results,'계산 불가 및 검토 사유',['구분','항목','내용'],issues);
+    setStatus('proposal-whatif-status','저장된 비교 결과를 표시했습니다. 모든 연결·유량은 합성 TEST_ONLY이며 실제 공정 수지로 사용할 수 없습니다.');
+  }
+  async function loadProposalList(){
+    byId('proposal-whatif-error').textContent='';byId('download-proposal-whatif').disabled=true;setStatus('proposal-whatif-status','로그인 사용자 범위의 변경 제안을 조회 중입니다.');
+    try{const proposals=await asJson('/api/workspace/change-proposals?limit=100');const select=byId('proposal-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent=proposals.length?'변경 제안 선택':'저장된 제안 없음';select.append(blank);proposals.forEach(item=>{const option=document.createElement('option');option.value=item.proposalId;option.textContent=`${item.changeType} · ${item.processCode}/${item.sheetName} · ${item.latestEventType} · ${item.proposalId}`;select.append(option);});setStatus('proposal-whatif-status',`현재 로그인 계정의 제안 ${proposals.length}건을 불러왔습니다.`);if(select.value)await loadSelectedProposal();else{byId('proposal-results').replaceChildren();byId('proposal-results').classList.add('hidden');byId('proposal-comparison-summary').classList.add('hidden');}}
+    catch(error){byId('proposal-whatif-error').textContent=error.message;setStatus('proposal-whatif-status','변경 제안 목록을 불러오지 못했습니다.');}
+  }
+  async function loadSelectedProposal(){
+    const id=byId('proposal-select').value;byId('download-proposal-whatif').disabled=true;byId('proposal-whatif-error').textContent='';if(!id){byId('proposal-results').replaceChildren();byId('proposal-results').classList.add('hidden');byId('proposal-comparison-summary').classList.add('hidden');return;}
+    setStatus('proposal-whatif-status','선택한 제안과 저장된 계산 결과를 불러오는 중입니다.');
+    try{const proposal=await asJson(`/api/workspace/change-proposals/${encodeURIComponent(id)}`);byId('download-proposal-whatif').dataset.proposalId=id;renderSavedProposal(proposal);}
+    catch(error){byId('proposal-whatif-error').textContent=error.message;setStatus('proposal-whatif-status','제안 상세를 불러오지 못했습니다.');}
+  }
+  byId('load-proposals').addEventListener('click',loadProposalList);byId('proposal-select').addEventListener('change',loadSelectedProposal);
+  byId('download-proposal-whatif').addEventListener('click',async()=>{
+    const id=byId('download-proposal-whatif').dataset.proposalId;if(!id)return;const button=byId('download-proposal-whatif');button.disabled=true;byId('proposal-whatif-error').textContent='';
+    try{const response=await api(`/api/workspace/change-proposals/${encodeURIComponent(id)}/what-if/export`);if(response.headers.get('X-Test-Only')!=='true'||response.headers.get('X-Official-Baseline-Modified')!=='false')throw new Error('다운로드 안전성 응답 헤더 검증 실패');const blob=await response.blob();const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;const disposition=response.headers.get('Content-Disposition')||'';link.download=disposition.match(/filename="?([^";]+)"?/i)?.[1]||'what-if-TEST_ONLY.xlsx';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);setStatus('proposal-whatif-status','저장된 TEST_ONLY 비교 Excel 다운로드를 시작했습니다. 공식 자료는 변경되지 않았습니다.');}
+    catch(error){byId('proposal-whatif-error').textContent=error.message;}finally{button.disabled=false;}
+  });
+
+  let mappingOverview=null;let mappingPage=0;let mappingPageSize=50;let mappingRows=[];let mappingComparison=null;let mappingCandidates=null;let mappingCandidatePage=0;let mappingCandidateRequest=0;let mappingComparisonRequest=0;const mappingCandidatePageSize=100;
+  const mappingById=id=>byId(id);
+  function mapDisplay(value){return value==null||value===''?'미입력':String(value);}
+  function updateMappingDashboard(result){const summary=result?.reviewSummary||{};const candidateCountsAvailable=summary.candidateCountsAvailable===true;const values={
+    'mapping-total-rows':summary.inputRows,'mapping-both-candidates':summary.bothEndpointCandidateRows,'mapping-one-candidate':summary.oneEndpointCandidateRows,
+    'mapping-no-candidate':summary.noEndpointCandidateRows,'mapping-multiple-locations':summary.multipleLocationCandidateRows,
+    'mapping-ambiguous-count':summary.duplicateEndpointPairGroups,'mapping-material-missing':summary.missingMaterialTypeRows,
+    'mapping-unit-missing':summary.missingUnitRows,'mapping-period-missing':summary.missingPeriodRows,
+    'mapping-connector-binding-count':summary.connectorBindingRequiredRows,'mapping-verified-count':summary.verifiedFlowMappingCount??0,
+    'mapping-filtered-count':summary.filteredRows??result?.totalRows};
+    Object.entries(values).forEach(([id,value])=>{mappingById(id).textContent=value==null?'인벤토리 확인 필요':String(value);});
+    mappingById('mapping-verified-count').textContent='0';
+    document.querySelectorAll('button.mapping-metric[data-review-filter]').forEach(button=>{const filter=button.dataset.reviewFilter;const candidateFilter=['BOTH_ENDPOINT_CANDIDATES','ONE_ENDPOINT_CANDIDATE','NO_ENDPOINT_CANDIDATES','MULTIPLE_LOCATION_CANDIDATES'].includes(filter);button.disabled=!result||(candidateFilter&&!candidateCountsAvailable);button.setAttribute('aria-pressed',mappingById('mapping-quality-filter').value===filter?'true':'false');});
+  }
+  function clearMappingDashboard(){updateMappingDashboard(null);mappingById('mapping-filtered-count').textContent='—';}
+  clearMappingDashboard();
+  document.querySelectorAll('button.mapping-metric[data-review-filter]').forEach(button=>button.addEventListener('click',()=>{if(button.disabled)return;clearTimeout(mappingSearchTimer);mappingById('mapping-quality-filter').value=button.dataset.reviewFilter;mappingById('mapping-row-search').value='';mappingPage=0;fetchMappingPage();}));
+  function candidateLocations(items){return (items||[]).map(item=>`${item.processCode}/${item.sheetName} ${item.topLeftCell||'위치 미상'}-${item.bottomRightCell||'위치 미상'} · ${item.facilityNameCandidate||'설비명 미확인'} · ${item.candidateStatus||'REVIEW_REQUIRED'}`).join('\n')||'도면 ID 후보 없음';}
+  function renderMappingPriorityGroups(groups){const wrap=mappingById('mapping-priority-groups');wrap.replaceChildren();for(const group of groups||[]){const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent=`${group.priority}. ${group.label}: ${group.count}행`;button.setAttribute('aria-pressed',mappingById('mapping-quality-filter').value===group.code?'true':'false');button.addEventListener('click',()=>{mappingById('mapping-quality-filter').value=group.code;mappingPage=0;fetchMappingPage();});wrap.append(button);}}
+  function renderMappingRows(){
+    const body=mappingById('mapping-flow-rows');body.replaceChildren();
+    for(const item of mappingRows){const row=document.createElement('tr');row.dataset.row=String(item.sourceRow);const locations=`출발 ${item.sourceLocationCandidateCount}: ${candidateLocations(item.sourceDiagramCandidates)}\n도착 ${item.targetLocationCandidateCount}: ${candidateLocations(item.targetDiagramCandidates)}`;const values=[item.rowId||item.sourceRow,`${mapDisplay(item.source)} → ${mapDisplay(item.target)}`,locations,`${mapDisplay(item.quantityText)} (${mapDisplay(item.quantityState)})`,`${mapDisplay(item.materialType)} / ${mapDisplay(item.unit)} / ${mapDisplay(item.period)}`,item.connectorBindingStatus||'NOT_MAPPED',`${(item.qualityStatuses||[]).join(', ')}\n${item.reviewReason||''}`];for(const value of values){const td=document.createElement('td');td.textContent=value;row.append(td);}row.addEventListener('click',()=>{mappingById('mapping-detail').textContent=JSON.stringify({source:{filename:mappingComparison?.sourceFilename,worksheet:'입력시트',sha256:mappingComparison?.sourceSha256,rowId:item.rowId,rowNumber:item.sourceRow},inventory:{status:mappingComparison?.inventoryStatus,updatedAt:mappingComparison?.inventoryUpdatedAt,currentFingerprint:mappingComparison?.sourceFingerprint,checkpointFingerprint:mappingComparison?.checkpointSourceFingerprint,dbFingerprintRecomputed:false},officialEvidence:mappingComparison?.officialEvidence,sourceEquipmentId:item.source,targetEquipmentId:item.target,sourceMajor:item.sourceMajor,targetMajor:item.targetMajor,sourceMiddle:item.sourceMiddle,targetMiddle:item.targetMiddle,quantity:item.quantity,quantityDisplay:item.quantityText,quantityState:item.quantityState,materialType:item.materialType,unit:item.unit,period:item.period,sourceMasterExactMatch:item.sourceExactMasterMatch,targetMasterExactMatch:item.targetExactMasterMatch,sourceDiagramCandidates:item.sourceDiagramCandidates,targetDiagramCandidates:item.targetDiagramCandidates,candidateWorkbookHashes:[...(item.sourceDiagramCandidates||[]),...(item.targetDiagramCandidates||[])].map(candidate=>({processCode:candidate.processCode,sheetName:candidate.sheetName,sourceSha256:candidate.sourceSha256})),connectorBinding:item.connectorBindingStatus,physicalConnectionEvidence:item.physicalConnectionEvidenceStatus,qualityStatuses:item.qualityStatuses,reviewStatus:item.reviewStatus,reviewReason:item.reviewReason,officialReadiness:'CALCULATION_UNAVAILABLE',note:'문자열·셀 위치 후보는 물리 배관 연결 증명이 아닙니다.'},null,2);});body.append(row);}
+    if(!mappingRows.length){const row=document.createElement('tr');const cell=document.createElement('td');cell.colSpan=7;cell.textContent='조건에 맞는 입력 행이 없습니다.';row.append(cell);body.append(row);}
+    mappingById('mapping-row-count').textContent=String(mappingRows.length);
+    mappingById('mapping-page-label').textContent=mappingComparison?`페이지 ${mappingPage+1} · 필터 결과 ${mappingComparison.totalRows} / 원본 ${mappingComparison.inputRows}행`:'페이지 —';
+    mappingById('mapping-page-prev').disabled=mappingPage===0;mappingById('mapping-page-next').disabled=!mappingComparison?.hasNext;
+    mappingById('mapping-filtered-count').textContent=String(mappingComparison?.reviewSummary?.filteredRows??mappingComparison?.totalRows??'—');
+  }
+  function renderMappingCandidates(result){
+    mappingCandidates=result;const wrap=mappingById('mapping-candidate-table');wrap.replaceChildren();
+    const sets=[['설비 ID 후보',result.equipmentCandidates||[],['equipmentIdCandidate','facilityNameCandidate','topLeftCell','bottomRightCell','candidateStatus','reviewReason']],['Connector 후보',result.connectorCandidates||[],['connectorId','objectName','drawingText','anchorStartColumn','anchorStartRow','anchorEndColumn','anchorEndRow','startConnectedShapeId','endConnectedShapeId','candidateStatus','reviewReason']],['구조 위치 후보',result.locationCandidates||[],['candidateId','precedingEquipmentCandidate','followingEquipmentCandidate','candidateCellRange','connectorCountInBand','explicitEndpointBindings','structuralStatus','physicalConnectionEvidenceStatus','blockingReason']]];
+    for(const [title,items,keys] of sets){const h=document.createElement('h3');h.textContent=`${title} · ${items.length} 표시`;wrap.append(h);const table=document.createElement('table');table.className='preview-table';const head=document.createElement('thead'),hr=document.createElement('tr');keys.forEach(key=>{const th=document.createElement('th');th.textContent=key;hr.append(th);});head.append(hr);table.append(head);const body=document.createElement('tbody');items.forEach(item=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=mapDisplay(item[key]);tr.append(td);});body.append(tr);});table.append(body);wrap.append(table);}
+    mappingById('mapping-candidate-page-label').textContent=`후보 페이지 ${(result.page??0)+1} · 설비 ${result.totalEquipmentCandidates??0} · Connector ${result.totalConnectorCandidates??0} · 위치 ${result.totalLocationCandidates??0}`;
+    mappingById('mapping-candidate-prev').disabled=(result.page??0)===0;
+    mappingById('mapping-candidate-next').disabled=!['totalEquipmentCandidates','totalConnectorCandidates','totalLocationCandidates'].some(key=>(result.page+1)*result.pageSize<result[key]);
+  }
+  async function loadMappingOverview(){
+    mappingById('mapping-error').textContent='';setStatus('mapping-status','공식 인벤토리 checkpoint 상태를 읽는 중입니다.');
+    try{mappingOverview=await asJson('/api/workspace/flow-mapping-review/overview');const select=mappingById('mapping-process-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='공정도 선택';select.append(blank);const byProcess=new Map();(mappingOverview.sheets||[]).forEach(sheet=>{if(!byProcess.has(sheet.processCode))byProcess.set(sheet.processCode,[]);byProcess.get(sheet.processCode).push(sheet);});for(const [code,sheets] of byProcess){const option=document.createElement('option');option.value=code;option.textContent=`${code} · ${sheets[0].filename}`;select.append(option);}mappingById('mapping-source-state').textContent=`인벤토리 ${mappingOverview.completedSheetCount}/${mappingOverview.totalSheetCount} 시트 · checkpoint ${mappingOverview.inventoryUpdatedAt||'시각 미확인'} · 상태 ${mappingOverview.inventoryStatus||'미확인'} · 현재 source fingerprint ${mappingOverview.sourceFingerprint||'미확인'} · 저장 checkpoint fingerprint ${mappingOverview.checkpointSourceFingerprint||'미확인'} · connector ${mappingOverview.connectorCandidateCount} · explicit binding ${mappingOverview.explicitConnectorEndpointBindingCount} · VERIFIED 유량 ${mappingOverview.verifiedFlowLabelMappingCount}건. ${mappingOverview.interpretationNotice}`;const fresh=mappingOverview.inventoryStatus==='HASH_MATCHED_CHECKPOINT';setStatus('mapping-status',`공정도 ${byProcess.size}개, 시트 ${mappingOverview.sheets?.length||0}개. ${fresh?'62시트 checkpoint의 source fingerprint가 현재 값과 일치합니다.':'현재 DB freshness가 검증되지 않아 후보는 제한되거나 차단됩니다.'} 물리 연결과 실유량 VERIFIED는 0건입니다.`);}
+    catch(error){mappingById('mapping-source-state').textContent=`공식 인벤토리 조회 실패: ${error.message}. MISSING_EVIDENCE 또는 STALE_INVENTORY 상태로 유지합니다.`;setStatus('mapping-status','DB 격리 환경 또는 hash-matched checkpoint가 없어 후보를 제공하지 않습니다.');mappingById('mapping-verified-count').textContent='0';}
+  }
+  function updateMappingSheets(){mappingCandidateRequest++;mappingCandidates=null;mappingCandidatePage=0;mappingById('mapping-candidate-table').replaceChildren();mappingById('mapping-detail').textContent='';mappingById('mapping-candidate-page-label').textContent='후보 페이지 —';mappingById('mapping-candidate-prev').disabled=true;mappingById('mapping-candidate-next').disabled=true;const code=mappingById('mapping-process-select').value;const select=mappingById('mapping-sheet-select');select.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent=code?'시트 선택':'공정 선택';select.append(blank);(mappingOverview?.sheets||[]).filter(item=>item.processCode===code).forEach(item=>{const option=document.createElement('option');option.value=item.sheetName;option.textContent=`${item.sheetName} · ${item.connectorCount} connector · ${item.equipmentIdCandidates} ID`;select.append(option);});select.disabled=!code;mappingById('load-mapping-candidates').disabled=!code;}
+  async function loadMappingCandidates(){const processCode=mappingById('mapping-process-select').value,sheetName=mappingById('mapping-sheet-select').value;if(!processCode||!sheetName){setStatus('mapping-status','공정도와 시트를 선택하세요.');return;}const requestId=++mappingCandidateRequest;mappingCandidates=null;mappingById('mapping-error').textContent='';mappingById('mapping-candidate-table').replaceChildren();mappingById('mapping-detail').textContent='';mappingById('mapping-candidate-prev').disabled=true;mappingById('mapping-candidate-next').disabled=true;mappingById('mapping-candidate-page-label').textContent='후보 조회 중…';try{const params=new URLSearchParams({processCode,sheetName,q:mappingById('mapping-search').value.trim(),page:String(mappingCandidatePage),pageSize:String(mappingCandidatePageSize)});const result=await asJson(`/api/workspace/flow-mapping-review/candidates?${params}`);if(requestId!==mappingCandidateRequest)return;renderMappingCandidates(result);setStatus('mapping-status',`구조 후보 조회 · ${result.status} · 페이지 ${result.page+1}, 설비 ${result.totalEquipmentCandidates}, Connector ${result.totalConnectorCandidates}, 위치 ${result.totalLocationCandidates}. DB freshness와 물리 연결은 별도 확인이 필요합니다.`);}catch(error){if(requestId!==mappingCandidateRequest)return;mappingCandidates=null;mappingById('mapping-candidate-table').replaceChildren();mappingById('mapping-detail').textContent='';mappingById('mapping-candidate-page-label').textContent='후보 조회 실패';mappingById('mapping-error').textContent=error.message;setStatus('mapping-status','후보 조회 실패. 공정·시트를 확인하고, stale/incomplete inventory면 현재 후보가 차단될 수 있습니다.');}}
+  let mappingAnalysisId=null;let mappingDraftPreview=null;let mappingDraftRequest=0;
+  function clearMappingDraft(message='검토 파일을 선택하거나 원본 분석을 다시 실행하세요.'){
+    mappingDraftRequest++;mappingDraftPreview=null;
+    mappingById('mapping-download-review-template').disabled=!mappingAnalysisId;
+    mappingById('mapping-download-review-template-csv').disabled=!mappingAnalysisId;
+    mappingById('mapping-import-review-draft').disabled=!mappingAnalysisId||!mappingById('mapping-review-draft-file').files?.length;
+    ['csv','json','xlsx'].forEach(format=>mappingById(`mapping-draft-export-${format}`).disabled=true);
+    mappingById('mapping-draft-filter').value='';mappingById('mapping-draft-preview').replaceChildren();mappingById('mapping-draft-preview').classList.add('hidden');
+    mappingById('mapping-draft-summary').replaceChildren();mappingById('mapping-draft-summary').classList.add('hidden');
+    mappingById('mapping-draft-error').textContent='';setStatus('mapping-draft-status',message);
+  }
+  function renderMappingDraftPreview(preview){
+    mappingDraftPreview=preview;
+    const summary=mappingById('mapping-draft-summary');summary.replaceChildren();
+    const line=document.createElement('p');line.textContent=`업로드 ${preview.uploadedRows}행 · 정상 초안 ${preview.validDraftRows}행 · 검토 필요 ${preview.reviewRequiredRows}행 · 충돌/오류 ${preview.conflictRows}행 · 원본 누락 ${preview.missingRows}행`;
+    const boundary=document.createElement('p');boundary.textContent=`원본 SHA-256 ${preview.sourceSha256} · DB 저장 ${preview.persisted?'예':'아니오'} · VERIFIED 유량 ${preview.verifiedFlowMappingCount}건 · readiness ${preview.officialReadiness}`;
+    summary.append(line,boundary);summary.classList.remove('hidden');
+    ['csv','json','xlsx'].forEach(format=>mappingById(`mapping-draft-export-${format}`).disabled=false);
+    renderMappingDraftRows();
+  }
+  function renderMappingDraftRows(){
+    const wrap=mappingById('mapping-draft-preview');wrap.replaceChildren();
+    const rows=mappingDraftPreview?.rows||[];const filter=mappingById('mapping-draft-filter').value;
+    const filtered=filter?rows.filter(row=>row.disposition===filter):rows;const visible=filtered.slice(0,100);
+    const caption=document.createElement('p');caption.className='muted';caption.textContent=`표시 ${visible.length} / 필터 결과 ${filtered.length}행 (최대 100행 표시)`;wrap.append(caption);
+    const table=document.createElement('table');table.className='preview-table';const headers=['검토 대상 ID','가져오기 판정','원본 설비 ID','검토 유량·물질·단위·기간','담당자','검토 상태','검토 사유'];
+    const thead=document.createElement('thead');const hr=document.createElement('tr');headers.forEach(text=>{const th=document.createElement('th');th.scope='col';th.textContent=text;hr.append(th);});thead.append(hr);table.append(thead);
+    const body=document.createElement('tbody');for(const item of visible){const row=document.createElement('tr');const values=[`${item.sourceSheet}!${item.sourceRow} · ${item.rowId}`,item.disposition,`${item.sourceEquipmentId} → ${item.targetEquipmentId}`,`${item.reviewedFlowValue||item.originalFlowText} · ${item.reviewedMaterialType||item.originalMaterialType} · ${item.reviewedUnit||item.originalUnit} · ${item.reviewedPeriod||item.originalPeriod}`,item.reviewer,item.reviewStatus,(item.issues||[]).join(' · ')];for(const value of values){const td=document.createElement('td');td.textContent=value==null?'':String(value);row.append(td);}body.append(row);}table.append(body);wrap.append(table);wrap.classList.remove('hidden');
+  }
+  async function saveMappingDraftDownload(path,filename,kind){
+    const response=await api(path);if(response.headers.get('X-Official-Baseline-Modified')!=='false')throw new Error('공식 기준 불변 응답 확인 실패');
+    if(kind==='template'&&response.headers.get('X-Review-Template-Only')!=='true')throw new Error('검토 입력 양식 응답 확인 실패');
+    if(kind==='draft'&&(response.headers.get('X-Review-Draft-Only')!=='true'||response.headers.get('X-Review-Persisted')!=='false'||response.headers.get('X-Review-Verified-Flow-Mappings')!=='0'||response.headers.get('X-Review-Readiness')!=='CALCULATION_UNAVAILABLE'))throw new Error('검토본 안전 경계 응답 확인 실패');
+    const blob=await response.blob();if(!blob.size)throw new Error('다운로드 파일이 비었습니다.');
+    const expected=response.headers.get('X-Review-SHA256')||'';if(!expected||!globalThis.crypto?.subtle)throw new Error('SHA-256 확인 기능이 없어 다운로드를 차단했습니다.');
+    const digest=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());const actual=[...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');
+    if(actual.toLowerCase()!==expected.toLowerCase())throw new Error('다운로드 파일 SHA-256이 서버 값과 다릅니다.');
+    const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;link.hidden=true;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    return {hash:actual,rows:response.headers.get('X-Review-Exported-Rows')||'미확인'};
+  }
+  async function downloadReviewInputTemplate(format){
+    const analysisId=mappingAnalysisId;if(!analysisId)return;
+    try{const result=await saveMappingDraftDownload(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(analysisId)}/draft-template?format=${format}`,`flow-mapping-review-template.${format}`,'template');setStatus('mapping-draft-status',`검토 입력 양식 ${format.toUpperCase()} 다운로드 · ${result.rows}행 · SHA-256 ${result.hash}`);}
+    catch(error){mappingById('mapping-draft-error').textContent=error.message;}
+  }
+  async function importMappingReviewDraft(){
+    const file=mappingById('mapping-review-draft-file').files?.[0];const analysisId=mappingAnalysisId;
+    if(!analysisId||!file)return;if(file.size>5*1024*1024){clearMappingDraft('파일 크기 초과');mappingById('mapping-draft-error').textContent='검토 파일은 5MB 이하여야 합니다.';return;}
+    const requestId=++mappingDraftRequest;mappingDraftPreview=null;mappingById('mapping-draft-preview').replaceChildren();mappingById('mapping-draft-preview').classList.add('hidden');mappingById('mapping-draft-summary').classList.add('hidden');
+    mappingById('mapping-draft-error').textContent='';['csv','json','xlsx'].forEach(format=>mappingById(`mapping-draft-export-${format}`).disabled=true);
+    mappingById('mapping-import-review-draft').disabled=true;setStatus('mapping-draft-status','파일 형식·OOXML·수식·SHA·원본 시트/행/설비 ID·수치·검토 상태를 확인합니다. 원본 데이터는 수정하지 않습니다.');
+    try{
+      const form=new FormData();form.set('file',file,file.name);
+      const uploaded=await asJson(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(analysisId)}/draft-import`,{method:'POST',body:form});
+      if(requestId!==mappingDraftRequest||analysisId!==mappingAnalysisId)return;
+      if(uploaded.persisted!==false||uploaded.verifiedFlowMappingCount!==0||uploaded.officialReadiness!=='CALCULATION_UNAVAILABLE')throw new Error('서버 검토본의 비영속·미검증 상태를 확인하지 못했습니다.');
+      const preview=await asJson(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(analysisId)}/draft-preview/${encodeURIComponent(uploaded.previewId)}`);
+      if(requestId!==mappingDraftRequest||analysisId!==mappingAnalysisId)return;
+      if(preview.previewId!==uploaded.previewId||preview.sourceSha256!==mappingComparison?.sourceSha256||preview.persisted!==false||preview.verifiedFlowMappingCount!==0)throw new Error('Preview가 현재 원본 분석 또는 안전 경계와 일치하지 않습니다.');
+      renderMappingDraftPreview(preview);mappingById('mapping-review-draft-file').value='';setStatus('mapping-draft-status','검토 초안 검증 완료 · 입력값은 세션 임시 Preview일 뿐 공식 연결·유량 승인 또는 DB 저장이 아닙니다.');
+    }catch(error){if(requestId===mappingDraftRequest&&analysisId===mappingAnalysisId){clearMappingDraft('검토 파일을 검증하지 못했습니다. 파일을 확인한 뒤 다시 업로드하세요.');mappingById('mapping-draft-error').textContent=error.message;}}
+    finally{if(requestId===mappingDraftRequest)mappingById('mapping-import-review-draft').disabled=!mappingAnalysisId||!mappingById('mapping-review-draft-file').files?.length;}
+  }
+  async function downloadMappingReviewDraft(format){
+    const preview=mappingDraftPreview;if(!mappingAnalysisId||!preview)return;const analysisId=mappingAnalysisId;const previewId=preview.previewId;const requestId=mappingDraftRequest;
+    try{const result=await saveMappingDraftDownload(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(analysisId)}/draft-preview/${encodeURIComponent(previewId)}/export?format=${format}`,`flow-mapping-review-draft.${format}`,'draft');
+      if(requestId!==mappingDraftRequest||analysisId!==mappingAnalysisId||previewId!==mappingDraftPreview?.previewId)throw new Error('검토 Preview가 바뀌어 다운로드를 취소했습니다.');
+      setStatus('mapping-draft-status',`검토 재출력 ${format.toUpperCase()} · ${result.rows}행 · SHA-256 ${result.hash} · 저장 안 됨`);
+    }catch(error){mappingById('mapping-draft-error').textContent=error.message;}
+  }
+  async function compareMappingFile(){const file=mappingById('mapping-source-file').files?.[0];if(!file){setStatus('mapping-status','물질수지 XLSM 또는 XLSX를 선택하세요.');return;}if(file.size>15*1024*1024){mappingById('mapping-error').textContent='물질수지 파일은 15MB 이하여야 합니다.';return;}const requestId=++mappingComparisonRequest;mappingAnalysisId=null;mappingComparison=null;clearMappingDraft('새 원본 분석 중입니다.');mappingById('mapping-download-review-template').disabled=true;mappingById('mapping-download-review-template-csv').disabled=true;mappingRows=[];mappingPage=0;clearMappingDashboard();mappingById('mapping-detail').textContent='';renderMappingRows();['csv','json','xlsx'].forEach(format=>mappingById(`mapping-export-${format}`).disabled=true);mappingById('mapping-error').textContent='';setStatus('mapping-status','한 번 업로드한 파일을 read-only로 분석합니다. 매크로·수식·쿼리는 실행하지 않습니다.');try{const form=new FormData();form.set('workbook',file,file.name);const params=new URLSearchParams({page:'0',pageSize:String(mappingPageSize)});const statusFilter=mappingById('mapping-quality-filter').value;if(statusFilter)params.set('statusFilter',statusFilter);const q=mappingById('mapping-row-search').value.trim();if(q)params.set('q',q);const result=await asJson(`/api/workspace/flow-mapping-review/material-balance-comparison?${params}`,{method:'POST',body:form});if(requestId!==mappingComparisonRequest)return;mappingComparison=result;mappingAnalysisId=result.analysisId;mappingById('mapping-download-review-template').disabled=false;mappingById('mapping-download-review-template-csv').disabled=false;mappingRows=result.rows||[];renderMappingPriorityGroups(result.priorityGroups);updateMappingDashboard(result);['csv','json','xlsx'].forEach(format=>mappingById(`mapping-export-${format}`).disabled=false);renderMappingRows();mappingById('mapping-source-file').value='';mappingById('compare-mapping-source').disabled=true;setStatus('mapping-status',`읽기 전용 분석 완료 · ${result.sourceFilename} · SHA-256 ${result.sourceSha256} · ${result.inputRows}행 · 인벤토리 ${result.inventoryStatus}. 업로드 원본 bytes는 보관하지 않고 결과는 사용자 세션 캐시로 제한됩니다.`);}catch(error){if(requestId!==mappingComparisonRequest)return;mappingComparison=null;mappingAnalysisId=null;clearMappingDraft('원본 분석 실패');mappingById('mapping-download-review-template').disabled=true;mappingById('mapping-download-review-template-csv').disabled=true;mappingRows=[];clearMappingDashboard();renderMappingRows();mappingById('mapping-error').textContent=error.message;setStatus('mapping-status','비교하지 않았습니다. 잠금 공식 MASTER, DB 격리 상태, 파일 형식을 확인하세요.');}}
+  async function fetchMappingPage(){if(!mappingAnalysisId)return;const requestId=++mappingComparisonRequest;mappingRows=[];mappingById('mapping-detail').textContent='';renderMappingRows();mappingById('mapping-error').textContent='';try{const params=new URLSearchParams({page:String(mappingPage),pageSize:String(mappingPageSize)});const q=mappingById('mapping-row-search').value.trim();const statusFilter=mappingById('mapping-quality-filter').value;if(q)params.set('q',q);if(statusFilter)params.set('statusFilter',statusFilter);const result=await asJson(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(mappingAnalysisId)}/rows?${params}`);if(requestId!==mappingComparisonRequest)return;mappingComparison=result;mappingRows=result.rows||[];updateMappingDashboard(result);renderMappingPriorityGroups(result.priorityGroups);renderMappingRows();}catch(error){if(requestId!==mappingComparisonRequest)return;mappingRows=[];mappingComparison=null;clearMappingDashboard();renderMappingRows();mappingById('mapping-error').textContent=error.message;setStatus('mapping-status','검토 캐시가 만료됐거나 현재 로그인 세션에 속하지 않습니다. 파일을 다시 분석하세요.');}}
+  async function downloadMappingReport(format){if(!mappingAnalysisId)return;const analysisId=mappingAnalysisId;const requestId=mappingComparisonRequest;const params=new URLSearchParams({format});const statusFilter=mappingById('mapping-quality-filter').value;const query=mappingById('mapping-row-search').value.trim();if(statusFilter)params.set('statusFilter',statusFilter);if(query)params.set('q',query);try{const response=await api(`/api/workspace/flow-mapping-review/material-balance-comparison/${encodeURIComponent(analysisId)}/export?${params}`);if(requestId!==mappingComparisonRequest||analysisId!==mappingAnalysisId)throw new Error('필터 또는 분석 파일이 바뀌어 다운로드를 취소했습니다.');if(response.headers.get('X-Review-Only')!=='true'||response.headers.get('X-Official-Baseline-Modified')!=='false')throw new Error('읽기 전용 export header 검증 실패');const blob=await response.blob();const expected=response.headers.get('X-Review-SHA256')||'';if(!expected||!globalThis.crypto?.subtle)throw new Error('다운로드 SHA-256 응답 또는 브라우저 검증 기능이 없어 다운로드를 차단했습니다.');const digest=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());const actual=[...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');if(actual.toLowerCase()!==expected.toLowerCase())throw new Error('다운로드 SHA-256 검증 실패');if(requestId!==mappingComparisonRequest||analysisId!==mappingAnalysisId)throw new Error('필터 또는 분석 파일이 바뀌어 다운로드를 취소했습니다.');const rowCount=response.headers.get('X-Review-Exported-Rows')||'미확인';const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=`flow-mapping-review.${format}`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);setStatus('mapping-status',`현재 필터 결과 다운로드 · ${format.toUpperCase()} · ${rowCount}행 · SHA-256 ${actual}`);}catch(error){mappingById('mapping-error').textContent=error.message;}}
+  mappingById('mapping-process-select').addEventListener('change',updateMappingSheets);
+  mappingById('mapping-sheet-select').addEventListener('change',()=>{mappingCandidateRequest++;mappingCandidatePage=0;mappingCandidates=null;mappingById('load-mapping-candidates').disabled=!mappingById('mapping-sheet-select').value;mappingById('mapping-candidate-prev').disabled=true;mappingById('mapping-candidate-next').disabled=true;mappingById('mapping-candidate-page-label').textContent='후보 페이지 —';mappingById('mapping-candidate-table').replaceChildren();});
+  mappingById('load-mapping-candidates').addEventListener('click',()=>{mappingCandidatePage=0;loadMappingCandidates();});
+  mappingById('mapping-candidate-prev').addEventListener('click',()=>{mappingCandidatePage=Math.max(0,mappingCandidatePage-1);loadMappingCandidates();});
+  mappingById('mapping-candidate-next').addEventListener('click',()=>{if(mappingCandidates&&['totalEquipmentCandidates','totalConnectorCandidates','totalLocationCandidates'].some(key=>(mappingCandidatePage+1)*mappingCandidatePageSize<mappingCandidates[key])){mappingCandidatePage++;loadMappingCandidates();}});
+  mappingById('compare-mapping-source').addEventListener('click',compareMappingFile);
+  mappingById('mapping-source-file').addEventListener('change',()=>{mappingComparisonRequest++;mappingAnalysisId=null;mappingComparison=null;clearMappingDraft('원본 파일을 변경했습니다. 다시 분석하세요.');mappingById('mapping-download-review-template').disabled=true;mappingById('mapping-download-review-template-csv').disabled=true;mappingRows=[];clearMappingDashboard();mappingById('mapping-detail').textContent='';mappingById('compare-mapping-source').disabled=!mappingById('mapping-source-file').files?.length;['csv','json','xlsx'].forEach(format=>mappingById(`mapping-export-${format}`).disabled=true);renderMappingRows();});
+  mappingById('mapping-review-draft-file').addEventListener('change',()=>{clearMappingDraft(mappingById('mapping-review-draft-file').files?.length?'파일이 바뀌었습니다. 이전 검토 Preview를 초기화했습니다.':'검토 파일을 선택하세요.');mappingById('mapping-import-review-draft').disabled=!mappingAnalysisId||!mappingById('mapping-review-draft-file').files?.length;});
+  mappingById('mapping-download-review-template').addEventListener('click',()=>downloadReviewInputTemplate('xlsx'));
+  mappingById('mapping-download-review-template-csv').addEventListener('click',()=>downloadReviewInputTemplate('csv'));
+  mappingById('mapping-import-review-draft').addEventListener('click',importMappingReviewDraft);
+  mappingById('mapping-draft-filter').addEventListener('change',renderMappingDraftRows);
+  ['csv','json','xlsx'].forEach(format=>mappingById(`mapping-draft-export-${format}`).addEventListener('click',()=>downloadMappingReviewDraft(format)));
+  mappingById('mapping-page-prev').addEventListener('click',()=>{mappingPage=Math.max(0,mappingPage-1);fetchMappingPage();});
+  mappingById('mapping-page-next').addEventListener('click',()=>{if(mappingComparison?.hasNext){mappingPage++;fetchMappingPage();}});
+  mappingById('mapping-search').addEventListener('input',()=>{mappingCandidateRequest++;mappingCandidatePage=0;mappingCandidates=null;mappingById('mapping-candidate-table').replaceChildren();mappingById('mapping-detail').textContent='';mappingById('mapping-candidate-page-label').textContent='검색어가 변경되었습니다. 조회를 다시 실행하세요.';mappingById('mapping-candidate-prev').disabled=true;mappingById('mapping-candidate-next').disabled=true;mappingById('load-mapping-candidates').disabled=!mappingById('mapping-sheet-select').value;});
+  mappingById('mapping-quality-filter').addEventListener('change',()=>{clearTimeout(mappingSearchTimer);mappingPage=0;fetchMappingPage();});
+  ['csv','json','xlsx'].forEach(format=>mappingById(`mapping-export-${format}`).addEventListener('click',()=>downloadMappingReport(format)));
+  let mappingSearchTimer=null;mappingById('mapping-row-search').addEventListener('input',()=>{clearTimeout(mappingSearchTimer);mappingSearchTimer=setTimeout(()=>{mappingPage=0;fetchMappingPage();},350);});
+
+  async function initializeOperatorSession(){
+    try{
+      const state=await asJson('/api/session/status');
+      if(!state.authenticated){location.replace('/login.html');return;}
+      csrfToken=state.csrfToken||'';
+      byId('signed-in-user').textContent=`로그인: ${state.username}`;
+      try{
+        const readiness=await asJson('/api/workspace/material-balance/what-if/readiness');
+        byId('what-if-readiness').textContent=`실제 공정 계산 상태: ${readiness.status}. ${readiness.notice}`;
+      }catch(error){byId('what-if-readiness').textContent=`실제 공정 계산 상태를 조회하지 못했습니다: ${error.message}`;}
+      await loadDocuments();
+      await loadProposalList();
+      await loadMappingOverview();
+    }catch(error){setStatus('working-error',error.message);setStatus('process-selection-status','로그인 상태를 확인할 수 없습니다. 다시 로그인해 주세요.');}
+  }
+  initializeOperatorSession();
+})();
+</script>
+</body>
+</html>

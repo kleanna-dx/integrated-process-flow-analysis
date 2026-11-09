@@ -1,0 +1,26 @@
+{
+  "candidateId": "P-01-01-TOP-WC-A2AB5194-REVIEW",
+  "processCode": "P-01",
+  "sheetName": "P-01-01(TOP)",
+  "managementNo": "I-PP11001",
+  "sourceSha256": "426cbd28de4a66a2201f1cffd8f4aff87cca1b37c3daab0be10be9aa09faf391",
+  "workingCopySha256": "a2ab51944a4c2d0d77cc91e675c6e36199c426bbf87e8a1f598cbb85986907bb",
+  "boxRange": "J4:AA20",
+  "status": "REVIEW_REQUIRED",
+  "registered": false,
+  "activationAllowed": false,
+  "approvalEvidencePresent": false,
+  "templateBoxRange": "J4:AA20",
+  "existingProfileId": "P-01-01-TOP-REVIEW-V1",
+  "existingProfileVersion": "1.0.0",
+  "expectedLiveMerges": [],
+  "templateRelativeMerges": [],
+  "fields": [
+    {"field": "managementNo", "cellAddress": "J4", "observedCurrentValue": "I-PP11001", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J4", "proposedForReview": false},
+    {"field": "equipmentTypeLabel", "cellAddress": "J6", "observedCurrentValue": "펄프·종이 및 종이제품 제조시설(펄퍼)", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J6", "proposedForReview": true},
+    {"field": "equipmentName", "cellAddress": "J7", "observedCurrentValue": "40㎥ PULPER (TOP, IV)", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J7", "proposedForReview": true},
+    {"field": "businessItemNo", "cellAddress": "J8", "observedCurrentValue": "P-135-001", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J8", "proposedForReview": true},
+    {"field": "capacity", "cellAddress": "J9", "observedCurrentValue": "40㎥", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J9", "proposedForReview": true},
+    {"field": "quantity", "cellAddress": "J10", "observedCurrentValue": "1ea", "valueSource": "exact uploaded P-01 working-copy SHA snapshot; runtime must compare current value", "existingProfileReferenceCell": "J10", "proposedForReview": true}
+  ]
+}

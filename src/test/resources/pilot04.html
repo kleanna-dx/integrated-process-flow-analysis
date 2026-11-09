@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="data:,">
+  <title>PILOT-04 로컬 TEST_ONLY 도면 수정</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, -apple-system, "Malgun Gothic", sans-serif; color: #172033; background: #f3f6fb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 16px; }
+    main { max-width: 880px; margin: auto; }
+    header, section { background: #fff; border: 1px solid #dbe3ef; border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 8px 24px #24354b0a; }
+    h1 { font-size: 1.45rem; margin: 0 0 8px; }
+    h2 { font-size: 1.1rem; margin: 0 0 16px; }
+    p, small { line-height: 1.55; color: #516078; }
+    .warning { border-left: 4px solid #d97706; background: #fff8e8; padding: 12px 14px; border-radius: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    label { display: block; font-weight: 650; margin: 12px 0 6px; }
+    select, input { width: 100%; border: 1px solid #bac7d8; background: white; border-radius: 8px; padding: 11px 12px; font: inherit; }
+    input[readonly] { background: #f7f9fc; color: #41516a; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    button { border: 0; border-radius: 8px; padding: 11px 16px; color: white; background: #2457c5; font: inherit; font-weight: 700; cursor: pointer; }
+    button.secondary { color: #24334a; background: #e7edf5; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .status { min-height: 1.5em; margin-top: 12px; font-weight: 650; }
+    .result { background: #f7f9fc; border-radius: 8px; padding: 12px; overflow-wrap: anywhere; }
+    .hidden { display: none; }
+    code { overflow-wrap: anywhere; }
+    @media (max-width: 650px) { body { padding: 16px 10px; } .grid { grid-template-columns: 1fr; } header, section { padding: 17px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>PILOT-04 — TEST_ONLY Excel 입력·생성</h1>
+    <p class="warning"><strong>격리 로컬 시험 전용.</strong> 운영 API가 아니며 공식 도면·작업본·운영 DB에 연결되지 않습니다. 고정 검증 복사본만 사용하고 물리 연결이나 공정 유량을 변경하지 않습니다.</p>
+    <p id="login-status" role="status">격리 시험 계정으로 로그인해 주세요.</p>
+  </header>
+
+  <section aria-labelledby="login-heading">
+    <h2 id="login-heading">격리 시험 로그인</h2>
+    <label for="test-password">일회성 시험 암호</label>
+    <input id="test-password" type="password" autocomplete="current-password" maxlength="256">
+    <div class="actions"><button id="login-button" type="button">시험 세션 시작</button></div>
+  </section>
+
+  <section aria-labelledby="case-heading">
+    <h2 id="case-heading">1. 검증 복사본 선택</h2>
+    <label for="process-select">공정 / 설비</label>
+    <select id="process-select">
+      <option value="P-02">P-02 / P-02-01(TOP) / I-PP21005</option>
+      <option value="P-01">P-01 / P-01-01(TOP) / I-PP11001</option>
+    </select>
+    <div class="grid">
+      <div><label for="target-cell">고정 대상 셀</label><input id="target-cell" readonly></div>
+      <div><label for="source-sha">검증 원본 SHA-256</label><input id="source-sha" readonly></div>
+    </div>
+    <label for="before-value">현재 원본 셀 값</label><input id="before-value" readonly>
+    <label for="replacement-text">시험 변경 문구</label>
+    <input id="replacement-text" maxlength="80" autocomplete="off" spellcheck="false" required
+      pattern="SYNTHETIC_TEST_ONLY [A-Za-z0-9가-힣][A-Za-z0-9가-힣 _#().,㎥℃/-]{0,59}"
+      aria-describedby="input-help" placeholder="SYNTHETIC_TEST_ONLY PILOT04 P02 A">
+    <small id="input-help">최대 80자, `SYNTHETIC_TEST_ONLY ` 접두어와 영문/숫자/한글 등의 허용 평문 문자만 사용할 수 있습니다. 수식은 거부됩니다.</small>
+    <div class="actions">
+      <button id="preview-button" type="button">Preview</button>
+      <button id="generate-button" type="button" disabled>Generate 신규 Excel</button>
+      <button id="download-button" class="secondary hidden" type="button" disabled>신규 Excel 다운로드</button>
+    </div>
+    <p id="status-message" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="preview-section" class="hidden" aria-labelledby="preview-heading">
+    <h2 id="preview-heading">2. Preview 결과</h2>
+    <div id="preview-result" class="result"></div>
+  </section>
+  <section id="generated-section" class="hidden" aria-labelledby="generated-heading">
+    <h2 id="generated-heading">3. 생성 결과</h2>
+    <div id="generated-result" class="result"></div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const cases = {
+    'P-02': {
+      sheet: 'P-02-01(TOP)', equipment: 'I-PP21005', cell: 'I89', before: '131 MULTI SORTER#1',
+      sha: '28716f1f26433d825e2e3220b9623a7d102b4454b45f4f106ab175a2348d9f76'
+    },
+    'P-01': {
+      sheet: 'P-01-01(TOP)', equipment: 'I-PP11001', cell: 'J7', before: '40㎥ PULPER (TOP, IV)',
+      sha: '426cbd28de4a66a2201f1cffd8f4aff87cca1b37c3daab0be10be9aa09faf391'
+    }
+  };
+  const api = '/test-only/pilot-04/modify';
+  const byId = id => document.getElementById(id);
+  const processSelect = byId('process-select');
+  const replacementInput = byId('replacement-text');
+  const previewButton = byId('preview-button');
+  const generateButton = byId('generate-button');
+  const downloadButton = byId('download-button');
+  const accessToken = '__PILOT04_TOKEN__';
+  let csrfToken = '';
+  let preview = null;
+  let generated = null;
+
+  function setStatus(text, isError = false) {
+    const node = byId('status-message');
+    node.textContent = text;
+    node.style.color = isError ? '#b42318' : '#1d5e37';
+  }
+
+  function escapeText(value) {
+    const node = document.createElement('span');
+    node.textContent = value == null ? '' : String(value);
+    return node.innerHTML;
+  }
+
+  function renderCase() {
+    const item = cases[processSelect.value];
+    byId('target-cell').value = `${item.sheet}!${item.cell} · ${item.equipment}`;
+    byId('source-sha').value = item.sha;
+    byId('before-value').value = item.before;
+    clearPreview();
+  }
+
+  function clearPreview() {
+    preview = null;
+    generated = null;
+    generateButton.disabled = true;
+    downloadButton.disabled = true;
+    downloadButton.classList.add('hidden');
+    byId('preview-section').classList.add('hidden');
+    byId('generated-section').classList.add('hidden');
+  }
+
+  async function apiFetch(path, options = {}) {
+    const headers = new Headers(options.headers || {});
+    headers.set('X-Pilot-04-Token', accessToken);
+    const response = await fetch(path, { credentials: 'same-origin', cache: 'no-store', ...options, headers });
+    return response;
+  }
+
+  async function ensureSession() {
+    const response = await apiFetch('/api/session/status');
+    if (!response.ok) throw new Error(`세션 확인 실패 (${response.status})`);
+    const state = await response.json();
+    if (!state.authenticated || !state.csrfToken) {
+      byId('login-status').textContent = '로그인 후 시험 세션을 시작하세요.';
+      return;
+    }
+    csrfToken = state.csrfToken;
+    byId('login-status').textContent = '격리 시험 세션 준비 완료 · 서버 세션 및 CSRF 활성';
+    byId('login-button').disabled = true;
+    byId('test-password').disabled = true;
+  }
+
+  byId('login-button').addEventListener('click', async () => {
+    const password = byId('test-password').value;
+    if (!password) { setStatus('일회성 시험 암호를 입력하세요.', true); return; }
+    try {
+      const response = await apiFetch('/api/session/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Login-Request': 'same-origin' },
+        body: JSON.stringify({ username: 'pilot04-test-operator', password })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || `로그인 거부 (${response.status})`);
+      csrfToken = data.csrfToken;
+      byId('test-password').value = '';
+      byId('test-password').disabled = true;
+      byId('login-button').disabled = true;
+      byId('login-status').textContent = '격리 시험 세션 준비 완료 · 서버 세션 및 CSRF 활성';
+      setStatus('TEST_ONLY 서버 세션이 생성되었습니다.');
+    } catch (error) {
+      setStatus(error.message || '시험 로그인 실패', true);
+    }
+  });
+
+  previewButton.addEventListener('click', async () => {
+    clearPreview();
+    const item = cases[processSelect.value];
+    try {
+      setStatus('고정 원본 SHA와 대상 셀을 서버에서 확인 중입니다.');
+      const response = await apiFetch(`${api}/preview`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+        body: JSON.stringify({ processCode: processSelect.value, replacementText: replacementInput.value })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || `Preview 거부 (${response.status})`);
+      if (data.status === 'NO_OP') {
+        setStatus('현재 원본값과 같아 NO_OP 처리했습니다. 새 파일은 생성하지 않습니다.', true);
+        return;
+      }
+      if (data.sourceSha256 !== item.sha || data.cellAddress !== item.cell || data.beforeText !== item.before) {
+        throw new Error('서버 Preview의 고정 원본 정보가 화면 기준과 달라 중단했습니다.');
+      }
+      preview = data;
+      byId('preview-result').innerHTML = `
+        <div><strong>변경 전</strong>: ${escapeText(data.beforeText)}</div>
+        <div><strong>변경 예정</strong>: ${escapeText(data.replacementText)}</div>
+        <div><strong>대상</strong>: ${escapeText(data.sheetName)}!${escapeText(data.cellAddress)} · ${escapeText(data.managementNo)}</div>
+        <div><strong>원본 SHA 검증</strong>: 일치</div>
+        <div><strong>판정</strong>: ${escapeText(data.status)} · TEST_ONLY</div>`;
+      byId('preview-section').classList.remove('hidden');
+      generateButton.disabled = false;
+      setStatus('Preview가 유효합니다. 시험 파일 생성은 Generate를 눌렀을 때만 수행됩니다.');
+    } catch (error) {
+      setStatus(error.message || 'Preview 실패', true);
+    }
+  });
+
+  generateButton.addEventListener('click', async () => {
+    if (!preview || preview.replacementText !== replacementInput.value || preview.processCode !== processSelect.value) {
+      clearPreview();
+      setStatus('입력 또는 공정 선택이 바뀌었습니다. Preview를 다시 실행하세요.', true);
+      return;
+    }
+    generateButton.disabled = true;
+    try {
+      setStatus('실제 TEST_ONLY 편집 엔진이 새 XLSX를 생성 중입니다.');
+      const response = await apiFetch(`${api}/generate/${encodeURIComponent(preview.previewId)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+        body: JSON.stringify({ replacementText: preview.replacementText })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || `Generate 거부 (${response.status})`);
+      if (data.replacementText !== replacementInput.value || data.sourceSha256 !== preview.sourceSha256) {
+        throw new Error('Generate 응답과 Preview 입력이 달라 중단했습니다.');
+      }
+      generated = data;
+      byId('generated-result').innerHTML = `
+        <div><strong>새 파일</strong>: ${escapeText(data.filename)}</div>
+        <div><strong>입력 반영</strong>: ${escapeText(data.replacementText)}</div>
+        <div><strong>생성 시각</strong>: ${escapeText(data.serverGeneratedAt)}</div>
+        <div><strong>출력 SHA-256</strong>: <code>${escapeText(data.outputSha256)}</code></div>
+        <div><strong>공식 기준 원본 변경</strong>: 아니오</div>`;
+      byId('generated-section').classList.remove('hidden');
+      downloadButton.classList.remove('hidden');
+      downloadButton.disabled = false;
+      setStatus('새 결과 생성 완료. 다운로드 후 파일 SHA와 셀 값을 검증합니다.');
+    } catch (error) {
+      setStatus(error.message || 'Generate 실패', true);
+      generateButton.disabled = false;
+    }
+  });
+
+  downloadButton.addEventListener('click', async () => {
+    if (!generated || !preview) return;
+    downloadButton.disabled = true;
+    try {
+      const response = await apiFetch(`${api}/download/${encodeURIComponent(preview.previewId)}`);
+      if (!response.ok) throw new Error(`Download 거부 (${response.status})`);
+      const bytes = await response.arrayBuffer();
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      const actualSha = [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('');
+      const headerSha = response.headers.get('X-Output-SHA256');
+      if (actualSha !== generated.outputSha256 || actualSha !== headerSha) {
+        throw new Error('브라우저 다운로드 바이트의 SHA가 서버 생성 SHA와 다릅니다.');
+      }
+      const blob = new Blob([bytes], { type: response.headers.get('Content-Type') || 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = generated.filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      byId('generated-result').insertAdjacentHTML('beforeend', `<div><strong>브라우저 다운로드 SHA 확인</strong>: ${actualSha}</div>`);
+      setStatus(`다운로드 확인 PASS · SHA-256 ${actualSha}`);
+    } catch (error) {
+      setStatus(error.message || 'Download 검증 실패', true);
+      downloadButton.disabled = false;
+    }
+  });
+
+  processSelect.addEventListener('change', renderCase);
+  replacementInput.addEventListener('input', () => {
+    if (preview || generated) {
+      clearPreview();
+      setStatus('입력 문구가 바뀌어 이전 Preview/Generate를 무효화했습니다. Preview를 다시 실행하세요.');
+    }
+  });
+  renderCase();
+  ensureSession().catch(error => {
+    byId('login-status').textContent = error.message;
+    byId('login-status').style.color = '#b42318';
+    previewButton.disabled = true;
+    generateButton.disabled = true;
+    downloadButton.disabled = true;
+  });
+})();
+</script>
+</body>
+</html>

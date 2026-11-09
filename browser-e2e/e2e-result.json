@@ -1,0 +1,39 @@
+{
+  "browser": "Chrome/156.0.8078.4",
+  "login": "PASS",
+  "proposal_list": "PASS",
+  "PIPE_CHANGE_detail_before_after_balance_residual_impacts": "PASS",
+  "FLOW_CHANGE_detail": "PASS",
+  "TEST_ONLY_excel_download": "PASS",
+  "fresh_context_proposal_access": "HTTP 401 PASS",
+  "logout": "PASS",
+  "calculation_status": {
+    "PIPE_CHANGE": "CALCULATED_SYNTHETIC",
+    "FLOW_CHANGE": "CALCULATED_SYNTHETIC"
+  },
+  "official_readiness": "CALCULATION_UNAVAILABLE",
+  "visible_result_table_count": 8,
+  "screenshot": "browser-e2e/pipe-change-before-after.png",
+  "download": {
+    "filename": "what-if-b7e033ee9ae3-TEST_ONLY.xlsx",
+    "size_bytes": 14013,
+    "sha256": "b7e033ee9ae3b8ea2203c046b076ccb7a9310cb8f221107660af40e37547a8d5",
+    "zip_entries": 16,
+    "zip_test": null,
+    "sheets": [
+      "제안 요약",
+      "연결망 전후",
+      "변경 연결",
+      "공정 수지",
+      "잔차 비교",
+      "전체 외부 수지",
+      "외부 수지 비교",
+      "영향·검토"
+    ]
+  },
+  "proposal_ids": {
+    "PIPE_CHANGE": "861642b5-33fa-4734-9d96-216b082c3513",
+    "FLOW_CHANGE": "89166d48-365f-4d08-8336-321348d6fbf8"
+  },
+  "display_summary": "PIPE_CHANGE · SYNTHETIC-P / SYNTHETIC-01 · 861642b5-33fa-4734-9d96-216b082c3513\n\nTEST_ONLY 합성 비교 · 실제 공정 readiness: CALCULATION_UNAVAILABLE · 검토: REVIEW_REQUIRED · 연결 증빙: REVIEW_REQUIRED\n\n변경 사유: TEST_ONLY synthetic before/after What-if; no official connection was created. · 설비: SYN-EQ-A"
+}

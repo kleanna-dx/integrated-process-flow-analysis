@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="same-origin">
+  <link rel="icon" href="data:,">
+  <title>로그인 · 공정도 변경 작업</title>
+  <style>
+    :root{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;color:#17191b;background:#f4f5f6;--border:#d9dcdf;--muted:#62676c}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px}.login-card{width:min(420px,100%);background:#fff;border:1px solid var(--border);padding:28px;border-radius:6px}h1{font-size:1.4rem;margin:0 0 8px}p{line-height:1.55}.muted{color:var(--muted);font-size:.92rem}.field{margin:16px 0}.field label{display:block;font-weight:700;margin-bottom:6px}.field input{width:100%;min-height:44px;border:1px solid #aeb4b9;border-radius:4px;padding:10px;font:inherit}button{min-height:44px;padding:10px 16px;border:1px solid #30343a;border-radius:4px;background:#30343a;color:#fff;font:inherit;font-weight:700;cursor:pointer;width:100%}button:disabled{opacity:.55;cursor:wait}.notice{padding:10px 12px;border-left:3px solid #747a80;background:#f3f4f5}.error{color:#8a1e1e}.hidden{display:none!important}:focus-visible{outline:3px solid #788896;outline-offset:2px}
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <h1>공정도 변경 작업</h1>
+    <p class="muted">로그인 정보는 서버에서 검증되며 이 브라우저에 저장되지 않습니다.</p>
+    <section id="setup-panel" class="hidden" aria-labelledby="setup-title">
+      <h2 id="setup-title">최초 계정 설정</h2>
+      <p class="notice">공개 회원가입은 제공하지 않습니다. 이 브라우저에서 등록을 요청한 뒤 서버 관리자의 승인을 받아야 합니다. 요청은 15분 후 만료됩니다.</p>
+      <button id="request-setup-button" type="button">관리자 승인 요청</button>
+      <div id="setup-waiting" class="hidden" role="status">
+        <p id="setup-state-message" class="notice"></p>
+        <p>승인 요청 ID: <code id="setup-request-id"></code></p>
+        <p class="muted">이 ID만 담당 관리자에게 전달해 주세요. 비밀번호나 관리자 토큰은 전달하지 마세요.</p>
+      </div>
+      <form id="setup-form" class="hidden" autocomplete="off">
+        <div class="field"><label for="setup-username">새 아이디</label><input id="setup-username" name="username" autocomplete="username" minlength="3" maxlength="80" pattern="[A-Za-z0-9._-]{3,80}" required></div>
+        <div class="field"><label for="setup-password">새 비밀번호</label><input id="setup-password" name="password" type="password" autocomplete="new-password" minlength="14" maxlength="128" required></div>
+        <div class="field"><label for="setup-password-confirmation">비밀번호 확인</label><input id="setup-password-confirmation" name="passwordConfirmation" type="password" autocomplete="new-password" minlength="14" maxlength="128" required></div>
+        <button id="setup-complete-button" type="submit">계정 설정 완료</button>
+      </form>
+      <p id="setup-error" class="error" role="alert"></p>
+    </section>
+    <form id="login-form" autocomplete="on" class="hidden">
+      <div class="field"><label for="username">아이디</label><input id="username" name="username" autocomplete="username" maxlength="80" required></div>
+      <div class="field"><label for="password">비밀번호</label><input id="password" name="password" type="password" autocomplete="current-password" maxlength="256" required></div>
+      <button id="login-button" type="submit">로그인</button>
+    </form>
+    <p id="login-error" class="error" role="alert"></p>
+  </main>
+<script>
+(() => {
+  const loginForm=document.getElementById('login-form');
+  const loginButton=document.getElementById('login-button');
+  const loginError=document.getElementById('login-error');
+  const setupPanel=document.getElementById('setup-panel');
+  const requestButton=document.getElementById('request-setup-button');
+  const setupWaiting=document.getElementById('setup-waiting');
+  const setupForm=document.getElementById('setup-form');
+  const setupError=document.getElementById('setup-error');
+  let setupCsrf='';
+  let setupRequestId='';
+  let pollHandle=null;
+  const json=async response=>response.json().catch(()=>({}));
+  const showError=(target,body,fallback)=>{target.textContent=body.message||fallback;};
+
+  async function refreshSetup(){
+    const response=await fetch('/api/operator-setup/status',{credentials:'same-origin',cache:'no-store'});
+    const state=await json(response);
+    if(!response.ok)throw new Error(state.message||'초기 설정 상태를 확인하지 못했습니다.');
+    setupCsrf=state.csrfToken||setupCsrf;
+    setupRequestId=state.requestId||setupRequestId;
+    document.getElementById('setup-request-id').textContent=setupRequestId;
+    if(!state.available){
+      requestButton.classList.add('hidden');setupWaiting.classList.add('hidden');setupForm.classList.add('hidden');
+      setupError.textContent='초기 계정 설정이 서버 정책에 의해 차단되어 있습니다. 담당 관리자에게 문의해 주세요.';
+      return;
+    }
+    if(state.requestState==='APPROVED'){
+      setupWaiting.classList.remove('hidden');setupForm.classList.remove('hidden');requestButton.classList.add('hidden');
+      document.getElementById('setup-state-message').textContent='관리자가 승인했습니다. 이 브라우저에서 새 아이디와 비밀번호를 설정해 주세요.';
+      if(pollHandle){clearInterval(pollHandle);pollHandle=null;}
+    }else if(state.requestState==='PENDING'){
+      setupWaiting.classList.remove('hidden');setupForm.classList.add('hidden');requestButton.classList.add('hidden');
+      document.getElementById('setup-state-message').textContent=`승인 대기 중입니다. 만료 시각: ${state.expiresAt}`;
+    }else{
+      setupWaiting.classList.add('hidden');setupForm.classList.add('hidden');requestButton.classList.remove('hidden');
+      if(state.requestState==='EXPIRED'||state.requestState==='REJECTED')setupError.textContent='요청이 만료되었거나 승인되지 않았습니다. 새 요청을 할 수 있습니다.';
+    }
+  }
+
+  async function initialize(){
+    try{
+      const response=await fetch('/api/session/status',{credentials:'same-origin',cache:'no-store'});
+      const state=await json(response);
+      if(!response.ok)throw new Error(state.message||'로그인 상태를 확인하지 못했습니다.');
+      if(state.authenticated){location.replace('/');return;}
+      if(state.configured){loginForm.classList.remove('hidden');setupPanel.classList.add('hidden');return;}
+      setupPanel.classList.remove('hidden');loginForm.classList.add('hidden');
+      await refreshSetup();
+      if(setupRequestId)pollHandle=setInterval(()=>refreshSetup().catch(()=>{}),5000);
+    }catch(problem){loginError.textContent=problem.message||'서비스 상태를 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.';}
+  }
+
+  requestButton.addEventListener('click',async()=>{
+    requestButton.disabled=true;setupError.textContent='';
+    try{
+      const response=await fetch('/api/operator-setup/request',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'X-CSRF-Token':setupCsrf}});
+      const body=await json(response);if(!response.ok)throw new Error(body.message||'승인 요청을 만들 수 없습니다.');
+      setupCsrf=body.csrfToken||setupCsrf;setupRequestId=body.requestId||'';await refreshSetup();
+      if(!pollHandle)pollHandle=setInterval(()=>refreshSetup().catch(()=>{}),5000);
+    }catch(problem){setupError.textContent=problem.message||'승인 요청을 만들 수 없습니다.';}
+    finally{requestButton.disabled=false;}
+  });
+
+  setupForm.addEventListener('submit',async event=>{
+    event.preventDefault();setupError.textContent='';const button=document.getElementById('setup-complete-button');button.disabled=true;
+    const password=setupForm.elements.password.value;const passwordConfirmation=setupForm.elements.passwordConfirmation.value;
+    try{
+      const response=await fetch('/api/operator-setup/complete',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json','X-CSRF-Token':setupCsrf},body:JSON.stringify({username:setupForm.elements.username.value,password,passwordConfirmation})});
+      const body=await json(response);if(!response.ok)throw new Error(body.message||'계정을 설정할 수 없습니다.');
+      setupForm.reset();location.replace('/login.html?setup=complete');
+    }catch(problem){setupForm.elements.password.value='';setupForm.elements.passwordConfirmation.value='';setupError.textContent=problem.message||'계정을 설정할 수 없습니다.';}
+    finally{button.disabled=false;}
+  });
+
+  loginForm.addEventListener('submit',async event=>{
+    event.preventDefault();loginError.textContent='';loginButton.disabled=true;
+    try{
+      const response=await fetch('/api/session/login',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json','X-Login-Request':'same-origin'},body:JSON.stringify({username:loginForm.elements.username.value,password:loginForm.elements.password.value})});
+      const body=await json(response);if(!response.ok)throw new Error(body.message||'아이디 또는 비밀번호를 확인해 주세요.');
+      loginForm.elements.password.value='';location.replace('/');
+    }catch(problem){loginError.textContent=problem.message||'로그인할 수 없습니다.';loginForm.elements.password.value='';loginForm.elements.password.focus();}
+    finally{loginButton.disabled=false;}
+  });
+  initialize();
+})();
+</script>
+</body>
+</html>

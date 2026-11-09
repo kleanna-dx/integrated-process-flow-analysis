@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>통합공정도 자동화 | 변경 분석</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: #111111;
+      background: #f2f4f7;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 28px 18px 48px; color: #111111; }
+    main { max-width: 1240px; margin: 0 auto; }
+    header, section { background: #ffffff; border: 1px solid #d8dde5; border-radius: 12px; padding: 22px; margin-bottom: 16px; }
+    h1 { margin: 0 0 8px; font-size: 1.65rem; }
+    h2 { margin: 0 0 14px; font-size: 1.18rem; }
+    h3 { margin: 0 0 10px; font-size: 1rem; }
+    p { color: #111111; line-height: 1.55; margin: 8px 0; }
+    .lead { font-size: 1rem; }
+    .notice { border-left: 5px solid #c58a00; background: #fff7df; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }
+    .notice strong { display: block; margin-bottom: 4px; }
+    .demo-section { border: 2px solid #49627b; background: #f4f8fc; }
+    .demo-label { display: inline-block; margin-bottom: 10px; border-radius: 999px; padding: 5px 11px; background: #173f72; color: #ffffff; font-weight: 800; }
+    .demo-result-label { border-left-color: #173f72; background: #eaf2fb; }
+    .edit-panel { border: 2px solid #49627b; background: #f4f8fc; }
+    .confirm-row { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0; font-weight: 700; }
+    .confirm-row input { width: 20px; height: 20px; margin-top: 2px; flex: 0 0 auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: end; }
+    label { display: block; font-weight: 700; margin: 14px 0 7px; }
+    input[type="password"], input[type="file"], input[type="number"] {
+      width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #9aa4b2;
+      border-radius: 6px; background: #ffffff; color: #111111; font: inherit;
+    }
+    button { min-height: 44px; border: 1px solid #111111; border-radius: 6px; padding: 10px 16px; background: #173f72; color: #ffffff; font: inherit; font-weight: 700; cursor: pointer; }
+    button.secondary { background: #ffffff; color: #111111; }
+    button:disabled { opacity: .62; cursor: wait; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+    .helper { font-size: .9rem; }
+    .error { color: #111111; border: 1px solid #a60000; background: #fff1f1; border-radius: 6px; padding: 12px; white-space: pre-wrap; }
+    .status-line { font-weight: 700; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 10px; margin: 16px 0; }
+    .metric { border: 1px solid #cbd2dc; border-radius: 8px; background: #f8f9fb; padding: 13px; min-height: 82px; }
+    .metric-label { display: block; font-size: .9rem; font-weight: 700; }
+    .metric-value { display: block; margin-top: 7px; font-size: 1.55rem; font-weight: 800; }
+    .run-banner { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 12px; background: #eef3f8; border-radius: 7px; font-weight: 700; }
+    .tag { display: inline-block; border: 1px solid #6f7782; border-radius: 999px; padding: 3px 9px; font-size: .82rem; font-weight: 700; color: #111111; background: #ffffff; white-space: nowrap; }
+    .tag.review { border-color: #9a6b00; background: #fff3ce; }
+    .tag.exact { border-color: #466a38; background: #eaf4e4; }
+    .tag.candidate { border-color: #49627b; background: #e9f1f8; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 850px; color: #111111; }
+    th, td { border: 1px solid #cbd2dc; padding: 10px; text-align: left; vertical-align: top; line-height: 1.45; }
+    td { white-space: pre-line; }
+    th { background: #e8edf3; font-weight: 800; }
+    td ul { margin: 0; padding-left: 18px; }
+    td li + li { margin-top: 5px; }
+    .empty-state { border: 1px dashed #758091; border-radius: 8px; padding: 22px; text-align: center; font-weight: 700; background: #f8f9fb; }
+    .review-box { border: 1px solid #bd8500; background: #fff7df; border-radius: 8px; padding: 14px; }
+    .review-box ul { margin-bottom: 0; padding-left: 22px; }
+    details { margin-top: 16px; }
+    summary { cursor: pointer; font-weight: 800; padding: 8px 0; }
+    pre { overflow: auto; max-height: 520px; background: #f5f6f8; color: #111111; border: 1px solid #cbd2dc; border-radius: 6px; padding: 14px; font: 12px/1.5 ui-monospace, monospace; }
+    [hidden] { display: none !important; }
+    @media (max-width: 760px) {
+      body { padding: 14px 10px 30px; }
+      header, section { padding: 16px; }
+      .form-grid { grid-template-columns: 1fr; gap: 4px; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(125px, 1fr)); }
+    }
+    @media print {
+      body { background: #ffffff; padding: 0; }
+      header, section { box-shadow: none; break-inside: avoid; }
+      #credential-section, #saved-run-section, details { display: none !important; }
+      .summary-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>통합공정도 자동화 — 변경 분석</h1>
+    <p class="lead">V1.0 기준 마스터와 업로드한 TEST_ONLY 변경본을 비교한 결과입니다.</p>
+    <div class="notice">
+      <strong>시험·검토용 결과입니다. 공식 원본은 변경하지 않습니다.</strong>
+      도면 후보는 위치 확인을 위한 참고 정보입니다. 관리번호가 일치해도 도면 편집이나 공정 연결 승인을 의미하지 않으며, 실제 변경 전 담당자 검토가 필요합니다.
+    </div>
+  </header>
+
+  <section id="demo-section" class="demo-section" aria-labelledby="demo-heading">
+    <span class="demo-label">가상 데이터 시연</span>
+    <h2 id="demo-heading">토큰 없이 화면 체험</h2>
+    <p>아래 버튼은 브라우저에 포함된 합성 예시만 화면에 표시합니다. 파일 전송, 관리자 API 호출, MariaDB 조회·저장, 공식 마스터 비교 및 도면 수정 요청은 하지 않습니다.</p>
+    <div class="button-row">
+      <button id="show-demo-button" class="secondary" type="button">가상 결과 화면 보기</button>
+    </div>
+    <p class="helper">예시 값은 가상이며 실제 회사 설비·마스터·도면 정보가 아닙니다. 실제 Excel 분석 및 저장 결과 조회에는 계속 관리자 API 토큰이 필요합니다.</p>
+  </section>
+
+  <section id="credential-section">
+    <h2>Excel 변경 분석</h2>
+    <form id="master-diff-form">
+      <div class="form-grid">
+        <div>
+          <label for="admin-token">관리자 API 토큰</label>
+          <input id="admin-token" type="password" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="master-file">변경된 전체 목록 Excel (.xlsx)</label>
+          <input id="master-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+        </div>
+      </div>
+      <div class="button-row">
+        <button id="submit-button" type="submit">V1.0 기준으로 분석</button>
+      </div>
+      <p class="helper">토큰은 브라우저 저장소에 저장하지 않습니다. 분석 요청 후 입력란을 비웁니다.</p>
+    </form>
+    <p id="error-message" class="error" role="alert" hidden></p>
+  </section>
+
+  <section id="saved-run-section">
+    <h2>기존 TEST_ONLY 분석 결과 보기</h2>
+    <p>저장된 분석 결과를 다시 불러옵니다. Excel을 다시 업로드하거나 변경 분석을 재실행하지 않습니다.</p>
+    <form id="saved-run-form">
+      <div class="form-grid">
+        <div>
+          <label for="saved-run-id">분석 실행 ID</label>
+          <input id="saved-run-id" type="number" min="1" inputmode="numeric" placeholder="예: 186" required>
+        </div>
+        <div class="button-row">
+          <button class="secondary" id="load-run-button" type="submit">저장 결과 불러오기</button>
+        </div>
+      </div>
+      <p class="helper">발표 시연 자료: 추가 186 · 변경 없음 187 · 삭제 188 · 수정 190 · 순서 변경 191</p>
+    </form>
+    <p id="saved-error-message" class="error" role="alert" hidden></p>
+  </section>
+
+  <section id="results-section" hidden aria-live="polite">
+    <div id="demo-result-notice" class="notice demo-result-label" hidden>
+      <strong>가상 데이터 시연</strong>
+      아래는 고정된 합성 예시입니다. 실제 기준자료 조회, Excel 분석, 데이터 저장 또는 도면 수정 결과가 아닙니다.
+    </div>
+    <h2>분석 결과 요약</h2>
+    <div id="run-banner" class="run-banner"></div>
+    <div id="summary-grid" class="summary-grid"></div>
+
+    <h3>변경 설비 상세</h3>
+    <div id="changes-empty" class="empty-state" hidden>변경된 설비가 없습니다.</div>
+    <div id="changes-table-wrap" class="table-wrap" hidden>
+      <table>
+        <thead>
+          <tr>
+            <th>변경 유형</th><th>설비 관리번호</th><th>사업장 Item No.</th><th>설비명</th>
+            <th>변경 전</th><th>변경 후</th><th>관련 공정도</th><th>검토 상태</th>
+          </tr>
+        </thead>
+        <tbody id="changes-table-body"></tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:22px">영향 도면 및 후보 위치</h3>
+    <div id="diagrams-empty" class="empty-state" hidden>영향 도면 후보 정보가 없습니다.</div>
+    <div id="diagrams-table-wrap" class="table-wrap" hidden>
+      <table>
+        <thead><tr><th>공정</th><th>도면 파일</th><th>시트</th><th>근거 구분</th><th>자동 매핑</th><th>주의</th></tr></thead>
+        <tbody id="diagrams-table-body"></tbody>
+      </table>
+    </div>
+
+    <section id="test-only-edit-section" class="edit-panel" hidden aria-labelledby="test-only-edit-heading">
+      <h3 id="test-only-edit-heading">수정 도면 생성 및 다운로드</h3>
+      <p id="test-only-edit-target" class="run-banner"></p>
+      <div id="test-only-edit-plan-details" class="notice" hidden></div>
+      <div class="review-box">
+        <strong>생성 전 확인</strong>
+        <ul>
+          <li>현재 지원 범위는 저장 run 193 / item 217에 연결된 C-PW15020 및 PW-01-05 한 건입니다. 다른 run·설비·도면은 지원된다고 간주하지 않습니다.</li>
+          <li>C-PW15009 및 C-PW15010 연결은 명시한 TEST_ONLY 계획의 가상 표시입니다. 승인 관계는 REVIEW_REQUIRED로 유지하고 CONFIRMED 관계를 만들지 않습니다.</li>
+          <li>업로드 자료의 폐수·폐기물 양과 이동처는 비어 있습니다. 실제 물질수지는 자료 부족으로 검증 불가로 남깁니다.</li>
+        </ul>
+      </div>
+      <label class="confirm-row" for="test-only-scenario-confirm">
+        <input id="test-only-scenario-confirm" type="checkbox">
+        <span>저장된 분석 run/item으로 TEST_ONLY 편집 계획을 확인하는 데 동의합니다. 이 단계는 관계 승인이나 파일 생성을 하지 않습니다.</span>
+      </label>
+      <label class="confirm-row" for="synthetic-balance-confirm">
+        <input id="synthetic-balance-confirm" type="checkbox">
+        <span>선택한 경우에만 가상 시험값(유입 100, 후단 97, 폐수 2.5, 폐기물 0.5 ton/day)을 표시합니다. 실제값이나 실제 검증 결과가 아니며, 선택하지 않으면 숫자를 채우지 않습니다.</span>
+      </label>
+      <label id="test-only-confirm-row" class="confirm-row" for="test-only-confirm" hidden>
+        <input id="test-only-confirm" type="checkbox">
+        <span>run/item/plan 연결, PW-01-05 시트, 엔진 산출 삽입 위치 및 REVIEW_REQUIRED 상태를 확인했습니다. 실제 관계 승인 없이 통합 TEST_ONLY 파일만 생성합니다.</span>
+      </label>
+      <div class="button-row">
+        <button id="prepare-test-only-button" type="button">시험 대상·삽입 위치 확인</button>
+        <button id="generate-test-only-button" type="button" hidden disabled>TEST_ONLY 통합 Excel 생성</button>
+        <button id="download-test-only-button" class="secondary" type="button" hidden disabled>통합 Excel 다운로드</button>
+      </div>
+      <p id="test-only-edit-status" class="status-line" role="status" aria-live="polite"></p>
+      <p id="test-only-edit-error" class="error" role="alert" hidden></p>
+      <p class="helper">최종 파일에는 ① 변경된 통합공정도 ② 설비 변경내역 ③ 물질수지 검토 결과가 포함됩니다. 토큰은 요청 헤더로만 전송하고 URL·브라우저 저장소에 저장하지 않습니다. 생성과 다운로드 각각 관리자 인증이 필요합니다.</p>
+    </section>
+
+    <h3 style="margin-top:22px">검토 사항</h3>
+    <div id="review-box" class="review-box"></div>
+    <details>
+      <summary>상세 데이터 보기 (원본 JSON)</summary>
+      <pre id="analysis-result"></pre>
+    </details>
+  </section>
+</main>
+<script>
+  const form = document.getElementById('master-diff-form');
+  const savedForm = document.getElementById('saved-run-form');
+  const tokenInput = document.getElementById('admin-token');
+  const fileInput = document.getElementById('master-file');
+  const uploadButton = document.getElementById('submit-button');
+  const loadRunButton = document.getElementById('load-run-button');
+  const showDemoButton = document.getElementById('show-demo-button');
+  const demoResultNotice = document.getElementById('demo-result-notice');
+  const testOnlyEditSection = document.getElementById('test-only-edit-section');
+  const testOnlyPlanDetails = document.getElementById('test-only-edit-plan-details');
+  const testOnlyConfirmRow = document.getElementById('test-only-confirm-row');
+  const testOnlyScenarioConfirm = document.getElementById('test-only-scenario-confirm');
+  const syntheticBalanceConfirm = document.getElementById('synthetic-balance-confirm');
+  const testOnlyConfirm = document.getElementById('test-only-confirm');
+  const prepareTestOnlyButton = document.getElementById('prepare-test-only-button');
+  const generateTestOnlyButton = document.getElementById('generate-test-only-button');
+  const downloadTestOnlyButton = document.getElementById('download-test-only-button');
+  const testOnlyEditStatus = document.getElementById('test-only-edit-status');
+  const testOnlyEditError = document.getElementById('test-only-edit-error');
+  let activeTestOnlyChange = null;
+  let activeTestOnlyPlanId = null;
+  let generatedScenario = null;
+  const errorMessage = document.getElementById('error-message');
+  const savedErrorMessage = document.getElementById('saved-error-message');
+  const resultsSection = document.getElementById('results-section');
+  const changeTypeLabels = { ADDED: '신규 추가', REMOVED: '삭제', MODIFIED: '정보 수정', MOVED: '순서 변경' };
+  const display = value => value === null || value === undefined || value === '' ? '—' : String(value);
+  const asObject = value => {
+    if (value && typeof value === 'object' && !Array.isArray(value)) return value;
+    if (typeof value === 'string') { try { const parsed = JSON.parse(value); return parsed && typeof parsed === 'object' ? parsed : {}; } catch (_) { return {}; } }
+    return {};
+  };
+  const asArray = value => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string') { try { const parsed = JSON.parse(value); return Array.isArray(parsed) ? parsed : []; } catch (_) { return []; } }
+    return [];
+  };
+  const firstValue = (obj, keys) => {
+    const values = asObject(obj);
+    for (const key of keys) if (values[key] !== undefined && values[key] !== null && values[key] !== '') return values[key];
+    const normalized = Object.fromEntries(Object.entries(values).map(([key, value]) => [key.replace(/[\s._()（）·&/\-]/g, '').toLowerCase(), value]));
+    for (const key of keys) {
+      const value = normalized[key.replace(/[\s._()（）·&/\-]/g, '').toLowerCase()];
+      if (value !== undefined && value !== null && value !== '') return value;
+    }
+    return null;
+  };
+  const showError = (element, message) => { element.textContent = message; element.hidden = false; };
+  const clearError = element => { element.textContent = ''; element.hidden = true; };
+  const apiGet = async (path, token) => {
+    const response = await fetch(path, { headers: { 'X-Admin-Token': token } });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.message || payload.detail || payload.error || `요청 실패 (${response.status})`);
+    return payload;
+  };
+  const escapeText = value => display(value);
+  const addTextCell = (row, value) => { const cell = document.createElement('td'); cell.textContent = escapeText(value); row.appendChild(cell); return cell; };
+
+  function diagramStatus(diagram) {
+    const status = diagram.mappingStatus || '';
+    if (diagram.automaticMappingSucceeded === true) return { label: '관리번호 기준 기존 매핑 후보', className: 'exact' };
+    if (status === 'PROCESS_CODE_ONLY_REVIEW') return { label: '공정코드 후보 (확정 아님)', className: 'candidate' };
+    if (status === 'EXACT_IDENTIFIER_CANDIDATE_REVIEW') return { label: '정확 식별자 후보 (확정 아님)', className: 'candidate' };
+    if (status === 'MULTI_SHEET_REVIEW') return { label: '복수 시트 후보 (확정 아님)', className: 'candidate' };
+    return { label: status ? '검토 필요' : '미확인', className: 'review' };
+  }
+
+  function localizedReview(review) {
+    if (typeof review !== 'string') return JSON.stringify(review);
+    if (review.startsWith('Manual confirmation is required before modifying an official drawing')) {
+      return '공식 도면 수정 전 담당자 확인이 필요합니다. 공정 연결이나 승인 관계는 생성되지 않았습니다.';
+    }
+    const match = review.match(/^Review diagram mapping for ([^:]+): ([A-Z_]+) in (.+?) \/ (.+)\.$/);
+    if (match) return `${match[1]}: ${match[3]} / ${match[4]}는 ${match[2] === 'PROCESS_CODE_ONLY_REVIEW' ? '공정코드 기반 후보 위치' : '도면 위치 후보'}이며 확정 매핑이 아닙니다.`;
+    return review;
+  }
+
+  function getItemValues(item) {
+    const before = asObject(item.beforeValues);
+    const after = asObject(item.afterValues);
+    return {
+      before,
+      after,
+      managementNo: item.permitManagementNo || firstValue(after, ['인허가관리번호', '인허가 관리번호', '관리번호']) || firstValue(before, ['인허가관리번호', '인허가 관리번호', '관리번호']),
+      itemNo: item.businessItemNo || firstValue(after, ['사업장ItemNo.', '사업장ItemNo', 'Item No.', '사업장 Item No.']) || firstValue(before, ['사업장ItemNo.', '사업장ItemNo', 'Item No.', '사업장 Item No.']),
+      facilityName: item.facilityName || firstValue(after, ['시설명', '설비명', '시설명칭']) || firstValue(before, ['시설명', '설비명', '시설명칭'])
+    };
+  }
+
+  function makeBeforeAfter(item, values, side) {
+    const fields = asObject(item.changedFields);
+    const entries = Object.entries(fields);
+    if (entries.length) {
+      return entries.map(([name, change]) => `${name}: ${display(asObject(change)[side])}`).join('\n');
+    }
+    if (item.changeType === 'ADDED') {
+      if (side === 'before') return '기준에 없음';
+      return Object.entries(values.after).filter(([key, value]) => value !== null && value !== '').slice(0, 6).map(([key, value]) => `${key}: ${value}`).join('\n') || '신규 설비 정보';
+    }
+    if (item.changeType === 'REMOVED') {
+      if (side === 'after') return '기준에서 삭제';
+      return Object.entries(values.before).filter(([key, value]) => value !== null && value !== '').slice(0, 6).map(([key, value]) => `${key}: ${value}`).join('\n') || '기존 설비';
+    }
+    if (item.changeType === 'MOVED') {
+      const position = entries.find(([name]) => name === '마스터시트 행 순서');
+      if (position) return `마스터시트 행 순서: ${display(asObject(position[1])[side])}`;
+      return side === 'before' ? `기존 행: ${display(item.oldSourceRow)}` : `변경 행: ${display(item.newSourceRow)}`;
+    }
+    return '변경 없음';
+  }
+
+  function configureTestOnlyEdit(data, items, isDemo) {
+    activeTestOnlyChange = null;
+    activeTestOnlyPlanId = null;
+    testOnlyEditSection.hidden = true;
+    testOnlyScenarioConfirm.checked = false;
+    syntheticBalanceConfirm.checked = false;
+    generatedScenario = null;
+    testOnlyConfirm.checked = false;
+    testOnlyConfirmRow.hidden = true;
+    testOnlyPlanDetails.hidden = true;
+    testOnlyPlanDetails.replaceChildren();
+    prepareTestOnlyButton.hidden = false;
+    prepareTestOnlyButton.disabled = true;
+    generateTestOnlyButton.hidden = true;
+    generateTestOnlyButton.disabled = true;
+    downloadTestOnlyButton.hidden = true;
+    downloadTestOnlyButton.disabled = true;
+    testOnlyEditStatus.textContent = '';
+    clearError(testOnlyEditError);
+    if (isDemo || Number(data.changeRunId) !== 193 || data.analysisMode !== 'TEST_ONLY') return;
+    const candidates = items.filter(item => item.changeType === 'ADDED'
+      && item.permitManagementNo === 'C-PW15020' && Number(item.changeItemId) > 0);
+    if (candidates.length !== 1) return;
+    const affected = asArray(candidates[0].affectedDiagrams);
+    const targetSheet = affected.find(diagram => diagram.sheetName === 'PW-01-05'
+      && diagram.processWorkbook === 'PW-01 폐수처리공정 ★변경허가.xlsx');
+    if (!targetSheet) return;
+    const selectedValues = getItemValues(candidates[0]);
+    activeTestOnlyChange = {
+      changeRunId: Number(data.changeRunId), changeItemId: Number(candidates[0].changeItemId),
+      managementNo: selectedValues.managementNo, facilityName: selectedValues.facilityName
+    };
+    const target = document.getElementById('test-only-edit-target');
+    target.replaceChildren();
+    [`분석 실행 ID: ${activeTestOnlyChange.changeRunId}`, `변경 항목 ID: ${activeTestOnlyChange.changeItemId}`,
+      `설비: ${activeTestOnlyChange.managementNo} / ${activeTestOnlyChange.facilityName}`,
+      '대상: PW-01 폐수처리공정 ★변경허가.xlsx · PW-01-05',
+      '삽입 위치: 계획 생성 후 엔진이 산출한 위치만 사용'].forEach(value => {
+      const span = document.createElement('span'); span.textContent = value; target.appendChild(span);
+    });
+    testOnlyEditSection.hidden = false;
+  }
+
+  function renderResults(data, rawPayload, isDemo = false) {
+    demoResultNotice.hidden = !isDemo;
+    const items = asArray(data.changes);
+    configureTestOnlyEdit(data, items, isDemo);
+    const diagrams = asArray(data.affectedDiagrams);
+    const reviews = asArray(data.reviewRequiredItems);
+    const issues = asArray(data.validationIssues);
+    const summary = [
+      ['기준 설비', data.baselineRecordCount], ['업로드 설비', data.uploadedRecordCount],
+      ['신규 추가', data.addedCount], ['삭제', data.removedCount],
+      ['정보 수정', data.modifiedCount], ['순서 변경', data.movedCount],
+      ['검증 오류', data.validationIssueCount], ['분석 실행 ID', data.changeRunId]
+    ];
+    const banner = document.getElementById('run-banner');
+    banner.replaceChildren();
+    [`기준 버전: ${display(data.baselineVersion)}`, `분석 모드: ${display(data.analysisMode)}`, `파일: ${display(data.uploadedFilename)}`].forEach(text => {
+      const span = document.createElement('span'); span.textContent = text; banner.appendChild(span);
+    });
+    const summaryGrid = document.getElementById('summary-grid');
+    summaryGrid.replaceChildren();
+    summary.forEach(([label, value]) => {
+      const card = document.createElement('div'); card.className = 'metric';
+      const title = document.createElement('span'); title.className = 'metric-label'; title.textContent = label;
+      const count = document.createElement('span'); count.className = 'metric-value'; count.textContent = display(value);
+      card.append(title, count); summaryGrid.appendChild(card);
+    });
+
+    const tableBody = document.getElementById('changes-table-body'); tableBody.replaceChildren();
+    document.getElementById('changes-empty').hidden = items.length !== 0;
+    document.getElementById('changes-table-wrap').hidden = items.length === 0;
+    items.forEach(item => {
+      const values = getItemValues(item);
+      const row = document.createElement('tr');
+      const typeCell = addTextCell(row, changeTypeLabels[item.changeType] || item.changeType || '기타');
+      const typeTag = document.createElement('span'); typeTag.className = 'tag'; typeTag.textContent = changeTypeLabels[item.changeType] || item.changeType || '기타';
+      typeCell.replaceChildren(typeTag);
+      addTextCell(row, values.managementNo);
+      addTextCell(row, values.itemNo);
+      addTextCell(row, values.facilityName);
+      addTextCell(row, makeBeforeAfter(item, values, 'before'));
+      addTextCell(row, makeBeforeAfter(item, values, 'after'));
+      const itemDiagrams = asArray(item.affectedDiagrams);
+      const diagramCell = document.createElement('td');
+      if (itemDiagrams.length) {
+        const list = document.createElement('ul');
+        itemDiagrams.forEach(diagram => {
+          const li = document.createElement('li');
+          li.textContent = [diagram.processCode, diagram.processWorkbook, diagram.sheetName].filter(Boolean).join(' · ');
+          list.appendChild(li);
+        });
+        diagramCell.appendChild(list);
+      } else diagramCell.textContent = '도면 정보 없음';
+      row.appendChild(diagramCell);
+      const statusCell = document.createElement('td');
+      const status = diagramStatus(itemDiagrams[0] || { mappingStatus: item.diagramMappingStatus, automaticMappingSucceeded: item.automaticMappingSucceeded });
+      const statusTag = document.createElement('span'); statusTag.className = `tag ${status.className}`; statusTag.textContent = reviews.length || asArray(item.reviewRequiredItems).length ? '검토 필요' : status.label;
+      statusCell.appendChild(statusTag);
+      const detail = document.createElement('p'); detail.textContent = status.label; statusCell.appendChild(detail);
+      row.appendChild(statusCell);
+      tableBody.appendChild(row);
+    });
+
+    const diagramBody = document.getElementById('diagrams-table-body'); diagramBody.replaceChildren();
+    document.getElementById('diagrams-empty').hidden = diagrams.length !== 0;
+    document.getElementById('diagrams-table-wrap').hidden = diagrams.length === 0;
+    diagrams.forEach(diagram => {
+      const row = document.createElement('tr');
+      addTextCell(row, diagram.processCode || '—');
+      addTextCell(row, diagram.processWorkbook || '도면 파일 미확인');
+      addTextCell(row, diagram.sheetName || '—');
+      const status = diagramStatus(diagram);
+      const kind = document.createElement('td'); const tag = document.createElement('span');
+      tag.className = `tag ${status.className}`; tag.textContent = status.label; kind.appendChild(tag); row.appendChild(kind);
+      addTextCell(row, diagram.automaticMappingSucceeded === true ? '예 (후보 식별)' : '아니오');
+      addTextCell(row, '도면 편집 전 담당자 확인 필요');
+      diagramBody.appendChild(row);
+    });
+
+    const reviewBox = document.getElementById('review-box'); reviewBox.replaceChildren();
+    const header = document.createElement('p'); header.className = 'status-line';
+    header.textContent = reviews.length ? `검토 필요 항목 ${reviews.length}건` : '추가 검토 항목 없음'; reviewBox.appendChild(header);
+    if (data.baselineModified === false) {
+      const baselineNote = document.createElement('p'); baselineNote.textContent = '공식 V1.0 기준 마스터 변경: 없음'; reviewBox.appendChild(baselineNote);
+    }
+    if (reviews.length) {
+      const list = document.createElement('ul');
+      reviews.forEach(review => { const li = document.createElement('li'); li.textContent = localizedReview(review); list.appendChild(li); });
+      reviewBox.appendChild(list);
+    }
+    if (issues.length) {
+      const issueTitle = document.createElement('p'); issueTitle.className = 'status-line'; issueTitle.textContent = `검증 오류/경고 상세 ${issues.length}건`; reviewBox.appendChild(issueTitle);
+      const issueList = document.createElement('ul');
+      issues.forEach(issue => { const li = document.createElement('li'); li.textContent = [issue.severity, issue.code, issue.fieldName, issue.detail].filter(Boolean).join(' · '); issueList.appendChild(li); });
+      reviewBox.appendChild(issueList);
+    }
+    document.getElementById('analysis-result').textContent = JSON.stringify(rawPayload, null, 2);
+    resultsSection.hidden = false;
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  testOnlyScenarioConfirm.addEventListener('change', () => {
+    prepareTestOnlyButton.disabled = !testOnlyScenarioConfirm.checked;
+  });
+
+  testOnlyConfirm.addEventListener('change', () => {
+    generateTestOnlyButton.disabled = !testOnlyConfirm.checked;
+  });
+
+  syntheticBalanceConfirm.addEventListener('change', () => {
+    if (generatedScenario !== null && generatedScenario !== syntheticBalanceConfirm.checked) {
+      generatedScenario = null;
+      downloadTestOnlyButton.hidden = true;
+      downloadTestOnlyButton.disabled = true;
+      generateTestOnlyButton.hidden = false;
+      generateTestOnlyButton.disabled = !testOnlyConfirm.checked;
+      testOnlyEditStatus.textContent = '시험값 선택이 바뀌었습니다. 선택한 시나리오로 통합 Excel을 다시 생성해 주세요.';
+    }
+  });
+
+  function responseFilename(response, fallback) {
+    const disposition = response.headers.get('Content-Disposition') || '';
+    const encoded = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+    if (encoded) { try { return decodeURIComponent(encoded[1]); } catch (_) { return fallback; } }
+    const plain = disposition.match(/filename="?([^";]+)"?/i);
+    return plain ? plain[1] : fallback;
+  }
+
+  async function responsePayload(response) {
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.message || payload.detail || payload.error || `요청 실패 (${response.status})`);
+    return payload;
+  }
+
+  prepareTestOnlyButton.addEventListener('click', async () => {
+    clearError(testOnlyEditError);
+    if (!activeTestOnlyChange || !testOnlyScenarioConfirm.checked) {
+      showError(testOnlyEditError, 'run 193의 설비와 가상 시험 연결 조건을 확인하고 계획 생성에 동의해 주세요.'); return;
+    }
+    const token = tokenInput.value;
+    if (!token) { showError(testOnlyEditError, '관리자 API 토큰을 입력해 주세요.'); return; }
+    prepareTestOnlyButton.disabled = true;
+    prepareTestOnlyButton.textContent = '시험 계획 생성 및 위치 확인 중…';
+      testOnlyEditStatus.textContent = '저장된 run/item 계획 중 지원 범위와 일치하는 계획을 찾는 중입니다.';
+    try {
+      const matchingPlansResponse = await fetch(`/api/admin/diagram-edit-plans/by-run/${encodeURIComponent(activeTestOnlyChange.changeRunId)}/items/${encodeURIComponent(activeTestOnlyChange.changeItemId)}`, {
+        headers: { 'X-Admin-Token': token, 'Cache-Control': 'no-store' }
+      });
+      const matchingPlans = await responsePayload(matchingPlansResponse);
+      const supportedPlan = matchingPlans.filter(candidate => candidate.planStatus === 'TEST_ONLY_READY'
+        && candidate.automaticEditAllowed === true && candidate.relationStatus === 'REVIEW_REQUIRED'
+        && candidate.target?.workbookFilename === 'PW-01 폐수처리공정 ★변경허가.xlsx'
+        && candidate.target?.sheetName === 'PW-01-05'
+        && candidate.testOnlyScenario?.enabled === true
+        && candidate.equipment?.managementNo === activeTestOnlyChange.managementNo)
+        .sort((left, right) => Number(right.planId) - Number(left.planId))[0];
+      let plan = supportedPlan;
+      if (!plan) {
+        const planResponse = await fetch('/api/admin/diagram-edit-plans', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token },
+          body: JSON.stringify({
+            changeRunId: activeTestOnlyChange.changeRunId,
+            changeItemId: activeTestOnlyChange.changeItemId,
+            testOnlyScenario: {
+              enabled: true, processCode: 'PW-01-05',
+              workbookFilename: 'PW-01 폐수처리공정 ★변경허가.xlsx', sheetName: 'PW-01-05',
+              predecessorManagementNo: 'C-PW15009', predecessorName: 'ACTIVATED CARBON FILTER',
+              successorManagementNo: 'C-PW15010', successorName: 'FINAL EFFLUENT TANK',
+              equipmentTypeLabel: '여과시설'
+            }
+          })
+        });
+        plan = await responsePayload(planResponse);
+      }
+      if (Number(plan.changeRunId) !== activeTestOnlyChange.changeRunId
+          || Number(plan.changeItemId) !== activeTestOnlyChange.changeItemId
+          || !plan.equipment
+          || plan.equipment.managementNo !== activeTestOnlyChange.managementNo
+          || plan.equipment.facilityName !== activeTestOnlyChange.facilityName) {
+        throw new Error('서버 계획의 run/item/설비가 현재 업로드 결과와 달라 확인을 중단했습니다.');
+      }
+      activeTestOnlyPlanId = Number(plan.planId);
+      testOnlyPlanDetails.replaceChildren();
+      const detailLines = [
+        `계획 ID: ${plan.planId} · run ${plan.changeRunId} / item ${plan.changeItemId}`,
+        `상태: ${plan.planStatus} / ${plan.relationStatus} · 자동 편집 가능: ${plan.automaticEditAllowed ? 'TEST_ONLY 한정' : '아니오'}`,
+        `대상: ${plan.target?.workbookFilename || '—'} · ${plan.target?.sheetName || '—'}`,
+        `삽입 범위: ${plan.insertion?.plannedCellRange || '분석 안 됨'} · 기준 행 ${plan.insertion?.insertBeforeRow ?? '—'} · 삽입 ${plan.insertion?.rowsInserted ?? '—'}행`,
+        `선행/후행 후보: ${plan.predecessorCandidate?.managementNo || '—'} → C-PW15020 → ${plan.successorCandidate?.managementNo || '—'}`,
+        `검토: ${asArray(plan.reviewRequiredItems).join(' / ') || '추가 검토 항목 없음'}`
+      ];
+      detailLines.forEach(text => { const p = document.createElement('p'); p.textContent = text; testOnlyPlanDetails.appendChild(p); });
+      testOnlyPlanDetails.hidden = false;
+      if (plan.planStatus !== 'TEST_ONLY_READY' || plan.automaticEditAllowed !== true
+          || plan.relationStatus !== 'REVIEW_REQUIRED' || plan.officialApprovalCreated !== false
+          || !plan.insertion || !plan.insertion.plannedCellRange) {
+        testOnlyConfirmRow.hidden = true;
+        generateTestOnlyButton.hidden = true;
+        throw new Error('계획이 TEST_ONLY_READY / REVIEW_REQUIRED 및 검증된 삽입위치 조건을 충족하지 않아 생성을 중단했습니다.');
+      }
+      testOnlyConfirmRow.hidden = false;
+      generateTestOnlyButton.hidden = false;
+      generateTestOnlyButton.disabled = true;
+      prepareTestOnlyButton.disabled = true;
+      prepareTestOnlyButton.textContent = '시험 대상·삽입 위치 확인 완료';
+      testOnlyEditStatus.textContent = '계획을 만들었습니다. 삽입 범위와 후보 연결을 검토하고 확인란을 선택해야 파일 생성이 활성화됩니다.';
+    } catch (error) {
+      showError(testOnlyEditError, `TEST_ONLY 계획 확인 실패: ${error.message}`);
+      testOnlyEditStatus.textContent = '';
+      prepareTestOnlyButton.disabled = false;
+      prepareTestOnlyButton.textContent = '시험 대상·삽입 위치 확인';
+    } finally {
+      tokenInput.value = '';
+    }
+  });
+
+  generateTestOnlyButton.addEventListener('click', async () => {
+    clearError(testOnlyEditError);
+    if (!activeTestOnlyPlanId || !testOnlyConfirm.checked) {
+      showError(testOnlyEditError, '계획의 실제 삽입 위치와 TEST_ONLY 연결 후보를 확인해 주세요.'); return;
+    }
+    const token = tokenInput.value;
+    if (!token) { showError(testOnlyEditError, '관리자 API 토큰을 입력해 주세요.'); return; }
+    generateTestOnlyButton.disabled = true;
+    generateTestOnlyButton.textContent = 'TEST_ONLY Excel 생성 중…';
+    downloadTestOnlyButton.hidden = true;
+    testOnlyEditStatus.textContent = `계획 ${activeTestOnlyPlanId}의 고정 V1.0 원본에서 새 시험 사본을 생성 중입니다.`;
+    try {
+      const generationResponse = await fetch(`/api/admin/diagram-edit-plans/${encodeURIComponent(activeTestOnlyPlanId)}/generate-integrated-test-only`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token },
+        body: JSON.stringify({ changeRunId: activeTestOnlyChange.changeRunId,
+          changeItemId: activeTestOnlyChange.changeItemId,
+          includeSyntheticTestValues: syntheticBalanceConfirm.checked })
+      });
+      const generated = await responsePayload(generationResponse);
+      if (generated.integrated !== true || Number(generated.planId) !== activeTestOnlyPlanId
+          || Number(generated.changeRunId) !== activeTestOnlyChange.changeRunId
+          || Number(generated.changeItemId) !== activeTestOnlyChange.changeItemId
+          || !/^[a-f0-9]{64}$/i.test(generated.sha256 || '') || Number(generated.sheetCount) !== 8) {
+        throw new Error('서버가 검증된 통합본 메타데이터를 반환하지 않아 다운로드를 열지 않았습니다.');
+      }
+      const filename = generated.filename || 'TEST_ONLY-integrated.xlsx';
+      downloadTestOnlyButton.hidden = false;
+      downloadTestOnlyButton.disabled = false;
+      generatedScenario = syntheticBalanceConfirm.checked;
+      const scenarioText = generatedScenario
+        ? '가상 TEST_ONLY 값 명시 선택 · 실제 물질수지 검증 불가'
+        : '가상값 미선택 · 실제 자료 검토만 · 물질수지 검증 불가';
+      testOnlyEditStatus.textContent = `통합 생성 완료 · plan ${activeTestOnlyPlanId} · ${filename} · ${scenarioText} · SHA-256 ${generated.sha256}`;
+    } catch (error) {
+      showError(testOnlyEditError, `TEST_ONLY 파일 생성 실패: ${error.message}`);
+      testOnlyEditStatus.textContent = '';
+    } finally {
+      tokenInput.value = '';
+      generateTestOnlyButton.textContent = 'TEST_ONLY 통합 Excel 생성';
+      generateTestOnlyButton.disabled = !testOnlyConfirm.checked;
+    }
+  });
+
+  downloadTestOnlyButton.addEventListener('click', async () => {
+    clearError(testOnlyEditError);
+    if (!activeTestOnlyPlanId) { showError(testOnlyEditError, '생성된 plan이 없습니다. 먼저 TEST_ONLY 수정 도면을 생성해 주세요.'); return; }
+    const token = tokenInput.value;
+    if (!token) { showError(testOnlyEditError, '다운로드를 위해 관리자 API 토큰을 다시 입력해 주세요.'); return; }
+    downloadTestOnlyButton.disabled = true;
+    downloadTestOnlyButton.textContent = '인증된 파일 다운로드 중…';
+    try {
+      if (generatedScenario === null) throw new Error('생성된 통합 파일이 없습니다. 먼저 통합 생성을 완료해 주세요.');
+      const response = await fetch(`/api/admin/diagram-edit-plans/${encodeURIComponent(activeTestOnlyPlanId)}/download-integrated?includeSyntheticTestValues=${generatedScenario}`, {
+        headers: { 'X-Admin-Token': token, 'Cache-Control': 'no-store' }
+      });
+      if (!response.ok) await responsePayload(response);
+      const filename = responseFilename(response, 'TEST_ONLY-C-PW15020-PW-01-05.xlsx');
+      const blob = await response.blob();
+      if (!blob.size) throw new Error('다운로드한 Excel 파일이 비어 있습니다.');
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl; link.download = filename; link.hidden = true;
+      document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      const downloadedHash = response.headers.get('X-Output-SHA256') || '해시 헤더 미확인';
+      testOnlyEditStatus.textContent = `통합 Excel 다운로드 완료 · ${filename} · SHA-256 ${downloadedHash} · 토큰은 URL/저장소에 기록하지 않았습니다.`;
+    } catch (error) {
+      showError(testOnlyEditError, `Excel 다운로드 실패: ${error.message}`);
+    } finally {
+      tokenInput.value = '';
+      downloadTestOnlyButton.disabled = false;
+      downloadTestOnlyButton.textContent = '통합 Excel 다운로드';
+    }
+  });
+
+  showDemoButton.addEventListener('click', () => {
+    clearError(errorMessage);
+    clearError(savedErrorMessage);
+    const demoResult = {
+      changeRunId: 'DEMO-001', baselineVersion: 'DEMO-BASELINE', analysisMode: 'DEMO / 합성 예시',
+      uploadedFilename: 'TEST_ONLY-가상-변경본.xlsx', baselineRecordCount: 12, uploadedRecordCount: 13,
+      addedCount: 1, removedCount: 0, modifiedCount: 0, movedCount: 0, validationIssueCount: 0,
+      baselineModified: false, diagramMappingStatus: 'PROCESS_CODE_ONLY_REVIEW', automaticMappingSucceeded: false,
+      changes: [{
+        changeType: 'ADDED', permitManagementNo: 'TEST-EQ-001', businessItemNo: 'TEST-ITEM-001',
+        facilityName: '가상 시험 설비', beforeValues: {},
+        afterValues: { '시설명': '가상 시험 설비', '공정코드': 'DEMO-01', '비고': 'TEST_ONLY 합성 예시' },
+        changedFields: {}, affectedDiagrams: [{ processCode: 'DEMO-01', processWorkbook: 'TEST_ONLY-demo-process.xlsx', sheetName: 'DEMO-1', mappingStatus: 'PROCESS_CODE_ONLY_REVIEW', automaticMappingSucceeded: false }],
+        reviewRequiredItems: ['가상 예시이며 실제 도면 매핑 또는 수정 승인이 아닙니다.']
+      }],
+      affectedDiagrams: [{ processCode: 'DEMO-01', processWorkbook: 'TEST_ONLY-demo-process.xlsx', sheetName: 'DEMO-1', mappingStatus: 'PROCESS_CODE_ONLY_REVIEW', automaticMappingSucceeded: false }],
+      reviewRequiredItems: ['가상 예시이며 실제 도면 매핑 또는 수정 승인이 아닙니다.'], validationIssues: []
+    };
+    renderResults(demoResult, { demoOnly: true, testOnly: true, explanation: '브라우저에 내장된 고정 합성 데이터. 서버 요청과 DB 접근 없음.' }, true);
+  });
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault(); clearError(errorMessage); savedErrorMessage.hidden = true; resultsSection.hidden = true;
+    if (!fileInput.files || fileInput.files.length !== 1) { showError(errorMessage, '변경된 전체 목록 Excel 파일 하나를 선택해 주세요.'); return; }
+    const token = tokenInput.value;
+    const body = new FormData(); body.append('masterFile', fileInput.files[0]);
+    uploadButton.disabled = true; uploadButton.textContent = '변경 내용 분석 중…';
+    try {
+      const response = await fetch('/api/admin/master-diff', { method: 'POST', headers: { 'X-Admin-Token': token }, body });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.message || payload.detail || payload.error || `분석 요청 실패 (${response.status})`);
+      renderResults(payload, payload);
+    } catch (error) {
+      showError(errorMessage, `분석 요청을 완료하지 못했습니다.\n${error.message}`);
+    } finally {
+      tokenInput.value = ''; uploadButton.disabled = false; uploadButton.textContent = 'V1.0 기준으로 분석';
+    }
+  });
+
+  savedForm.addEventListener('submit', async event => {
+    event.preventDefault(); clearError(savedErrorMessage); clearError(errorMessage); resultsSection.hidden = true;
+    const runId = document.getElementById('saved-run-id').value;
+    const token = tokenInput.value;
+    if (!token) { showError(savedErrorMessage, '먼저 관리자 API 토큰을 입력해 주세요.'); return; }
+    loadRunButton.disabled = true; loadRunButton.textContent = '저장 결과 불러오는 중…';
+    try {
+      const [baseline, run, changes, issues] = await Promise.all([
+        apiGet('/api/admin/baselines/current', token),
+        apiGet(`/api/admin/change-runs/${encodeURIComponent(runId)}`, token),
+        apiGet(`/api/admin/change-runs/${encodeURIComponent(runId)}/items`, token),
+        apiGet(`/api/admin/change-runs/${encodeURIComponent(runId)}/issues`, token)
+      ]);
+      const data = {
+        changeRunId: run.changeRunId, baselineVersion: baseline.version, analysisMode: run.analysisMode,
+        uploadedFilename: run.filename, baselineRecordCount: baseline.equipmentCount, uploadedRecordCount: run.totalRecords,
+        addedCount: run.addedCount, removedCount: run.removedCount, modifiedCount: run.modifiedCount,
+        movedCount: run.movedCount, validationIssueCount: run.validationIssueCount,
+        baselineModified: null, diagramMappingStatus: run.diagramMappingStatus,
+        automaticMappingSucceeded: run.automaticMappingSucceeded,
+        affectedDiagrams: asArray(run.affectedDiagrams), reviewRequiredItems: asArray(run.reviewRequiredItems),
+        changes: changes.map(item => ({ ...item, changedFields: asObject(item.changedFields), beforeValues: asObject(item.beforeValues), afterValues: asObject(item.afterValues), affectedDiagrams: asArray(item.affectedDiagrams), reviewRequiredItems: asArray(item.reviewRequiredItems) })),
+        validationIssues: issues
+      };
+      renderResults(data, { loadedFromPersistedRun: true, source: { run, changes, issues, baseline } });
+    } catch (error) {
+      showError(savedErrorMessage, `저장된 분석 결과를 불러오지 못했습니다.\n${error.message}`);
+    } finally {
+      tokenInput.value = ''; loadRunButton.disabled = false; loadRunButton.textContent = '저장 결과 불러오기';
+    }
+  });
+</script>
+</body>
+</html>

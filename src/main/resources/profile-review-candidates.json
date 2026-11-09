@@ -1,0 +1,54 @@
+[
+  {
+    "candidateId": "P-02-01-TOP-WC-C3379F2E-REVIEW",
+    "processCode": "P-02",
+    "sheetName": "P-02-01(TOP)",
+    "managementNo": "I-PP21005",
+    "sourceSha256": "28716f1f26433d825e2e3220b9623a7d102b4454b45f4f106ab175a2348d9f76",
+    "workingCopySha256": "c3379f2eca9d235af994045be02bb1cae650e22baf75cb8886456848c881a3d2",
+    "boxRange": "I86:Z93",
+    "status": "REVIEW_REQUIRED",
+    "registered": false,
+    "activationAllowed": false,
+    "approvalEvidencePresent": false,
+    "templateBoxRange": "I581:Z588",
+    "existingProfileId": "P-02-01-TOP-V1",
+    "existingProfileVersion": "1.0.0",
+    "expectedLiveMerges": [{"firstRow": 1, "firstColumn": 13, "lastRow": 7, "lastColumn": 17}],
+    "templateRelativeMerges": [{"firstRow": 1, "firstColumn": 12, "lastRow": 7, "lastColumn": 17}],
+    "fields": [
+      {"field": "managementNo", "cellAddress": "I86", "observedCurrentValue": "I-PP21005", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I581", "proposedForReview": false},
+      {"field": "equipmentTypeLabel", "cellAddress": "I88", "observedCurrentValue": "펄프·종이 및 종이제품 제조시설(스크린)", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I583", "proposedForReview": true},
+      {"field": "equipmentName", "cellAddress": "I89", "observedCurrentValue": "131 MULTI SORTER#1", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I584", "proposedForReview": true},
+      {"field": "businessItemNo", "cellAddress": "I90", "observedCurrentValue": "S-131-007", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I585", "proposedForReview": true},
+      {"field": "capacity", "cellAddress": "I91", "observedCurrentValue": "45kw", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I586", "proposedForReview": true},
+      {"field": "quantity", "cellAddress": "I92", "observedCurrentValue": "1ea", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "I587", "proposedForReview": true}
+    ]
+  },
+  {
+    "candidateId": "P-01-01-TOP-WC-A2AB5194-REVIEW",
+    "processCode": "P-01",
+    "sheetName": "P-01-01(TOP)",
+    "managementNo": "I-PP11001",
+    "sourceSha256": "426cbd28de4a66a2201f1cffd8f4aff87cca1b37c3daab0be10be9aa09faf391",
+    "workingCopySha256": "a2ab51944a4c2d0d77cc91e675c6e36199c426bbf87e8a1f598cbb85986907bb",
+    "boxRange": "J4:AA20",
+    "status": "REVIEW_REQUIRED",
+    "registered": false,
+    "activationAllowed": false,
+    "approvalEvidencePresent": false,
+    "templateBoxRange": "J4:AA20",
+    "existingProfileId": "P-01-01-TOP-REVIEW-V1",
+    "existingProfileVersion": "1.0.0",
+    "expectedLiveMerges": [],
+    "templateRelativeMerges": [],
+    "fields": [
+      {"field": "managementNo", "cellAddress": "J4", "observedCurrentValue": "I-PP11001", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J4", "proposedForReview": false},
+      {"field": "equipmentTypeLabel", "cellAddress": "J6", "observedCurrentValue": "펄프·종이 및 종이제품 제조시설(펄퍼)", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J6", "proposedForReview": true},
+      {"field": "equipmentName", "cellAddress": "J7", "observedCurrentValue": "40㎥ PULPER (TOP, IV)", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J7", "proposedForReview": true},
+      {"field": "businessItemNo", "cellAddress": "J8", "observedCurrentValue": "P-135-001", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J8", "proposedForReview": true},
+      {"field": "capacity", "cellAddress": "J9", "observedCurrentValue": "40㎥", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J9", "proposedForReview": true},
+      {"field": "quantity", "cellAddress": "J10", "observedCurrentValue": "1ea", "valueSource": "exact working-copy SHA snapshot", "existingProfileReferenceCell": "J10", "proposedForReview": true}
+    ]
+  }
+]

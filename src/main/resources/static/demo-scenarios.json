@@ -1,0 +1,74 @@
+{
+  "mode": "RECORDED_SOLVER_TEST_REPLAY",
+  "liveCalculation": false,
+  "description": "실제 테스트에서 기존 directed-network solver가 생성한 TEST_ONLY 결과를 시연 화면에서 재생합니다. 브라우저 선택은 solver API를 호출하지 않습니다.",
+  "matrixWorkbook": "/demo-scenario-matrix.xlsx",
+  "matrixSha256": "8844aac8d0fd99f3789271b4008becebe37bf74f78a65a1f7f780246fa6a63f1",
+  "adapterReportSha256": "77cc01555719904da3e3a010d6d060e4160d9a239e893f5843edf2777a087aaa",
+  "scenarios": [
+    {
+      "id": "A-20",
+      "label": "공정 간 이동 20",
+      "status": "CALCULATED",
+      "transfer": 20.0,
+      "p2Downstream": 80.0,
+      "p1Downstream": 120.0,
+      "externalBalance": "process wastewater ton/day: 200/200/0 [BALANCED]",
+      "constraint": null
+    },
+    {
+      "id": "B-10",
+      "label": "공정 간 이동 10",
+      "status": "CALCULATED",
+      "transfer": 10.0,
+      "p2Downstream": 90.0,
+      "p1Downstream": 110.0,
+      "externalBalance": "process wastewater ton/day: 200/200/0 [BALANCED]",
+      "constraint": null
+    },
+    {
+      "id": "B-50",
+      "label": "공정 간 이동 50",
+      "status": "CALCULATED",
+      "transfer": 50.0,
+      "p2Downstream": 50.0,
+      "p1Downstream": 150.0,
+      "externalBalance": "process wastewater ton/day: 200/200/0 [BALANCED]",
+      "constraint": null
+    },
+    {
+      "id": "C-120",
+      "label": "과다 이동 120",
+      "status": "CONSTRAINT_VIOLATION",
+      "transfer": 120.0,
+      "p2Downstream": -20.0,
+      "p1Downstream": 220.0,
+      "externalBalance": "process wastewater ton/day: 200/200/0 [BALANCED]",
+      "constraint": "NEGATIVE_FLOW_CONSTRAINT_VIOLATION:P2-X-P2-OUT:-20"
+    },
+    {
+      "id": "D-20",
+      "label": "공정 간 재순환 20",
+      "status": "CALCULATED",
+      "recycleSetpoint": 20.0,
+      "externalBalance": "process wastewater ton/day: 100/100/0 [BALANCED]",
+      "constraint": null
+    },
+    {
+      "id": "D-30",
+      "label": "공정 간 재순환 30",
+      "status": "CALCULATED",
+      "recycleSetpoint": 30.0,
+      "externalBalance": "process wastewater ton/day: 100/100/0 [BALANCED]",
+      "constraint": null
+    }
+  ],
+  "residualDelta": {
+    "id": "I-after-8",
+    "baselineResidual": 5.0,
+    "afterResidual": 8.0,
+    "delta": 3.0,
+    "status": "RESIDUAL_UNRESOLVED",
+    "notice": "합성 TEST_ONLY 예시. 기존/신규 오류 확정이 아니며 원인·인과관계는 미확정."
+  }
+}

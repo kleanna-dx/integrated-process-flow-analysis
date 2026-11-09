@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" href="data:,">
+  <title>통합공정도 자동화 프로그램 — 개발 성과 시연</title>
+  <style>
+    :root { font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; color: #111; background: #f1f3f6; color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 22px 14px 48px; }
+    main { max-width: 1180px; margin: 0 auto; }
+    header, section { background: #fff; border: 1px solid #d7dce3; border-radius: 12px; padding: 22px; margin: 0 0 16px; }
+    h1 { font-size: 1.65rem; margin: 0 0 8px; } h2 { font-size: 1.18rem; margin: 0 0 14px; } h3 { font-size: 1rem; }
+    p, li { line-height: 1.55; } p { margin: 8px 0; }
+    .lead { font-size: 1.05rem; } .notice { border-left: 5px solid #956700; background: #fff7df; padding: 12px 14px; border-radius: 6px; margin-top: 14px; }
+    .notice strong { display: block; margin-bottom: 4px; } .blue { border-left-color: #173f72; background: #eef5fc; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(140px,1fr)); gap: 10px; margin: 14px 0; }
+    .metric { border: 1px solid #cbd2dc; border-radius: 8px; padding: 13px; background: #f8f9fb; min-height: 84px; }
+    .metric b { display: block; font-size: .86rem; } .metric strong { display: block; font-size: 1.45rem; margin-top: 6px; }
+    .row { display:flex; flex-wrap:wrap; align-items:end; gap:10px; margin:12px 0; }
+    label { display:block; font-weight:700; margin:12px 0 6px; }
+    input[type=password],input[type=file],select { display:block; width:100%; max-width:520px; min-height:42px; padding:9px 11px; font:inherit; border:1px solid #8994a2; border-radius:6px; background:#fff; }
+    input[type=checkbox] { width:19px; height:19px; vertical-align:middle; }
+    button,.button { display:inline-block; min-height:42px; padding:9px 14px; border:1px solid #111; border-radius:6px; color:#fff; background:#173f72; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
+    .secondary { background:#fff; color:#111; } button:disabled { opacity:.55; cursor:not-allowed; }
+    .tag { display:inline-block; padding:3px 9px; border:1px solid #637080; background:#f8fafc; border-radius:999px; font-size:.82rem; font-weight:700; }
+    .tag.test { color:#173f72; border-color:#49627b; background:#edf4fb; } .tag.warn { color:#513800; border-color:#956700; background:#fff4d6; }
+    .status { font-weight:700; min-height:1.4em; } .error { color:#8d0000; white-space:pre-wrap; }
+    .table-wrap { overflow:auto; border:1px solid #cbd2dc; border-radius:6px; margin-top:12px; }
+    table { border-collapse:collapse; width:100%; min-width:720px; } th,td { text-align:left; vertical-align:top; border-bottom:1px solid #d9dee5; padding:9px; line-height:1.4; } th { background:#edf1f6; position:sticky; top:0; }
+    .small { font-size:.9rem; color:#222; } .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    details { margin-top:12px; } summary { cursor:pointer; font-weight:700; } pre { white-space:pre-wrap; overflow:auto; background:#f6f7f9; border:1px solid #d7dce3; border-radius:6px; padding:12px; max-height:360px; }
+    [hidden] { display:none !important; } .checks { display:flex; align-items:flex-start; gap:8px; margin:12px 0; }
+    .checks input { flex:0 0 auto; margin-top:4px; } footer { padding:8px 4px; font-size:.88rem; }
+    @media(max-width:760px){body{padding:12px 8px 30px}header,section{padding:16px}.grid{grid-template-columns:repeat(2,minmax(120px,1fr))}}
+    @media print{body{background:#fff;padding:0}header,section{break-inside:avoid}.actions,input,button{display:none!important}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="tag test">개발 성과 시연 · TEST_ONLY</span>
+    <h1>통합공정도 자동화 프로그램 — 개발 성과 시연</h1>
+    <p class="lead">기준자료 비교, 제한된 설비 변경 사본 생성, 시험 연결망 계산 결과와 현장 검토 후보를 확인합니다.</p>
+    <div class="notice"><strong>시연 범위와 한계</strong>전체 공정 연결망·전체 물질수지 검증은 완료되지 않았습니다. 공식 V1.0 원본은 읽기 전용이며, 검토 후보는 승인이나 계산망 편입이 아닙니다. 계산 시나리오 선택은 실제 solver 결과 Excel 재생이며 페이지에서 새 계산을 수행하지 않습니다.</div>
+    <div class="grid" aria-label="기준자료 현황">
+      <div class="metric"><b>공식 공정도 문서</b><strong>15</strong><span class="small">V1.0 기준 16개 중</span></div>
+      <div class="metric"><b>공식 설비 목록</b><strong>1</strong><span class="small">전체 목록.xlsx</span></div>
+      <div class="metric"><b>공식 설비 행</b><strong>1,332</strong><span class="small">최근 DB COUNT(*) 조회</span></div>
+      <div class="metric"><b>PW-01-05 증빙 확인 연결</b><strong>0</strong><span class="small">CONFIRMED 관계도 0</span></div>
+    </div>
+    <p class="small">현재 기준자료 무결성: V1.0 XLSX 16/16 로컬·manifest·MariaDB metadata·BLOB SHA-256 일치. 팀원 XLSM SHA-256은 시연 파일에서 다시 대조합니다.</p>
+    <nav class="actions" aria-label="기존 기능">
+      <a class="button secondary" href="/master-diff.html">기존 설비 변경·통합 도면 화면 열기</a>
+      <a class="button secondary" href="#candidate-section">PW-01-05 후보 검토로 이동</a>
+    </nav>
+  </header>
+
+  <section id="change-section">
+    <h2>① 설비 변경 검토 및 TEST_ONLY 통합 공정도</h2>
+    <p>기존 Step 6-5 기능을 재사용합니다. 현재 지원 사례는 <b>run 193 / item 217 / plan 33 / C-PW15020 / PW-01-05</b> 한 건입니다. 범용 편집 기능이 아닙니다.</p>
+    <p>기존 run·설비·도면·계획 상태를 서버에서 재검증한 뒤 생성합니다. 관리자 인증이 필요하며, 새 TEST_ONLY 출력은 별도 저장 이력으로 추가되고 공식 원본은 변경하지 않습니다.</p>
+    <label class="checks"><input id="synthetic-values" type="checkbox"><span>합성 예시 유량(유입 100, 후단 97, 폐수 2.5, 폐기물 0.5 ton/day)을 수정 Excel에 포함합니다. 미선택 시 실제자료 검증 불가 표지만 표시합니다.</span></label>
+    <label for="change-token">이번 요청의 관리자 토큰</label>
+    <input id="change-token" type="password" autocomplete="off" aria-describedby="change-token-note">
+    <p id="change-token-note" class="small">토큰은 요청 헤더로만 전송하고 브라우저 저장소에 기록하지 않습니다. 각 요청 후 입력란을 비웁니다.</p>
+    <div class="actions">
+      <button id="generate-integrated">run 193 / item 217 / plan 33 검증 후 Excel 생성</button>
+      <button id="download-integrated" class="secondary" disabled>생성된 Excel 다운로드</button>
+    </div>
+    <p id="change-status" class="status" role="status" aria-live="polite"></p>
+    <p id="change-error" class="error" role="alert" hidden></p>
+    <div id="change-proof" class="notice blue" hidden></div>
+  </section>
+
+  <section id="simulation-section">
+    <h2>② 합성 TEST_ONLY 연결망 결과</h2>
+    <div class="notice blue"><strong>기록된 solver test 결과 재생 — 실시간 계산 아님</strong>표시값은 기존 directed-network solver가 생성한 `TEST_ONLY-network-scenario-matrix.xlsx`와 Step 7-4B 통합 검증 결과에서 가져옵니다. 시나리오 선택은 브라우저에서 저장된 결과를 바꿔 보여줄 뿐 solver API를 호출하지 않습니다.</div>
+    <label for="scenario-select">기록된 합성 시나리오 선택</label>
+    <select id="scenario-select"></select>
+    <div class="grid" id="scenario-metrics" aria-live="polite"></div>
+    <p id="scenario-status" class="status"></p>
+    <div class="notice" id="residual-example"></div>
+    <div class="actions">
+      <a class="button secondary" href="/demo-scenario-matrix.xlsx" download>solver 생성 8개 시나리오 Excel 다운로드</a>
+    </div>
+  </section>
+
+  <section id="candidate-section">
+    <h2>③ 팀원 물질수지 DB·공식 도면 연결 후보 검토</h2>
+    <p>팀원 XLSM 3,082개 연결행을 읽기 전용 비교하고, PW-01-05 후보 33건을 표시합니다. 검토 Excel에는 기존 현장 파일 누락 8건과 참고전용 행 6건도 후보와 분리해 표시합니다. preview는 계산이나 DB 검토이력 저장이 아닙니다. 6시트 Excel 생성은 snapshot/candidate source를 생성하지만 검토 case/history, 공식 관계 승인, equipment_flow는 쓰지 않습니다.</p>
+    <div class="grid">
+      <div class="metric"><b>팀원 XLSM 연결 행</b><strong id="team-rows">미조회</strong></div>
+      <div class="metric"><b>PW-01-05 후보</b><strong id="candidate-count">미조회</strong></div>
+      <div class="metric"><b>증빙 검증 완료</b><strong id="verified-count">미조회</strong></div>
+      <div class="metric"><b>공식 CONFIRMED</b><strong id="confirmed-count">0</strong></div>
+    </div>
+    <label for="candidate-token">이번 요청의 관리자 토큰</label>
+    <input id="candidate-token" type="password" autocomplete="off">
+    <label for="team-xlsm">읽기 전용 팀원 물질수지 XLSM</label>
+    <input id="team-xlsm" type="file" accept=".xlsm,application/vnd.ms-excel.sheet.macroEnabled.12">
+    <div class="actions">
+      <button id="inspect-candidates">DB·도면 비교 및 후보 목록 조회</button>
+      <button id="download-review-workbook" class="secondary" disabled>6시트 연결 검토 Excel 생성·다운로드</button>
+    </div>
+    <p id="candidate-status" class="status" role="status" aria-live="polite"></p>
+    <p id="candidate-error" class="error" role="alert" hidden></p>
+    <div class="table-wrap" id="candidate-table-wrap" hidden>
+      <table><thead><tr><th>DB 행</th><th>출발→도착</th><th>도면 셀 힌트</th><th>connector 힌트</th><th>검토 상태</th></tr></thead><tbody id="candidate-rows"></tbody></table>
+    </div>
+    <div class="actions" id="review-preview-controls" hidden>
+      <label for="review-xlsx">기존/생성한 6시트 현장검토 Excel preview</label>
+      <input id="review-xlsx" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+      <button id="preview-review">업로드 미리보기·입력 검증</button>
+    </div>
+    <p id="preview-status" class="status" role="status" aria-live="polite"></p>
+    <p id="preview-error" class="error" role="alert" hidden></p>
+    <pre id="preview-result" hidden></pre>
+    <p class="small">실제 담당자 검토 결과가 없는 현재 DB에서는 import 저장을 시연하지 않습니다. 저장 관련 합성 검증은 트랜잭션 rollback 통합 테스트에서만 수행되며 운영/담당자 이력으로 남지 않습니다.</p>
+  </section>
+
+  <section>
+    <h2>④ 현재 상태와 미완성 범위</h2>
+    <div class="table-wrap"><table><thead><tr><th>구분</th><th>현재 확인된 상태</th><th>이번 시연에서의 의미</th></tr></thead><tbody>
+      <tr><td>공식 V1.0 원본</td><td>16개 hash 대조 일치</td><td>읽기 전용 기준. 생성 Excel은 별도 TEST_ONLY 사본</td></tr>
+      <tr><td>설비 변경 → 도면</td><td>저장된 run/item/plan 1건을 검증·생성 가능</td><td>run 193 / item 217 / plan 33에 한정</td></tr>
+      <tr><td>물질수지 계산</td><td>합성 solver 회귀 결과 존재</td><td>실시간 시뮬레이션 API가 아닌 기록된 결과 재생</td></tr>
+      <tr><td>연결 후보</td><td>33건, 증빙 VERIFIED 0, 공식 CONFIRMED 0</td><td>후보 검토와 Excel preview까지만; 실제 전체 연결망 아님</td></tr>
+      <tr><td>전체 공정 적용</td><td>미완료</td><td>현장 연결·범위·단위·기간 증거 수집 후 단계적으로 보완</td></tr>
+    </tbody></table></div>
+  </section>
+  <footer>로컬/샌드박스 시연용입니다. 외부 공개·운영 배포 대상이 아닙니다. 정적 페이지에는 공식 도면/원본 DB 행을 포함하지 않으며 상세 후보 API는 기존 관리자 토큰을 요구합니다.</footer>
+</main>
+<script>
+  const byId = id => document.getElementById(id);
+  const setError = (id, message='') => { const e=byId(id); e.textContent=message; e.hidden=!message; };
+  const tokenFor = id => { const el=byId(id), token=el.value.trim(); el.value=''; return token; };
+  const apiError = async response => { const body=await response.json().catch(()=>({})); return new Error(body.message||body.detail||body.error||`요청 실패 (HTTP ${response.status})`); };
+  const fileNameFrom = response => {
+    const d=response.headers.get('Content-Disposition')||'';
+    const e=d.match(/filename\*=UTF-8''([^;]+)/i); if(e){try{return decodeURIComponent(e[1]);}catch(_){}}
+    const p=d.match(/filename="?([^";]+)"?/i); return p?p[1]:'TEST_ONLY-output.xlsx';
+  };
+  const saveBlob = (blob,name) => { const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.hidden=true;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500); };
+
+  let scenarioData=null;
+  async function loadScenarios(){
+    try {
+      const r=await fetch('/demo-scenarios.json',{cache:'no-store'}); if(!r.ok)throw new Error('시연 결과 JSON을 읽지 못했습니다.');
+      scenarioData=await r.json(); const select=byId('scenario-select');
+      scenarioData.scenarios.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=`${s.label} · ${s.status}`;select.append(o);});
+      select.addEventListener('change',renderScenario); renderScenario();
+      const d=scenarioData.residualDelta;
+      byId('residual-example').innerHTML='';
+      const strong=document.createElement('strong');strong.textContent='잔차 차이도 합성 TEST_ONLY 예시입니다.';
+      const text=document.createElement('p');text.textContent=`기준 잔차 +${d.baselineResidual} → 변경 후 +${d.afterResidual} = 변화 +${d.delta}. 상태 ${d.status}. ${d.notice}`;
+      byId('residual-example').append(strong,text);
+      if(scenarioData.liveCalculation!==false)throw new Error('기록 결과를 실시간 계산으로 표시할 수 없습니다.');
+    } catch(e){byId('scenario-status').textContent=e.message;}
+  }
+  function renderScenario(){
+    if(!scenarioData)return;const x=scenarioData.scenarios.find(s=>s.id===byId('scenario-select').value);if(!x)return;
+    const items=x.id==='C-120'?[['이동량',x.transfer],['P2 후단',x.p2Downstream],['P1 후단',x.p1Downstream],['solver 상태',x.status]]:
+      x.id.startsWith('D-')?[['재순환량',x.recycleSetpoint],['외부 유입',100],['외부 유출',100],['solver 상태',x.status]]:
+      [['공정 간 이동',x.transfer],['P2 후단',x.p2Downstream],['P1 후단',x.p1Downstream],['solver 상태',x.status]];
+    const grid=byId('scenario-metrics');grid.replaceChildren();items.forEach(([k,v])=>{const d=document.createElement('div');d.className='metric';const b=document.createElement('b');b.textContent=k;const s=document.createElement('strong');s.textContent=String(v);d.append(b,s);grid.append(d);});
+    byId('scenario-status').textContent=`${x.id} · ${x.externalBalance}${x.constraint?' · 제약: '+x.constraint:''}`;
+  }
+  loadScenarios();
+
+  let integratedScenario=null;
+  byId('generate-integrated').addEventListener('click',async()=>{
+    setError('change-error');byId('download-integrated').disabled=true;
+    const token=tokenFor('change-token');if(!token){setError('change-error','요청할 때마다 관리자 토큰을 입력하세요.');return;}
+    byId('change-status').textContent='저장된 run/item/plan을 다시 검증한 뒤 별도 TEST_ONLY workbook을 생성합니다.';
+    try{
+      const r=await fetch('/api/admin/diagram-edit-plans/33/generate-integrated-test-only',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Token':token,'Cache-Control':'no-store'},body:JSON.stringify({changeRunId:193,changeItemId:217,includeSyntheticTestValues:byId('synthetic-values').checked})});
+      if(!r.ok)throw await apiError(r);const x=await r.json();
+      if(x.integrated!==true||x.planId!==33||x.changeRunId!==193||x.changeItemId!==217||x.sheetCount!==8||!/^([a-f0-9]{64})$/i.test(x.sha256||''))throw new Error('기대한 저장 계획과 연결되지 않아 다운로드를 막았습니다.');
+      integratedScenario=byId('synthetic-values').checked;byId('download-integrated').disabled=false;
+      byId('change-status').textContent=`생성 완료: ${x.filename} · SHA-256 ${x.sha256} · ${integratedScenario?'합성 수치를 포함':'합성 수치 미포함'}`;
+      const proof=byId('change-proof');proof.hidden=false;proof.textContent='실제 제한 사례: C-PW15020 / PW-01-05. 출력은 새 TEST_ONLY 파일이며 공식 V1.0 원본 변경·CONFIRMED 승인 생성은 수행하지 않습니다.';
+    }catch(e){setError('change-error',e.message);byId('change-status').textContent='';}
+  });
+  byId('download-integrated').addEventListener('click',async()=>{
+    setError('change-error');if(integratedScenario===null){setError('change-error','먼저 통합 Excel 생성을 완료하세요.');return;}
+    const token=tokenFor('change-token');if(!token){setError('change-error','다운로드 요청에 관리자 토큰이 필요합니다.');return;}
+    try{const r=await fetch(`/api/admin/diagram-edit-plans/33/download-integrated?includeSyntheticTestValues=${integratedScenario}`,{headers:{'X-Admin-Token':token,'Cache-Control':'no-store'}});if(!r.ok)throw await apiError(r);const hash=r.headers.get('X-Output-SHA256');const blob=await r.blob();if(!blob.size)throw new Error('다운로드 파일이 비었습니다.');saveBlob(blob,fileNameFrom(r));byId('change-status').textContent=`다운로드 완료 · ${fileNameFrom(r)} · SHA-256 ${hash||'응답 헤더 없음'}`;}catch(e){setError('change-error',e.message);}
+  });
+
+  const expectedTeamSourceSha256='565a9bd4c86f39adc959dd2ef8ab13c2ac7aac2efe0df4bc5e41f353b3a7daaa';
+  let candidatePreview=null;
+  byId('inspect-candidates').addEventListener('click',async()=>{
+    setError('candidate-error');byId('download-review-workbook').disabled=true;
+    const file=byId('team-xlsm').files?.[0];const token=tokenFor('candidate-token');
+    if(!file){setError('candidate-error','원본 해시가 알려진 팀원 XLSM 파일을 선택하세요.');return;}
+    if(!token){setError('candidate-error','요청할 때마다 관리자 토큰을 입력하세요.');return;}
+    const data=new FormData();data.append('teamWorkbook',file);
+    byId('candidate-status').textContent='XLSM과 잠금 V1.0 마스터를 읽기 전용 비교 중입니다.';
+    try{
+      const r=await fetch('/api/admin/step7-3/pw-01-05/network-review/candidate-preview',{method:'POST',headers:{'X-Admin-Token':token,'Cache-Control':'no-store'},body:data});
+      if(!r.ok)throw await apiError(r);candidatePreview=await r.json();
+      if(candidatePreview.sourceSha256!==expectedTeamSourceSha256)throw new Error('선택한 XLSM이 검증된 팀원 원본 hash와 다릅니다. 이번 시연에서는 후보 비교를 중단합니다.');
+      if(candidatePreview.pw0105CandidateCount!==33||candidatePreview.candidates.length!==33)throw new Error(`기대 후보 33건과 일치하지 않습니다 (${candidatePreview.candidates.length}).`);
+      byId('team-rows').textContent=Number(candidatePreview.teamConnectionRows).toLocaleString('ko-KR');
+      byId('candidate-count').textContent=String(candidatePreview.pw0105CandidateCount);
+      byId('verified-count').textContent=String(candidatePreview.evidenceVerifiedCandidateCount);
+      byId('confirmed-count').textContent=String(candidatePreview.officialConfirmedRelationCount);
+      const body=byId('candidate-rows');body.replaceChildren();candidatePreview.candidates.forEach(c=>{
+        const tr=document.createElement('tr');
+        const connector=(c.connectorHints||[]).map(h=>`shape ${h.shapeId} ${h.anchorStartCell}→${h.anchorEndCell}`).join('; ')||'위치 힌트 없음';
+        const values=[c.dbSourceRow,`${c.sourceEquipment} → ${c.targetEquipment}`,`${c.sourceCellHints||'—'} → ${c.targetCellHints||'—'}`,connector,`${c.candidateStatus} / ${c.evidenceStatus} / ${c.comparisonStatus}`];
+        values.forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td);});body.append(tr);
+      });
+      byId('candidate-table-wrap').hidden=false;byId('review-preview-controls').hidden=false;byId('download-review-workbook').disabled=false;
+      byId('candidate-status').textContent=`비교 완료 · XLSM 연결행 ${candidatePreview.teamConnectionRows} · 후보 ${candidatePreview.pw0105CandidateCount} · 실제 증빙 VERIFIED ${candidatePreview.evidenceVerifiedCandidateCount} · 공식 CONFIRMED ${candidatePreview.officialConfirmedRelationCount}. ${candidatePreview.notice}`;
+    }catch(e){candidatePreview=null;setError('candidate-error',e.message);byId('candidate-status').textContent='';}
+  });
+  byId('download-review-workbook').addEventListener('click',async()=>{
+    setError('candidate-error');const file=byId('team-xlsm').files?.[0];const token=tokenFor('candidate-token');
+    if(!candidatePreview||!file){setError('candidate-error','먼저 후보 preview를 성공시키세요.');return;}
+    if(!token){setError('candidate-error','다운로드 요청에 관리자 토큰이 필요합니다.');return;}
+    const data=new FormData();data.append('teamWorkbook',file);
+    try{const r=await fetch('/api/admin/step7-3/pw-01-05/network-review-workbook',{method:'POST',headers:{'X-Admin-Token':token,'Cache-Control':'no-store'},body:data});if(!r.ok)throw await apiError(r);const blob=await r.blob();if(!blob.size)throw new Error('검토 Excel이 비었습니다.');saveBlob(blob,fileNameFrom(r));byId('candidate-status').textContent='6시트 검토 Excel 다운로드 완료. snapshot/candidate source만 준비했으며 담당자 review case/history/승인 기록은 만들지 않았습니다.';}catch(e){setError('candidate-error',e.message);}
+  });
+  byId('preview-review').addEventListener('click',async()=>{
+    setError('preview-error');byId('preview-result').hidden=true;
+    const file=byId('review-xlsx').files?.[0];const token=tokenFor('candidate-token');
+    if(!file){setError('preview-error','6시트 .xlsx를 선택하세요.');return;}if(!token){setError('preview-error','요청할 때마다 관리자 토큰을 입력하세요.');return;}
+    const data=new FormData();data.append('reviewWorkbook',file);
+    try{const r=await fetch('/api/admin/step7-3/pw-01-05/network-review/preview',{method:'POST',headers:{'X-Admin-Token':token,'Cache-Control':'no-store'},body:data});if(!r.ok)throw await apiError(r);const x=await r.json();byId('preview-result').textContent=JSON.stringify(x,null,2);byId('preview-result').hidden=false;byId('preview-status').textContent=`Preview ${x.valid?'통과':'차단'} · 후보 ${x.candidateCount} · 담당자 입력 ${x.reviewInputCount} · route ${x.routeCount} · issue ${x.issues?.length||0}. 저장은 하지 않았습니다.`;}catch(e){setError('preview-error',e.message);}
+  });
+</script>
+</body>
+</html>

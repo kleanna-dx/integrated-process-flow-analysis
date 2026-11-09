@@ -1,3 +1,9 @@
+# Java / Maven
+/target/
+*.class
+*.jar
+!/.mvn/wrapper/maven-wrapper.jar
+
 # prod
 dist/
 
@@ -19,6 +25,12 @@ node_modules/
 .env
 .env.production
 .dev.vars
+
+# Original permit workbooks are stored in the local bootstrap directory and loaded into MariaDB.
+# Do not commit customer source files or derived exports.
+/data/reference/
+/data/exports/
+/validation-results/
 
 # logs
 logs/
